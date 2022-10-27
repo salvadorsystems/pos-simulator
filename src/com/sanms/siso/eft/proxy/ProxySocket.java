@@ -58,9 +58,8 @@ public class ProxySocket {
             proxyTest[i] = new Proxy();
             connectSocket = proxyTest[i].setup(apiHost, apiPort, false, 30);
             if (connectSocket == 0) {
-                System.out.println("Conexion Abierta");
-                String ruta = "C:\\Users\\salva\\Documents\\NetBeansProjects\\SimulatorProcesos\\src\\com\\sanms\\siso\\eft\\img\\img2.png";
-                ProcesosMC.imgConn.setIcon(new ImageIcon(ruta));
+                System.out.println("Conexion Abierta");              
+                ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img2.png")));
                 ProcesosMC.jButton1.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(apiHost);
                 ProcesosMC.lblPort.setText(apiPort);
@@ -73,9 +72,8 @@ public class ProxySocket {
     }
 
     public void closeSocket() {
-        System.out.println("Conexion Cerrada");
-        String ruta = "C:\\Users\\salva\\Documents\\NetBeansProjects\\SimulatorProcesos\\src\\com\\sanms\\siso\\eft\\img\\img1.png";
-        ProcesosMC.imgConn.setIcon(new ImageIcon(ruta));
+        System.out.println("Conexion Cerrada");      
+        ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
         ProcesosMC.jButton1.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
