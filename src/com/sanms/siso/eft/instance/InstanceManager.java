@@ -3,7 +3,7 @@ package com.sanms.siso.eft.instance;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
-import com.sanms.siso.eft.view.ViewClienteTest;
+import com.sanms.siso.eft.view.ProcesosMC;
 import com.sft.core.socket.DefaultSocketClient;
 import java.text.SimpleDateFormat;
 import java.util.List;

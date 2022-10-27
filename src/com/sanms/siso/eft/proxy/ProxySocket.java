@@ -2,7 +2,7 @@ package com.sanms.siso.eft.proxy;
 
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
-import com.sanms.siso.eft.view.ViewClienteTest;
+import com.sanms.siso.eft.view.ProcesosMC;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -60,10 +60,10 @@ public class ProxySocket {
             if (connectSocket == 0) {
                 System.out.println("Conexion Abierta");
                 String ruta = "C:\\Users\\salva\\Documents\\NetBeansProjects\\SimulatorProcesos\\src\\com\\sanms\\siso\\eft\\img\\img2.png";
-                ViewClienteTest.imgConn.setIcon(new ImageIcon(ruta));
-                ViewClienteTest.jButton1.setText("Desconectar");
-                ViewClienteTest.lblTCPIP.setText(apiHost);
-                ViewClienteTest.lblPort.setText(apiPort);
+                ProcesosMC.imgConn.setIcon(new ImageIcon(ruta));
+                ProcesosMC.jButton1.setText("Desconectar");
+                ProcesosMC.lblTCPIP.setText(apiHost);
+                ProcesosMC.lblPort.setText(apiPort);
             } else {
                 JOptionPane.showMessageDialog(null, "Error de conexión, Verifica la IP o puerto del servidor remoto",
                         "Error de conexión", JOptionPane.WARNING_MESSAGE);
@@ -75,10 +75,10 @@ public class ProxySocket {
     public void closeSocket() {
         System.out.println("Conexion Cerrada");
         String ruta = "C:\\Users\\salva\\Documents\\NetBeansProjects\\SimulatorProcesos\\src\\com\\sanms\\siso\\eft\\img\\img1.png";
-        ViewClienteTest.imgConn.setIcon(new ImageIcon(ruta));
-        ViewClienteTest.jButton1.setText("Conectar");
-        ViewClienteTest.lblTCPIP.setText("0.0.0.0");
-        ViewClienteTest.lblPort.setText("00");
+        ProcesosMC.imgConn.setIcon(new ImageIcon(ruta));
+        ProcesosMC.jButton1.setText("Conectar");
+        ProcesosMC.lblTCPIP.setText("0.0.0.0");
+        ProcesosMC.lblPort.setText("00");
         for (int i = 0; i < numIns; i++) {
             proxyTest[i].release();
         }

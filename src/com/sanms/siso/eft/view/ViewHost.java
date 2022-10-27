@@ -153,8 +153,8 @@ public class ViewHost extends javax.swing.JDialog {
             System.out.println("Fichero creado");
         } catch (IOException ex) {
         }
-        ViewClienteTest.apiHost = txtIpRemoto.getText();
-        ViewClienteTest.apiPort = txtPort.getText();
+        ProcesosMC.apiHost = txtIpRemoto.getText();
+        ProcesosMC.apiPort = txtPort.getText();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

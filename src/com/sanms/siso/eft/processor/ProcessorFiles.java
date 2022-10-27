@@ -1,7 +1,7 @@
 package com.sanms.siso.eft.processor;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.view.ViewClienteTest;
+import com.sanms.siso.eft.view.ProcesosMC;
 import com.sft.core.configuration.ConfigurationProperties;
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +34,7 @@ public class ProcessorFiles {
 
     public static String[] listConfigFiles(String path) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
-        ViewClienteTest.jListConfig.setModel(modelo);
+        ProcesosMC.jListConfig.setModel(modelo);
         String[] pathnames;
         File f = new File(path);
 
@@ -49,7 +49,7 @@ public class ProcessorFiles {
 
     public static void listTransactiones(String path) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
-        ViewClienteTest.jListTxn.setModel(modelo);
+        ProcesosMC.jListTxn.setModel(modelo);
         File file = new File(path);
         try {
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

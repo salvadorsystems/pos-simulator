@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author salvador
  */
-public final class ViewClienteTest extends javax.swing.JFrame {
+public final class ProcesosMC extends javax.swing.JFrame {
 
     static String apiHost;
     static String apiPort;
@@ -30,7 +30,7 @@ public final class ViewClienteTest extends javax.swing.JFrame {
     ViewHost windowTCPIP = new ViewHost(this, true);
     FileConfigEntity fileConfigEntity;
     
-    public ViewClienteTest() {
+    public ProcesosMC() {
         initComponents();
         initWorkSpace();
 
@@ -540,21 +540,23 @@ public final class ViewClienteTest extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewClienteTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcesosMC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewClienteTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcesosMC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewClienteTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcesosMC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewClienteTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcesosMC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewClienteTest().setVisible(true);
+                new ProcesosMC().setVisible(true);
             }
         });
     }
