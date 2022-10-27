@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<request token="Macros">
+		<!-- Parametros de Trabajo para los Req* -->		
+		<MSGTYPE>0200</MSGTYPE>			
+		<PRI_BITMAP>E23E4401A8E01002</PRI_BITMAP>		
+		<SEC_BITMAP>0000000000000100</SEC_BITMAP>
+
+		<!-- Parametros de Trabajo generales en Req* & ReqExt* -->
+		<NRO_TARJETA>4593340002073059</NRO_TARJETA>
+		<EXP_DATE>2104</EXP_DATE>
+		<RELACION_CUENTAS>934000</RELACION_CUENTAS>
+		<POS_ENTRY_MODE>051</POS_ENTRY_MODE>
+		<ACQ_ID>00000007963</ACQ_ID>
+		<FWD_ID>00000040404</FWD_ID>
+		<MONTO>000000000000000</MONTO>
+		<TERMINAL>22340880</TERMINAL>
+		<MERCH_TYPE>5942</MERCH_TYPE>
+		
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<!-- Parametros de Trabajo segun se necesite -->
+		<ACCEPTORID>299999490000</ACCEPTORID>
+		<ACCEPTORNAME>PROCESOS MC PRUEBAS SA</ACCEPTORNAME>
+		
+		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
+		<PIN>01A5A470178C2C4F</PIN>
+	</request>
+	<request token="ReqFinanciero">
+		<pan>{NRO_TARJETA}</pan>
+		<amount>{MONTO}</amount>		
+		<txnDate>dateMMDD()</txnDate>
+		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
+		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.time;A;4)</localTime>
+		<localDate>dateMMDD()</localDate>
+		<expirationDate>{EXP_DATE}</expirationDate>
+        <dateSettlement>dateMMDD()</dateSettlement>		
+		<merchantType>{MERCH_TYPE}</merchantType>
+		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
+		<acqId>{ACQ_ID}</acqId>
+		<fwdId>{FWD_ID}</fwdId>
+		<authCode></authCode>
+		<terminal>{TERMINAL}</terminal>
+		<currencyCode>{SOLES}</currencyCode>
+		<addDataPrivate>1</addDataPrivate>
+	</request>
+	<request token="ReqRelacionCuentas">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RELACION_CUENTAS}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>		
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		<additionalAmounts>7070604R000000000000</additionalAmounts>
+		<iccData>5F280206045F34010182025C00950500000480009A031909259F02060000000000009F0702FF809F0D05D8688CA8009F0E0524102000409F0F05D868DCF8009F100706010A03A0B8009F2608BD376E0EC76888949F2701809F3303E0F0C89F34030203009F3501229F3602047D9F370481F5F30B9C01005F2A0200009F1A0206049F5301528407A00000000310105A0842615390337602434F07A00000000310109F0607A0000000031010</iccData>
+		<networkData>CC2000354776</networkData>
+		<custInfoResponse>530150299999429900401</custInfoResponse>
+	</request>	
+</data>

@@ -24,6 +24,10 @@ public class FileWorkPathEntity {
         this.workParent = workParent;
     }
 
+    public FileWorkPathEntity() {
+        
+    }
+
     public String getWorkPath() {
         return workPath;
     }

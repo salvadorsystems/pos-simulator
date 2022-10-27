@@ -376,12 +376,16 @@ public final class ProcesosMC extends javax.swing.JFrame {
         txtNumberIns.setEnabled(false);
         txtNumberIns.setText("1");
         txtNumberTxn.setText("1");
-        String fichero;
+        /**String fichero;
         Gson gson = new Gson();
         fichero = ProcessorFiles.jsonFile("../SimulatorProcesos/ProcesosMC.json");
         FileWorkPathEntity processorWorkPath = gson.fromJson(fichero, FileWorkPathEntity.class);
+        fichero = ProcessorFiles.jsonFile("../simulador-procesosmc/ProcesosMC.json");**/        
+        FileWorkPathEntity processorWorkPath = new FileWorkPathEntity();
+        processorWorkPath.setWorkPath("../simulador-procesosmc/MastercCard/host.js");
+        processorWorkPath.setWorkParent("../simulador-procesosmc/MastercCard");
         windowTCPIP.path = processorWorkPath.getWorkPath();
-        txtPath.setText(processorWorkPath.getWorkPath());
+        txtPath.setText(processorWorkPath.getWorkPath());     
         path = processorWorkPath.getWorkParent();
         getconfigHost(processorWorkPath.getWorkPath());
         ProcessorFiles.listConfigFiles(processorWorkPath.getWorkParent());
