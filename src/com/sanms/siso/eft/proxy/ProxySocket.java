@@ -2,6 +2,7 @@ package com.sanms.siso.eft.proxy;
 
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
+import com.sanms.siso.eft.utils.EnumErrores;
 import com.sanms.siso.eft.view.ProcesosMC;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -64,8 +65,8 @@ public class ProxySocket {
                 ProcesosMC.lblTCPIP.setText(apiHost);
                 ProcesosMC.lblPort.setText(apiPort);
             } else {
-                JOptionPane.showMessageDialog(null, "Error de conexión, Verifica la IP o puerto del servidor remoto",
-                        "Error de conexión", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
+                        "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
         }
         return connectSocket;

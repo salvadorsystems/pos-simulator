@@ -5,7 +5,7 @@
  */
 package com.sanms.siso.eft.proxy;
 
-import com.sanms.siso.eft.constantes.Definition;
+import com.sanms.siso.eft.utils.Definition;
 
 /**
  *

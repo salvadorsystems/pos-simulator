@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
-import com.sanms.siso.eft.constantes.MiHilo;
+import com.sanms.siso.eft.utils.MiHilo;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.sanms.siso.eft.constantes;
+package com.sanms.siso.eft.utils;
 
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;

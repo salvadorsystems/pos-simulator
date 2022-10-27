@@ -1,26 +1,27 @@
-package com.sanms.siso.eft.constantes;
+package com.sanms.siso.eft.utils;
 
 /**
  *
  * @author salvador
  */
-public class SinHilos {
+public class ConHilosRunable implements Runnable{
     String atributo;
 
-    public SinHilos(int i)
+    public ConHilosRunable(int i)
     {
         atributo = "algo" + i;
     }
 
     public static void main(String[] args)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 3; i++)
         {
-            SinHilos sh = new SinHilos(i);
-            sh.run();
+            Thread ch = new Thread(new ConHilosRunable(i));
+            ch.start();
         }
     }
 
+    @Override
     public void run()
     {
         for (int i = 0; i < 5; i++)
@@ -28,7 +29,4 @@ public class SinHilos {
             System.out.println(i + ": " + atributo);
         }
     }
-        
-    }
-    
-
+}

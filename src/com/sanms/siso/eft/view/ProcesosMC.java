@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import com.sanms.siso.eft.proxy.ProxySocket;
+import com.sanms.siso.eft.utils.EnumErrores;
 import java.awt.HeadlessException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -417,13 +418,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
                         System.out.println("error: " + e);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Campo de instancias debe ser numerico");
+                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Campo de instancias esta vacio");
+                JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1002.getMensaje());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "IP no encontrado, ingresa la ip y puerto");
+            JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
