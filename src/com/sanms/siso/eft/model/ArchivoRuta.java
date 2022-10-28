@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.sanms.siso.eft.entity;
+package com.sanms.siso.eft.model;
 
 import com.google.gson.Gson;
 import java.io.BufferedWriter;
@@ -14,17 +14,17 @@ import javax.swing.JOptionPane;
  *
  * @author salvador
  */
-public class FileWorkPathEntity {
+public class ArchivoRuta {
 
     private String workPath;
     private String workParent;
 
-    public FileWorkPathEntity(String workPath, String workParent) {
+    public ArchivoRuta(String workPath, String workParent) {
         this.workPath = workPath;
         this.workParent = workParent;
     }
 
-    public FileWorkPathEntity() {
+    public ArchivoRuta() {
         
     }
 
@@ -51,9 +51,9 @@ public class FileWorkPathEntity {
 
     public static void setConfigWorkPath(String path, String parent) {
         Gson gson = new Gson();
-        FileWorkPathEntity processorWorkPath = new FileWorkPathEntity(path, parent);
+        ArchivoRuta processorWorkPath = new ArchivoRuta(path, parent);
         String json = gson.toJson(processorWorkPath);
-        try ( BufferedWriter bw = new BufferedWriter(new FileWriter("../SimulatorProcesos/ProcesosMC.json"))) {
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter("../simulador-procesosmc/ProcesosMC.json"))) {
             bw.write(json);
             System.out.println("Fichero Modificado");
         } catch (IOException ex) {

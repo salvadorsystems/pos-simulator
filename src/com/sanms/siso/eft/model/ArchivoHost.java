@@ -1,22 +1,22 @@
-package com.sanms.siso.eft.entity;
+package com.sanms.siso.eft.model;
 
 /**
  *
  * @author salvador
  */
-public class FileHostEntity {
+public class ArchivoHost {
     
     private String localHost;
     private String remoteHost;
     private int port;
     private int timeout;
 
-    public FileHostEntity() {
+    public ArchivoHost() {
     }
 
     
     
-    public FileHostEntity(String localHost, String remoteHost, int port, int timeout) {
+    public ArchivoHost(String localHost, String remoteHost, int port, int timeout) {
         this.localHost = localHost;
         this.remoteHost = remoteHost;
         this.port = port;
