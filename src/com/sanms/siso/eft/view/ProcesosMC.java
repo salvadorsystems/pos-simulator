@@ -1,10 +1,10 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.entity.FileConfigEntity;
+import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.processor.ProcessorFiles;
-import com.sanms.siso.eft.entity.FileHostEntity;
-import com.sanms.siso.eft.entity.FileWorkPathEntity;
+import com.sanms.siso.eft.model.ArchivoHost;
+import com.sanms.siso.eft.model.ArchivoRuta;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.Icon;
@@ -29,7 +29,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     ProxySocket socketProxy = new ProxySocket();
     ViewHost windowTCPIP = new ViewHost(this, true);
-    FileConfigEntity fileConfigEntity;
+    ArchivoConfiguracion fileConfigEntity;
     
     public ProcesosMC() {
         initComponents();
@@ -48,12 +48,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
         panelConfiguration = new javax.swing.JPanel();
         btnTCPIP = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        txtNumberIns = new javax.swing.JTextField();
+        txtNumIns = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtNumberTxn = new javax.swing.JTextField();
+        txtNumTxn = new javax.swing.JTextField();
         CboxNumI = new javax.swing.JCheckBox();
         panelConfiguration1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        BtnOpenCloseSocket = new javax.swing.JButton();
         imgConn = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -66,7 +66,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jListConfig = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListTxn = new javax.swing.JList<>();
-        jButton3 = new javax.swing.JButton();
+        BtnSendMessage = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -125,8 +125,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNumberIns, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                    .addComponent(txtNumberTxn))
+                    .addComponent(txtNumIns, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                    .addComponent(txtNumTxn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CboxNumI, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(34, Short.MAX_VALUE))
@@ -142,20 +142,20 @@ public final class ProcesosMC extends javax.swing.JFrame {
                             .addComponent(CboxNumI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel5)
-                                .addComponent(txtNumberIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtNumIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txtNumberTxn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtNumTxn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(14, 14, 14))
         );
 
         panelConfiguration1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Conexion"));
 
-        jButton1.setText("Conectar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BtnOpenCloseSocket.setText("Conectar");
+        BtnOpenCloseSocket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtnOpenCloseSocketActionPerformed(evt);
             }
         });
 
@@ -173,7 +173,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfiguration1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BtnOpenCloseSocket, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(imgConn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -203,7 +203,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                             .addComponent(jLabel8)
                             .addComponent(lblPort)))
                     .addComponent(imgConn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BtnOpenCloseSocket, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -273,10 +273,10 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        jButton3.setText("Enviar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        BtnSendMessage.setText("Enviar");
+        BtnSendMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                BtnSendMessageActionPerformed(evt);
             }
         });
 
@@ -306,7 +306,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BtnSendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -319,7 +319,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BtnSendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -343,7 +343,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         Gson gson = new Gson();
         if (ProcessorFiles.isJSONValid(ProcessorFiles.jsonFile(path))) {
             try {
-                FileHostEntity processorHost = gson.fromJson(ProcessorFiles.jsonFile(path), FileHostEntity.class);
+                ArchivoHost processorHost = gson.fromJson(ProcessorFiles.jsonFile(path), ArchivoHost.class);
                 if (processorHost != null) {
                     apiHost = processorHost.getRemoteHost();
                     apiPort = String.valueOf(processorHost.getPort());
@@ -374,15 +374,15 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private void initWorkSpace() {
         imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
         btnTCPIP.setIcon(setIcono("../img/ipAdress9.png", btnTCPIP));
-        txtNumberIns.setEnabled(false);
-        txtNumberIns.setText("1");
-        txtNumberTxn.setText("1");
+        txtNumIns.setEnabled(false);
+        txtNumIns.setText("1");
+        txtNumTxn.setText("1");
         /**String fichero;
         Gson gson = new Gson();
         fichero = ProcessorFiles.jsonFile("../SimulatorProcesos/ProcesosMC.json");
         FileWorkPathEntity processorWorkPath = gson.fromJson(fichero, FileWorkPathEntity.class);
         fichero = ProcessorFiles.jsonFile("../simulador-procesosmc/ProcesosMC.json");**/        
-        FileWorkPathEntity processorWorkPath = new FileWorkPathEntity();
+        ArchivoRuta processorWorkPath = new ArchivoRuta();
         processorWorkPath.setWorkPath("../simulador-procesosmc/MastercCard/host.js");
         processorWorkPath.setWorkParent("../simulador-procesosmc/MastercCard");
         windowTCPIP.path = processorWorkPath.getWorkPath();
@@ -395,18 +395,18 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jListTxn.setSelectedIndex(0);        
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BtnOpenCloseSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOpenCloseSocketActionPerformed
 
         if (!apiHost.isEmpty()) {
-            if (validateField(txtNumberIns.getText()) && validateField(txtNumberTxn.getText())) {
-                if (validateNumber(txtNumberIns.getText()) && validateNumber(txtNumberTxn.getText())) {
+            if (validateField(txtNumIns.getText()) && validateField(txtNumTxn.getText())) {
+                if (validateNumber(txtNumIns.getText()) && validateNumber(txtNumTxn.getText())) {
                     try {
                         connectClient++;
                         if (connectClient == 0) {
                             socketProxy.setApiHost(apiHost);
                             socketProxy.setApiPort(apiPort);
-                            socketProxy.setNumIns(Integer.parseInt(txtNumberIns.getText()));
-                            socketProxy.setNumberTxn(Integer.parseInt(txtNumberTxn.getText()));
+                            socketProxy.setNumIns(Integer.parseInt(txtNumIns.getText()));
+                            socketProxy.setNumTxn(Integer.parseInt(txtNumTxn.getText()));
                             if (socketProxy.openSocketAny() != 0) {
                                 connectClient = -1;
                             }
@@ -426,25 +426,27 @@ public final class ProcesosMC extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BtnOpenCloseSocketActionPerformed
 
     private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTCPIPActionPerformed
         windowTCPIP.setVisible(true);
     }//GEN-LAST:event_btnTCPIPActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSendMessageActionPerformed
         // TODO add your handling code here:
+        socketProxy.setFile(path);
+        socketProxy.setFilePath(path);
         socketProxy.sendMessageSocket();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_BtnSendMessageActionPerformed
 
     private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CboxNumIActionPerformed
         // TODO add your handling code here:
         if (CboxNumI.isSelected() == true) {
-            txtNumberIns.setEnabled(true);
-            txtNumberIns.requestFocus();
+            txtNumIns.setEnabled(true);
+            txtNumIns.requestFocus();
         } else {
-            txtNumberIns.setText("1");
-            txtNumberIns.setEnabled(false);
+            txtNumIns.setText("1");
+            txtNumIns.setEnabled(false);
         }
 
     }//GEN-LAST:event_CboxNumIActionPerformed
@@ -465,7 +467,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             if (seleccion_ruta != null) {
                 path = seleccion_ruta.getParent();
                 ProcessorFiles.listConfigFiles(seleccion_ruta.getParent());
-                FileWorkPathEntity.setConfigWorkPath(seleccion_ruta.getAbsolutePath(), seleccion_ruta.getParent());
+                ArchivoRuta.setConfigWorkPath(seleccion_ruta.getAbsolutePath(), seleccion_ruta.getParent());
                 getconfigHost(seleccion_ruta.getAbsolutePath());
                 windowTCPIP.path = seleccion_ruta.getAbsolutePath();
                 txtPath.setText(seleccion_ruta.getAbsolutePath());
@@ -500,10 +502,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
         Gson gson = new Gson();
         if (ProcessorFiles.isJSONValid(ProcessorFiles.jsonFile(pathConfig))) {
             try {
-                fileConfigEntity = gson.fromJson(ProcessorFiles.jsonFile(pathConfig), FileConfigEntity.class);
+                fileConfigEntity = gson.fromJson(ProcessorFiles.jsonFile(pathConfig), ArchivoConfiguracion.class);
                 if (fileConfigEntity != null) {
-                    String pathConfig1 = path + "\\" + fileConfigEntity.getWorkPath() + "\\" + fileConfigEntity.getGeneratorsFile();
-                    ProcessorFiles.listTransactiones(pathConfig1);
+                    //String pathConfig1 = path + "\\" + fileConfigEntity.getWorkPath() + "\\" + fileConfigEntity.getGeneratorsFile();
+                    
+                    ProcessorFiles.listTransactiones(path + "\\" + fileConfigEntity.getWorkPath() + "\\" + fileConfigEntity.getGeneratorsFile());
                     System.out.println("fileConfigEntity " + fileConfigEntity.getGeneratorsFile());
                     System.out.println("fileConfigEntity1 " + fileConfigEntity.getParametersFile());
                     System.out.println("PAT ORIGEN: "+ path);
@@ -567,12 +570,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton BtnOpenCloseSocket;
+    public static javax.swing.JButton BtnSendMessage;
     private javax.swing.JCheckBox CboxNumI;
     private javax.swing.JButton btnCargar;
     private javax.swing.JButton btnTCPIP;
     public static javax.swing.JLabel imgConn;
-    public static javax.swing.JButton jButton1;
-    public static javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -593,8 +596,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JPanel panelConfiguration;
     private javax.swing.JPanel panelConfiguration1;
     private javax.swing.JPanel panelConfiguration2;
-    private javax.swing.JTextField txtNumberIns;
-    private javax.swing.JTextField txtNumberTxn;
+    private javax.swing.JTextField txtNumIns;
+    private javax.swing.JTextField txtNumTxn;
     private javax.swing.JTextField txtPath;
     // End of variables declaration//GEN-END:variables
 }

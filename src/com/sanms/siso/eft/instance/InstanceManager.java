@@ -46,7 +46,7 @@ public class InstanceManager extends Thread {
     public InstanceManager() {
     }
 
-   public InstanceManager(ThreadGroup tg, String name) {
+    public InstanceManager(ThreadGroup tg, String name) {
         super(tg, name);
     }
 
@@ -194,21 +194,20 @@ public class InstanceManager extends Thread {
     }
 
     public void execute() {
+        int pid = this.threads;
         String result = "";
-            try{
-    //  result = processor.executeProcessCCE(selectItem, pid);            
-    }catch(Exception ex){
-      throw ex;
-    }
         try {
-            ProxyResult apiResult = new ProxyResult(); 
-            ProxyCommResult resultProxy = proxy.process("0200E23A440188E08002000000000400010016459334000207305943000007251538170010041538170725072559420511100000007963110000004040400000000098122340880299999490000   PROCESOS MC PRUEBAS SA                  604012CC200035477620108012321000349631  0021530150299999429900401", apiResult);
-            System.out.println("Result: "+ resultProxy.getStringResponse());
-            System.out.println("Enviando");
-        } catch (Exception e) {
-            System.out.println("ee :" + e);
-        }        
-        
+            //result = processor.executeProcessCCE(selectItem, pid);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+        ProxyResult apiResult = new ProxyResult();
+        //ProxyCommResult resultProxy = proxy.process("0200E23A440188E08002000000000400010016459334000207305943000007251538170010041538170725072559420511100000007963110000004040400000000098122340880299999490000   PROCESOS MC PRUEBAS SA                  604012CC200035477620108012321000349631  0021530150299999429900401", apiResult);
+        ProxyCommResult resultProxy = proxy.process(result, apiResult);
+        System.out.println("Result: " + resultProxy.getStringResponse());
+        System.out.println("Enviando");
+
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.entity.FileHostEntity;
+import com.sanms.siso.eft.model.ArchivoHost;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -146,7 +146,7 @@ public class ViewHost extends javax.swing.JDialog {
 
     private void setConfigHost() {
         Gson gson = new Gson();
-        FileHostEntity processorHost = new FileHostEntity(txtIpLocal.getText(), txtIpRemoto.getText(), Integer.parseInt(txtPort.getText()), Integer.parseInt(txtTimeout.getText()));
+        ArchivoHost processorHost = new ArchivoHost(txtIpLocal.getText(), txtIpRemoto.getText(), Integer.parseInt(txtPort.getText()), Integer.parseInt(txtTimeout.getText()));
         String json = gson.toJson(processorHost);
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write(json);

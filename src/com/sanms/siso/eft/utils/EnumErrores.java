@@ -12,7 +12,8 @@ public enum EnumErrores {
     ERROR_VALIDACION_OBLIGATORIEDAD_1000("1000", "Campo de instancias debe ser numerico"),
     ERROR_VALIDACION_OBLIGATORIEDAD_1002("1002", "Campo de instancias esta vacio"),
     ERROR_VALIDACION_OBLIGATORIEDAD_1003("1003", "IP no encontrado, ingresa la ip y puerto"),
-    ERROR_VALIDACION_OBLIGATORIEDAD_1004("1004", "IP o PUEURTO Incorrecto");
+    ERROR_VALIDACION_OBLIGATORIEDAD_1004("1004", "IP o PUEURTO Incorrecto"),
+    ERROR_VALIDACION_OBLIGATORIEDAD_1005("1005", "Debe especificar la ruta del archivo de parametros.");
 
     private EnumErrores(String cod, String msg) {
         this.cod = cod;

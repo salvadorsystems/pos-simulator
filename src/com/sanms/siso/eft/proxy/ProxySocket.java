@@ -17,9 +17,11 @@ public class ProxySocket {
     private int connectSocket = -1;
     private Proxy proxyTest[];
     private int numIns;
-    private int numberTxn;
+    private int numTxn;
     private String apiHost;
     private String apiPort;
+    private String filePath;
+    private String file;
 
     public int getNumIns() {
         return numIns;
@@ -29,12 +31,12 @@ public class ProxySocket {
         this.numIns = numIns;
     }
 
-    public int getNumberTxn() {
-        return numberTxn;
+    public int getNumTxn() {
+        return numTxn;
     }
 
-    public void setNumberTxn(int numberTxn) {
-        this.numberTxn = numberTxn;
+    public void setNumTxn(int numTxn) {
+        this.numTxn = numTxn;
     }
 
     public String getApiHost() {
@@ -53,6 +55,22 @@ public class ProxySocket {
         this.apiPort = apiPort;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+    
     public int openSocketAny() {
         proxyTest = new Proxy[numIns];
         for (int i = 0; i < numIns; i++) {
@@ -61,7 +79,7 @@ public class ProxySocket {
             if (connectSocket == 0) {
                 System.out.println("Conexion Abierta");              
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img2.png")));
-                ProcesosMC.jButton1.setText("Desconectar");
+                ProcesosMC.BtnOpenCloseSocket.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(apiHost);
                 ProcesosMC.lblPort.setText(apiPort);
             } else {
@@ -75,7 +93,7 @@ public class ProxySocket {
     public void closeSocket() {
         System.out.println("Conexion Cerrada");      
         ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
-        ProcesosMC.jButton1.setText("Conectar");
+        ProcesosMC.BtnOpenCloseSocket.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
         for (int i = 0; i < numIns; i++) {
@@ -87,8 +105,8 @@ public class ProxySocket {
         ThreadGroup parentGroup = new ThreadGroup("Parent Thread");
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
-            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]");
-            execute[i].setNumTxn(numberTxn);
+            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",filePath,file);
+            execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
             System.out.println("proxy :" + proxyTest[i]);
             execute[i].start();

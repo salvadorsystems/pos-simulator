@@ -1,10 +1,10 @@
-package com.sanms.siso.eft.entity;
+package com.sanms.siso.eft.model;
 
 /**
  *
  * @author salvador
  */
-public class FileConfigEntity {
+public class ArchivoConfiguracion {
 
     private String workPath;
     private String templatesFile;
@@ -18,7 +18,7 @@ public class FileConfigEntity {
     private String reportFlag;
     private String reportPath;
 
-    public FileConfigEntity(String workPath, String templatesFile, String generatorsFile, String parametersFile, String logLevel, String prefix, String tcpFile, String securityFile, String statisticFile, String reportFlag, String reportPath) {
+    public ArchivoConfiguracion(String workPath, String templatesFile, String generatorsFile, String parametersFile, String logLevel, String prefix, String tcpFile, String securityFile, String statisticFile, String reportFlag, String reportPath) {
         this.workPath = workPath;
         this.templatesFile = templatesFile;
         this.generatorsFile = generatorsFile;
