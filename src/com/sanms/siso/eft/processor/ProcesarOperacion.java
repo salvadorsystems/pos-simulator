@@ -10,14 +10,14 @@ import java.util.Map;
  *
  * @author salvador
  */
-public class ProcessorTransaction {
+public class ProcesarOperacion {
     
-public String ConstruirTrama(String nombreTxn, int pid){
+public String BuildTrama(String nombreTxn, int pid){
     
     Map<String, String> params = null;
     
     try {
-        params = ParametersTransaction.obtenerParametros(nombreTxn,pid);
+        params = ParametrosOperacion.obtenerParametros(nombreTxn,pid);
     } catch (Exception e) {
     }
     

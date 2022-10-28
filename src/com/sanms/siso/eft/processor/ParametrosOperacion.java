@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author CANVIA
  */
-public class ParametersTransaction {
+public class ParametrosOperacion {
 
     static Map<String, String> obtenerParametros(String nombreTxn, int pid) {
         Map<String, String> map = null;      
@@ -28,7 +28,7 @@ public class ParametersTransaction {
 
     private String pathFile;
 
-    public ParametersTransaction(String pathFile) {
+    public ParametrosOperacion(String pathFile) {
         this.pathFile = pathFile;
     }
 
