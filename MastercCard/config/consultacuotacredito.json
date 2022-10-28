@@ -1,0 +1,41 @@
+{
+   "detail":"Consulta  de Cuota de Credito",
+   "generators":[
+      {	
+         "detail":"Consulta Cuota Credito con DNI",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqConsultaCredito",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+      {
+         "detail":"Consulta Cuota Credito con Tarjeta",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqConsultaCreditoTarjeta",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

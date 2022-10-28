@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "consultadeuda.config",
+    "generatorsFile": "consultadeuda.json",
     "parametersFile": "consultadeuda.inf",
     "logLevel": "D",
     "prefix": "DYN_",

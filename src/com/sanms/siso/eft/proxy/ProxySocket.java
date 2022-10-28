@@ -2,8 +2,10 @@ package com.sanms.siso.eft.proxy;
 
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
+import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.EnumErrores;
 import com.sanms.siso.eft.view.ProcesosMC;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -21,7 +23,7 @@ public class ProxySocket {
     private String apiHost;
     private String apiPort;
     private String filePath;
-    private String file;
+    private List<Stream> listStream;
 
     public int getNumIns() {
         return numIns;
@@ -63,14 +65,14 @@ public class ProxySocket {
         this.filePath = filePath;
     }
 
-    public String getFile() {
-        return file;
+    public List<Stream> getListStream() {
+        return listStream;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setListStream(List<Stream> listStream) {
+        this.listStream = listStream;
     }
-    
+          
     public int openSocketAny() {
         proxyTest = new Proxy[numIns];
         for (int i = 0; i < numIns; i++) {
@@ -105,7 +107,7 @@ public class ProxySocket {
         ThreadGroup parentGroup = new ThreadGroup("Parent Thread");
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
-            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",filePath,file);
+            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",filePath,listStream);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
             System.out.println("proxy :" + proxyTest[i]);

@@ -2,9 +2,12 @@ package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
 import com.sanms.siso.eft.model.ArchivoConfiguracion;
-import com.sanms.siso.eft.processor.ProcessorFiles;
+import com.sanms.siso.eft.processor.ProcesarArchivos;
 import com.sanms.siso.eft.model.ArchivoHost;
 import com.sanms.siso.eft.model.ArchivoRuta;
+import com.sanms.siso.eft.model.Generator;
+import com.sanms.siso.eft.model.Operacion;
+import com.sanms.siso.eft.model.Stream;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.Icon;
@@ -13,6 +16,7 @@ import javax.swing.JButton;
 import com.sanms.siso.eft.proxy.ProxySocket;
 import com.sanms.siso.eft.utils.EnumErrores;
 import java.awt.HeadlessException;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -25,12 +29,16 @@ public final class ProcesosMC extends javax.swing.JFrame {
     static String apiHost;
     static String apiPort;
     private int connectClient = -1;
-    private String path;
+    private String ruta;
+    private String rutaParametros;
 
     ProxySocket socketProxy = new ProxySocket();
     ViewHost windowTCPIP = new ViewHost(this, true);
-    ArchivoConfiguracion fileConfigEntity;
-    
+    ArchivoConfiguracion archivoConfiguracion;
+    Operacion operacion;
+    List<Stream> listStreams;
+    List<Generator> listGenerator;
+
     public ProcesosMC() {
         initComponents();
         initWorkSpace();
@@ -341,9 +349,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void getconfigHost(String path) {
         Gson gson = new Gson();
-        if (ProcessorFiles.isJSONValid(ProcessorFiles.jsonFile(path))) {
+        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(path))) {
             try {
-                ArchivoHost processorHost = gson.fromJson(ProcessorFiles.jsonFile(path), ArchivoHost.class);
+                ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path), ArchivoHost.class);
                 if (processorHost != null) {
                     apiHost = processorHost.getRemoteHost();
                     apiPort = String.valueOf(processorHost.getPort());
@@ -377,22 +385,17 @@ public final class ProcesosMC extends javax.swing.JFrame {
         txtNumIns.setEnabled(false);
         txtNumIns.setText("1");
         txtNumTxn.setText("1");
-        /**String fichero;
-        Gson gson = new Gson();
-        fichero = ProcessorFiles.jsonFile("../SimulatorProcesos/ProcesosMC.json");
-        FileWorkPathEntity processorWorkPath = gson.fromJson(fichero, FileWorkPathEntity.class);
-        fichero = ProcessorFiles.jsonFile("../simulador-procesosmc/ProcesosMC.json");**/        
         ArchivoRuta processorWorkPath = new ArchivoRuta();
         processorWorkPath.setWorkPath("../simulador-procesosmc/MastercCard/host.js");
         processorWorkPath.setWorkParent("../simulador-procesosmc/MastercCard");
         windowTCPIP.path = processorWorkPath.getWorkPath();
-        txtPath.setText(processorWorkPath.getWorkPath());     
-        path = processorWorkPath.getWorkParent();
+        txtPath.setText(processorWorkPath.getWorkPath());
+        ruta = processorWorkPath.getWorkParent();
         getconfigHost(processorWorkPath.getWorkPath());
-        ProcessorFiles.listConfigFiles(processorWorkPath.getWorkParent());
-        jListConfig.setSelectedIndex(0);        
+        ProcesarArchivos.listConfigFiles(processorWorkPath.getWorkParent());
+        jListConfig.setSelectedIndex(0);
         setListTxn();
-        jListTxn.setSelectedIndex(0);        
+        jListTxn.setSelectedIndex(0);
     }
 
     private void BtnOpenCloseSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOpenCloseSocketActionPerformed
@@ -434,8 +437,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSendMessageActionPerformed
         // TODO add your handling code here:
-        socketProxy.setFile(path);
-        socketProxy.setFilePath(path);
+        socketProxy.setListStream(listStreams);
+        socketProxy.setFilePath(rutaParametros);
         socketProxy.sendMessageSocket();
     }//GEN-LAST:event_BtnSendMessageActionPerformed
 
@@ -465,8 +468,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
             jf.showOpenDialog(this);
             File seleccion_ruta = jf.getSelectedFile();
             if (seleccion_ruta != null) {
-                path = seleccion_ruta.getParent();
-                ProcessorFiles.listConfigFiles(seleccion_ruta.getParent());
+                ruta = seleccion_ruta.getParent();
+                ProcesarArchivos.listConfigFiles(seleccion_ruta.getParent());
                 ArchivoRuta.setConfigWorkPath(seleccion_ruta.getAbsolutePath(), seleccion_ruta.getParent());
                 getconfigHost(seleccion_ruta.getAbsolutePath());
                 windowTCPIP.path = seleccion_ruta.getAbsolutePath();
@@ -489,34 +492,39 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private void jListTxnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListTxnMouseClicked
         // TODO add your handling code here:
         setListtxn2();
-        System.out.println("fileConfigEntity FF" + fileConfigEntity.getGeneratorsFile());
-
     }//GEN-LAST:event_jListTxnMouseClicked
 
-    public void setListtxn2(){
+    public void setListtxn2() {
         String pathConfig = jListTxn.getSelectedValue();
-        System.out.println("--> " + pathConfig);
+        listGenerator = operacion.getGenerators();        
+        for (Generator generator : listGenerator) {
+            if (generator.getDetail().equalsIgnoreCase(pathConfig)) {
+                listStreams = generator.getStreams();
+            }
+        }
+        System.out.println(""+listStreams.toString());        
+        System.out.println("-->2 " + pathConfig);
     }
-    public void setListTxn() {        
-        String pathConfig = path + "\\" + jListConfig.getSelectedValue();
+
+    public void setListTxn() {
+        String rutaFileConfig = ruta + "\\" + jListConfig.getSelectedValue();
         Gson gson = new Gson();
-        if (ProcessorFiles.isJSONValid(ProcessorFiles.jsonFile(pathConfig))) {
-            try {
-                fileConfigEntity = gson.fromJson(ProcessorFiles.jsonFile(pathConfig), ArchivoConfiguracion.class);
-                if (fileConfigEntity != null) {
-                    //String pathConfig1 = path + "\\" + fileConfigEntity.getWorkPath() + "\\" + fileConfigEntity.getGeneratorsFile();
-                    
-                    ProcessorFiles.listTransactiones(path + "\\" + fileConfigEntity.getWorkPath() + "\\" + fileConfigEntity.getGeneratorsFile());
-                    System.out.println("fileConfigEntity " + fileConfigEntity.getGeneratorsFile());
-                    System.out.println("fileConfigEntity1 " + fileConfigEntity.getParametersFile());
-                    System.out.println("PAT ORIGEN: "+ path);
+        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig))) {
+            archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig), ArchivoConfiguracion.class);
+            if (archivoConfiguracion != null) {
+                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
+                rutaParametros = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile();
+                if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe))) {
+                    operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
+                    ProcesarArchivos.listarOperaciones(operacion);
                 } else {
-                    clearFields();
+                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje()+"\nRuta: "+rutaFileOpe);
                 }
-            } catch (com.google.gson.JsonSyntaxException ex) {
-                System.out.println("error :" + ex);
+            } else {
+                clearFields();
             }
         } else {
+            JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
             clearFields();
         }
         jListTxn.setSelectedIndex(0);

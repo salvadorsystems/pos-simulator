@@ -1,6 +1,8 @@
 package com.sanms.siso.eft.processor;
 
 import com.google.gson.Gson;
+import com.sanms.siso.eft.model.Generator;
+import com.sanms.siso.eft.model.Operacion;
 import com.sanms.siso.eft.view.ProcesosMC;
 import com.sft.core.configuration.ConfigurationProperties;
 import java.io.BufferedReader;
@@ -9,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +23,7 @@ import org.w3c.dom.NodeList;
  *
  * @author salvador
  */
-public class ProcessorFiles {
+public class ProcesarArchivos {
 
     public String executeProcessCCE(String nombreTxn, int pid) {
         String respuesta = null;
@@ -47,26 +50,16 @@ public class ProcessorFiles {
         return pathnames;
     }
 
-    public static void listTransactiones(String path) {
+    public static void listarOperaciones(Operacion operacion){
         DefaultListModel<String> modelo = new DefaultListModel<>();
         ProcesosMC.jListTxn.setModel(modelo);
-        File file = new File(path);
-        try {
-            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-            doc.getDocumentElement().normalize();
-            NodeList nodeParent = doc.getElementsByTagName("generator");
-            for (int i = 0; i < nodeParent.getLength(); i++) {
-                Element eElementParent = (Element) nodeParent.item(i);
-                String token = eElementParent.getAttribute("detail");
-                modelo.addElement(token);
-                System.out.println("token : " + token);
-            }
-        } catch (Exception e) {
-        }
+        List<Generator> listGenerator = operacion.getGenerators();
+        for (Generator generator : listGenerator) {
+            modelo.addElement(generator.getDetail());
+        }               
     }
 
-    public static String jsonFile(String path) {
+    public static String convertJsonToString(String path) {
         String fichero = "";
         // Gson gson = new Gson();
         try ( BufferedReader br = new BufferedReader(new FileReader(path))) {

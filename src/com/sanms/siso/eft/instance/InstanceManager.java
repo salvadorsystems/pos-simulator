@@ -1,5 +1,6 @@
 package com.sanms.siso.eft.instance;
 
+import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
@@ -26,8 +27,8 @@ public class InstanceManager extends Thread {
     private SimpleDateFormat time;
     private boolean running;
 
-    private String configurationFilePath;
-    private String selectItem;
+    private String rutaParametros;
+    private List<Stream> listStream;
     private int errorCount = 0;
     private int succesCount = 0;
 
@@ -37,10 +38,10 @@ public class InstanceManager extends Thread {
 
     private Proxy proxy;
 
-    public InstanceManager(ThreadGroup tg, String name, String configurationFilePath, String selectItem) {
+    public InstanceManager(ThreadGroup tg, String name, String rutaParametros, List<Stream> listStream) {
         this(tg, name);
-        this.configurationFilePath = configurationFilePath;
-        this.selectItem = selectItem;
+        this.rutaParametros = rutaParametros;
+        this.listStream = listStream;
     }
 
     public InstanceManager() {
@@ -114,20 +115,20 @@ public class InstanceManager extends Thread {
         this.running = running;
     }
 
-    public String getConfigurationFilePath() {
-        return configurationFilePath;
+    public String getRutaParametros() {
+        return rutaParametros;
     }
 
-    public void setConfigurationFilePath(String configurationFilePath) {
-        this.configurationFilePath = configurationFilePath;
+    public void setRutaParametros(String rutaParametros) {
+        this.rutaParametros = rutaParametros;
     }
 
-    public String getSelectItem() {
-        return selectItem;
+    public List<Stream> getListStream() {
+        return listStream;
     }
 
-    public void setSelectItem(String selectItem) {
-        this.selectItem = selectItem;
+    public void setListStream(List<Stream> listStream) {
+        this.listStream = listStream;
     }
 
     public int getErrorCount() {
