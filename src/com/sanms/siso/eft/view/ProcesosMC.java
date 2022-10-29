@@ -313,8 +313,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnSendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BtnSendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -383,6 +383,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
         btnTCPIP.setIcon(setIcono("../img/ipAdress9.png", btnTCPIP));
         txtNumIns.setEnabled(false);
+        BtnSendMessage.setEnabled(false);
         txtNumIns.setText("1");
         txtNumTxn.setText("1");
         ArchivoRuta processorWorkPath = new ArchivoRuta();
@@ -410,11 +411,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
                             socketProxy.setApiPort(apiPort);
                             socketProxy.setNumIns(Integer.parseInt(txtNumIns.getText()));
                             socketProxy.setNumTxn(Integer.parseInt(txtNumTxn.getText()));
+                            BtnSendMessage.setEnabled(true);
                             if (socketProxy.openSocketAny() != 0) {
                                 connectClient = -1;
                             }
                         } else {
                             socketProxy.closeSocket();
+                            BtnSendMessage.setEnabled(false);
                             connectClient = -1;
                         }
                     } catch (NumberFormatException e) {
@@ -496,13 +499,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     public void setListtxn2() {
         String pathConfig = jListTxn.getSelectedValue();
-        listGenerator = operacion.getGenerators();        
+        listGenerator = operacion.getGenerators();
         for (Generator generator : listGenerator) {
             if (generator.getDetail().equalsIgnoreCase(pathConfig)) {
                 listStreams = generator.getStreams();
             }
         }
-        System.out.println(""+listStreams.toString());        
+        System.out.println("" + listStreams.toString());
         System.out.println("-->2 " + pathConfig);
     }
 
@@ -518,7 +521,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
                 } else {
-                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje()+"\nRuta: "+rutaFileOpe);
+                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
             } else {
                 clearFields();

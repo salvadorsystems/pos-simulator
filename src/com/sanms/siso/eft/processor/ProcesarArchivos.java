@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sanms.siso.eft.model.Generator;
 import com.sanms.siso.eft.model.Operacion;
 import com.sanms.siso.eft.view.ProcesosMC;
-import com.sft.core.configuration.ConfigurationProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,11 +12,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  *
@@ -61,7 +55,6 @@ public class ProcesarArchivos {
 
     public static String convertJsonToString(String path) {
         String fichero = "";
-        // Gson gson = new Gson();
         try ( BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             while ((linea = br.readLine()) != null) {
