@@ -1,6 +1,7 @@
 package com.sanms.siso.eft.instance;
 
 import com.sanms.siso.eft.model.Stream;
+import com.sanms.siso.eft.processor.ProcesarOperacion;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
@@ -196,9 +197,11 @@ public class InstanceManager extends Thread {
 
     public void execute() {
         int pid = this.threads;
+        ProcesarOperacion processor = new ProcesarOperacion();
+        processor.setup(rutaParametros);
         String result = "";
         try {
-            //result = processor.executeProcessCCE(selectItem, pid);
+            result = processor.ConstruirTrama(listStream, pid);
         } catch (Exception ex) {
             throw ex;
         }

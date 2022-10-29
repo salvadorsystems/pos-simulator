@@ -4,6 +4,8 @@
  */
 package com.sanms.siso.eft.processor;
 
+import com.sanms.siso.eft.model.Stream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,17 +13,25 @@ import java.util.Map;
  * @author salvador
  */
 public class ProcesarOperacion {
-    
-public String BuildTrama(String nombreTxn, int pid){
-    
-    Map<String, String> params = null;
-    
-    try {
-        params = ParametrosOperacion.obtenerParametros(nombreTxn,pid);
-    } catch (Exception e) {
+
+    ParametrosOperacion parametrosOperacion;
+    Map<String, Map<String, Map<String, String>>> templateMapList;
+
+    public void setup(String rutaParametros) {
+        parametrosOperacion = new ParametrosOperacion(rutaParametros);
+        //templateMapList = 
     }
-    
-    return "";
-}
-    
+
+    public String ConstruirTrama(List<Stream> listStream, int pid) {
+
+        Map<String, String> params = null;
+
+        try {
+            params = parametrosOperacion.obtenerParametros(listStream, pid);
+        } catch (Exception e) {
+        }
+
+        return "";
+    }
+
 }
