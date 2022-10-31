@@ -12,9 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/processor/ProcessorFiles.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/processor/ProcesarOperacion.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/instance/InstanceManager.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/processor/ParametrosOperacion.java</file>
             <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/proxy/ProxySocket.java</file>
-            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/entity/FileWorkPathEntity.java</file>
             <file>file:/D:/ARCHIVOS%20UNS/Fuentes/simulador-procesosmc/src/com/sanms/siso/eft/view/ProcesosMC.java</file>
         </group>
     </open-files>

@@ -5,8 +5,13 @@
 package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
+import com.sanms.siso.tools.TemplateTool;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -16,21 +21,48 @@ public class ProcesarOperacion {
 
     ParametrosOperacion parametrosOperacion;
     Map<String, Map<String, Map<String, String>>> templateMapList;
+    private List<Stream> listStream;
+    private int pid;
+    private String rutaParametros;
 
-    public void setup(String rutaParametros) {
-        parametrosOperacion = new ParametrosOperacion(rutaParametros);
-        //templateMapList = 
+    public void setup(String rutaParametros, List<Stream> listStream, int pid) {
+        this.rutaParametros = rutaParametros;
+        this.listStream = listStream;
+        this.pid = pid;
     }
 
-    public String ConstruirTrama(List<Stream> listStream, int pid) {
+    public List<Stream> getListStream() {
+        return listStream;
+    }
 
-        Map<String, String> params = null;
+    public void setListStream(List<Stream> listStream) {
+        this.listStream = listStream;
+    }
 
-        try {
-            params = parametrosOperacion.obtenerParametros(listStream, pid);
-        } catch (Exception e) {
-        }
+    public String getRutaParametros() {
+        return rutaParametros;
+    }
 
+    public void setRutaParametros(String rutaParametros) {
+        this.rutaParametros = rutaParametros;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public String ConstruirTrama() throws ParserConfigurationException, SAXException, IOException {
+        parametrosOperacion = new ParametrosOperacion(rutaParametros);
+
+        templateMapList = TemplateTool.setup(rutaParametros);        
+
+        HashMap<String, String> hmReq = parametrosOperacion.obtenerParametrosCmpl(listStream, pid);
+            
+        System.out.println(hmReq);
         return "";
     }
 
