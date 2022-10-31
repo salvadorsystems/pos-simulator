@@ -36,6 +36,7 @@ public class InstanceManager extends Thread {
     private String apiHost = "";
     private String apiPort = "";
     private int apiTimeOut = 0;
+    private String template;
 
     private Proxy proxy;
 
@@ -180,6 +181,16 @@ public class InstanceManager extends Thread {
         this.proxy = proxy;
     }
 
+    public String getTemplate() {
+        
+        
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+    
     @Override
     public void run() {
         int txn = getNumTxn();
@@ -198,12 +209,12 @@ public class InstanceManager extends Thread {
     public void execute() {
         int pid = this.threads;
         ProcesarOperacion processor = new ProcesarOperacion();
-        processor.setup(rutaParametros);
+        processor.setup(rutaParametros,listStream,pid);
         String result = "";
         try {
-            result = processor.ConstruirTrama(listStream, pid);
+            result = processor.ConstruirTrama();
         } catch (Exception ex) {
-            throw ex;
+            //throw ex;
         }
 
         ProxyResult apiResult = new ProxyResult();
