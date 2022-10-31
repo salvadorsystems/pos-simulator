@@ -63,9 +63,7 @@ public class ParametrosOperacion {
                     }                    
                 }
             }           
-        }
-        
-                        
+        }                                
         return map;
     }
     public HashMap<String, String> obtenerParametrosCmpl(List<Stream> listStream, int pid) throws ParserConfigurationException, SAXException, IOException{        
