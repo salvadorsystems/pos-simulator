@@ -6,6 +6,7 @@ package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.tools.TemplateTool;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,7 @@ public class ProcesarOperacion {
         this.pid = pid;
     }
 
-    public String ConstruirTrama() throws ParserConfigurationException, SAXException, IOException {
+    public String ConstruirTrama() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         parametrosOperacion = new ParametrosOperacion(rutaParametros);
 
         templateMapList = TemplateTool.setup(rutaParametros);        

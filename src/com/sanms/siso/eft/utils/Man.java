@@ -5,6 +5,8 @@
  */
 package com.sanms.siso.eft.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,17 +19,23 @@ public class Man {
     public static void main(String[] args) {
         Man man = new Man();
         //man.ConstruirTrama();
-        man.realizarunsplitconindex();
+        String cc = man.realizarunsplitconindex(); 
+        String fecha = "tmp/mastercard.trace;6;1";
+        String[] fechaSeparada = cc.split(";");
+        for (int i = 0; i < fechaSeparada.length; i++) {
+            String string = fechaSeparada[i];
+            System.out.println(string);
+        }
     }
 
-    public void realizarunsplitconindex() {
-        String colores = "200";
+    public String  realizarunsplitconindex() {
+        String colores = "sequence(tmp/mastercard.trace;6;1)";
 
-        int inicio = colores.indexOf("");
-        int fin = colores.indexOf("(");
-
-        System.out.println(colores.substring(inicio , fin));
-        //System.out.println(colores.substring(inicio + 1));
+        int inicio = colores.indexOf("(");
+        int fin = colores.indexOf(")");
+        String cont = colores.substring(inicio + 1, fin);
+        //System.out.println(cont);
+        return cont;
     }
 
     public String ConstruirTrama() {
