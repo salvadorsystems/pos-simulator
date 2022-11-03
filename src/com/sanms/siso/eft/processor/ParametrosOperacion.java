@@ -8,6 +8,11 @@ import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.EnumErrores;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +51,7 @@ public class ParametrosOperacion {
         for (int i = 0; i < nodeParent.getLength(); i++) {
             Element eElementParent = (Element) nodeParent.item(i);
             String token = eElementParent.getAttribute("token");
-            if(txnName.equalsIgnoreCase(token.trim())){
+            if (txnName.equalsIgnoreCase(token.trim())) {
                 NodeList nodeChildLevel = nodeParent.item(i).getChildNodes();
                 for (int j = 0; j < nodeChildLevel.getLength(); j++) {
                     if (nodeChildLevel.item(j).getNodeName().equals("#comment")) {
@@ -55,35 +60,85 @@ public class ParametrosOperacion {
                     if (nodeChildLevel.item(j).getNodeName().equals("#text")) {
                         continue;
                     }
-                    Element eElementChildLevel = (Element) nodeChildLevel.item(j);
-                    if (eElementChildLevel.hasAttributes()) {
-                        
-                    }else{
+                    String value = nodeChildLevel.item(j).getTextContent();
+                    if (value.contains("(")) {
+                        int inicio = value.indexOf("");
+                        int fin = value.indexOf("(");
+                        System.out.println(value.substring(inicio, fin));
+                        String values = value.substring(inicio, fin);
+                        switch (values) {
+                            case "dateMMDD":
+
+                                break;
+                            case "timeHHMMSS":
+
+                                break;
+                            case "sequence":
+
+                                break;
+                            case "read":
+
+                                break;
+                            case "":
+                                break;
+                            default:
+                            //map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
+                        }
+                    } else {
                         map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
-                    }                    
+                    }
+
+                    //Element eElementChildLevel = (Element) nodeChildLevel.item(j);
+                    //if (eElementChildLevel.hasAttributes()) {
+                    //}else{
+                    //map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
+                    //}                    
                 }
-            }           
-        }                                
+            }
+        }
         return map;
     }
-    public HashMap<String, String> obtenerParametrosCmpl(List<Stream> listStream, int pid) throws ParserConfigurationException, SAXException, IOException{        
-        HashMap<String, String> hMac = obtenerParametros("Macros", pid);                
+
+    public HashMap<String, String> obtenerParametrosCmpl(List<Stream> listStream, int pid) throws ParserConfigurationException, SAXException, IOException {
+        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
         HashMap<String, String> params = new HashMap<>();
         for (Stream stream : listStream) {
             HashMap<String, String> hmReq = obtenerParametros(stream.getAlias(), pid);
             params.putAll(hmReq);
-        }        
+        }
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            Object key = entry.getKey();
+            //Object key = entry.getKey();
             Object val = entry.getValue();
             for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
                 Object key1 = entry1.getKey();
-                Object val1 = entry1.getValue();
-                if (val.equals("{"+key1+"}")) {
+                //Object val1 = entry1.getV|alue();
+                if (val.equals("{" + key1 + "}")) {
                     params.put(entry.getKey(), entry1.getValue());
                 }
             }
-        }                
+        }
         return params;
     }
+    
+    public String sysdate(String filename,String format, String nonusage0, String nonusage1, int pid){
+        String sysDate = new SimpleDateFormat(format).format(new Date());
+        return sysDate;
+    }
+    
+    private boolean writeOnFile(String filename, String content) throws IOException{
+        boolean success = false;
+        
+        File fileNew = new File(filename);
+        fileNew.createNewFile();
+        
+        RandomAccessFile file = new RandomAccessFile(filename, "rw");
+        FileChannel fileChannel = file.getChannel();
+        
+        FileLock lock = null;
+        //lock = CheckFileLocked();
+        
+        return success;
+    }
+    
+    
 }

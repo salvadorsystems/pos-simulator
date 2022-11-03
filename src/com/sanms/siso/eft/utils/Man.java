@@ -16,7 +16,18 @@ public class Man {
 
     public static void main(String[] args) {
         Man man = new Man();
-        man.ConstruirTrama();
+        //man.ConstruirTrama();
+        man.realizarunsplitconindex();
+    }
+
+    public void realizarunsplitconindex() {
+        String colores = "200";
+
+        int inicio = colores.indexOf("");
+        int fin = colores.indexOf("(");
+
+        System.out.println(colores.substring(inicio , fin));
+        //System.out.println(colores.substring(inicio + 1));
     }
 
     public String ConstruirTrama() {
@@ -24,9 +35,9 @@ public class Man {
 
         for (int i = 0; i < 2; i++) {
             Map<String, String> hm1 = obtenerParametros(i);
-            params.putAll(hm1);            
+            params.putAll(hm1);
         }
-        
+
         for (int i = 0; i < 2; i++) {
             Map<String, String> hm1 = obtenerParametros1(i);
             params.putAll(hm1);
@@ -46,8 +57,8 @@ public class Man {
         }
         return hm1;
     }
-    
-        public Map<String, String> obtenerParametros1(int i) {
+
+    public Map<String, String> obtenerParametros1(int i) {
         Map<String, String> hm1 = new HashMap<>();
         if (i == 1) {
             hm1.put("5", "B");
