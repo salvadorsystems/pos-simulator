@@ -212,7 +212,7 @@ public class InstanceManager extends Thread {
         processor.setup(rutaParametros,listStream,pid);
         String result = "";
         try {
-            result = processor.ConstruirTrama();
+            result = processor.ConstruirTrama();    
         } catch (Exception ex) {
             //throw ex;
         }
