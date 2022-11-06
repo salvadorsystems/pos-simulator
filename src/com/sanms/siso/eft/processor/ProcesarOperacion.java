@@ -5,6 +5,7 @@
 package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
+import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,9 +26,11 @@ public class ProcesarOperacion {
     private List<Stream> listStream;
     private int pid;
     private String rutaParametros;
+    private String rutaTemplate;
 
-    public void setup(String rutaParametros, List<Stream> listStream, int pid) {
+    public void setup(String rutaParametros, String rutaTemplate, List<Stream> listStream, int pid) {
         this.rutaParametros = rutaParametros;
+        this.rutaTemplate = rutaTemplate;
         this.listStream = listStream;
         this.pid = pid;
     }
@@ -59,12 +62,14 @@ public class ProcesarOperacion {
     public String ConstruirTrama() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         parametrosOperacion = new ParametrosOperacion(rutaParametros);
 
-        templateMapList = TemplateTool.setup(rutaParametros);        
+        templateMapList = TemplateTool.setup(rutaTemplate);
 
-        HashMap<String, String> hmReq = parametrosOperacion.obtenerParametrosCmpl(listStream, pid);
-            
-        System.out.println(hmReq);
-        return "";
+        Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
+
+        String respuesta = req.generateStream();
+
+        System.out.println(respuesta);
+        return respuesta;
     }
 
 }

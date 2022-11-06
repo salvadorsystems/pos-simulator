@@ -2,6 +2,7 @@ package com.sanms.siso.eft.proxy;
 
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
+import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.EnumErrores;
 import com.sanms.siso.eft.view.ProcesosMC;
@@ -22,7 +23,8 @@ public class ProxySocket {
     private int numTxn;
     private String apiHost;
     private String apiPort;
-    private String filePath;
+    private String parametersPath;
+    private String templatesPath;
     private List<Stream> listStream;
 
     public int getNumIns() {
@@ -57,12 +59,12 @@ public class ProxySocket {
         this.apiPort = apiPort;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getParametersPath() {
+        return parametersPath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setParametersPath(String parametersPath) {
+        this.parametersPath = parametersPath;
     }
 
     public List<Stream> getListStream() {
@@ -72,7 +74,15 @@ public class ProxySocket {
     public void setListStream(List<Stream> listStream) {
         this.listStream = listStream;
     }
-          
+
+    public String getTemplatesPath() {
+        return templatesPath;
+    }
+
+    public void setTemplatesPath(String templatesPath) {
+        this.templatesPath = templatesPath;
+    }
+        
     public int openSocketAny() {
         proxyTest = new Proxy[numIns];
         for (int i = 0; i < numIns; i++) {
@@ -107,7 +117,7 @@ public class ProxySocket {
         ThreadGroup parentGroup = new ThreadGroup("Parent Thread");
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
-            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",filePath,listStream);
+            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",parametersPath,templatesPath,listStream);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
             System.out.println("proxy :" + proxyTest[i]);
