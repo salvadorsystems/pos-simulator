@@ -1,5 +1,6 @@
 package com.sanms.siso.eft.instance;
 
+import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.processor.ProcesarOperacion;
 import com.sanms.siso.eft.proxy.Proxy;
@@ -37,12 +38,14 @@ public class InstanceManager extends Thread {
     private String apiPort = "";
     private int apiTimeOut = 0;
     private String template;
+    private String rutaTemplate;
 
     private Proxy proxy;
 
-    public InstanceManager(ThreadGroup tg, String name, String rutaParametros, List<Stream> listStream) {
+    public InstanceManager(ThreadGroup tg, String name, String rutaParametros,String rutaTemplate, List<Stream> listStream) {
         this(tg, name);
         this.rutaParametros = rutaParametros;
+        this.rutaTemplate = rutaTemplate;
         this.listStream = listStream;
     }
 
@@ -125,6 +128,14 @@ public class InstanceManager extends Thread {
         this.rutaParametros = rutaParametros;
     }
 
+    public String getRutaTemplate() {
+        return rutaTemplate;
+    }
+
+    public void setRutaTemplate(String rutaTemplate) {
+        this.rutaTemplate = rutaTemplate;
+    }
+        
     public List<Stream> getListStream() {
         return listStream;
     }
@@ -209,7 +220,7 @@ public class InstanceManager extends Thread {
     public void execute() {
         int pid = this.threads;
         ProcesarOperacion processor = new ProcesarOperacion();
-        processor.setup(rutaParametros,listStream,pid);
+        processor.setup(rutaParametros,rutaTemplate,listStream,pid);
         String result = "";
         try {
             result = processor.ConstruirTrama();    

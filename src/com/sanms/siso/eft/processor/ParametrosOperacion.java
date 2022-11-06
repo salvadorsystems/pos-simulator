@@ -7,6 +7,8 @@ package com.sanms.siso.eft.processor;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
+import com.sanms.siso.formatter.Template;
+import com.sanms.siso.tools.TemplateTool;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,6 +42,7 @@ import org.xml.sax.SAXException;
 public class ParametrosOperacion {
 
     private String rutaParametros = "";
+    Map<String, Map<String, Map<String, String>>> templateMapList;
 
     public ParametrosOperacion(String rutaParametros) {
         this.rutaParametros = rutaParametros;
@@ -103,7 +106,7 @@ public class ParametrosOperacion {
                             case "read":
                                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
                                 listParameters = parameters.split(";");
-                                if (listParameters.length < 4) {                                    
+                                if (listParameters.length < 4) {
                                     String localTime = reader(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", listParameters[2], "", pid);
                                     map.put(nodeChildLevel.item(j).getNodeName(), localTime);
                                 } else {
@@ -113,7 +116,7 @@ public class ParametrosOperacion {
                             case "":
                                 break;
                             default:
-                        }                        
+                        }
                     } else {
                         map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
                     }
@@ -123,23 +126,29 @@ public class ParametrosOperacion {
         return map;
     }
 
-    public HashMap<String, String> obtenerParametrosCmpl(List<Stream> listStream, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> hMac = obtenerParametros("Macros", pid);
         HashMap<String, String> params = new HashMap<>();
+        templateMapList = TemplateTool.setup(rutaTemplate);
+        Template req = null;
         for (Stream stream : listStream) {
+            req = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
             HashMap<String, String> hmReq = obtenerParametros(stream.getAlias(), pid);
             params.putAll(hmReq);
-        }
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            Object val = entry.getValue();
-            for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
-                Object key1 = entry1.getKey();
-                if (val.equals("{" + key1 + "}")) {
-                    params.put(entry.getKey(), entry1.getValue());
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                Object val = entry.getValue();
+                for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
+                    Object key1 = entry1.getKey();
+                    if (val.equals("{" + key1 + "}")) {
+                        params.put(entry.getKey(), entry1.getValue());
+                    }
                 }
+                String key = entry.getKey();
+                String value = entry.getValue();
+                req.saveValue(key, value);
             }
         }
-        return params;
+        return req;
     }
 
     public String sysdate(String filename, String format, String nonusage0, String nonusage1, int pid) throws IOException, FileNotFoundException, InterruptedException {

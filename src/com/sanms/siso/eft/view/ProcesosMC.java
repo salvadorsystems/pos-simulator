@@ -441,7 +441,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSendMessageActionPerformed
         // TODO add your handling code here:
         socketProxy.setListStream(listStreams);
-        socketProxy.setFilePath(rutaParametros);
+        socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
+        socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
         socketProxy.sendMessageSocket();
     }//GEN-LAST:event_BtnSendMessageActionPerformed
 
