@@ -14,6 +14,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import com.sanms.siso.eft.proxy.ProxySocket;
+import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
 import java.awt.HeadlessException;
 import java.util.List;
@@ -29,8 +30,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     static String apiHost;
     static String apiPort;
     private int connectClient = -1;
-    private String ruta;
-    private String rutaParametros;
+    private String ruta;    
 
     ProxySocket socketProxy = new ProxySocket();
     ViewHost windowTCPIP = new ViewHost(this, true);
@@ -380,15 +380,15 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     private void initWorkSpace() {
-        imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
-        btnTCPIP.setIcon(setIcono("../img/ipAdress9.png", btnTCPIP));
+        imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
+        btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
         txtNumIns.setEnabled(false);
         BtnSendMessage.setEnabled(false);
         txtNumIns.setText("1");
         txtNumTxn.setText("1");
         ArchivoRuta processorWorkPath = new ArchivoRuta();
-        processorWorkPath.setWorkPath("../simulador-procesosmc/MastercCard/host.js");
-        processorWorkPath.setWorkParent("../simulador-procesosmc/MastercCard");
+        processorWorkPath.setWorkPath(Constantes.RUTA_HOST_CONFIG);
+        processorWorkPath.setWorkParent(Constantes.RUTA_HOST);
         windowTCPIP.path = processorWorkPath.getWorkPath();
         txtPath.setText(processorWorkPath.getWorkPath());
         ruta = processorWorkPath.getWorkParent();
@@ -466,7 +466,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         // TODO add your handling code here:
         try {
-            JFileChooser jf = new JFileChooser("C:\\SISO");
+            JFileChooser jf = new JFileChooser(Constantes.BASE_SISOROOT);
             jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jf.setMultiSelectionEnabled(false);
             jf.showOpenDialog(this);
@@ -516,8 +516,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig))) {
             archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig), ArchivoConfiguracion.class);
             if (archivoConfiguracion != null) {
-                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
-                rutaParametros = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile();
+                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();                
                 if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe))) {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
