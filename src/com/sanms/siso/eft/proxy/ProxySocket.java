@@ -4,6 +4,7 @@ import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
+import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
 import com.sanms.siso.eft.view.ProcesosMC;
 import java.util.List;
@@ -90,7 +91,7 @@ public class ProxySocket {
             connectSocket = proxyTest[i].setup(apiHost, apiPort, false, 30);
             if (connectSocket == 0) {
                 System.out.println("Conexion Abierta");              
-                ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img2.png")));
+                ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
                 ProcesosMC.BtnOpenCloseSocket.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(apiHost);
                 ProcesosMC.lblPort.setText(apiPort);
@@ -98,13 +99,13 @@ public class ProxySocket {
                 JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
                         "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
-        }
+        }   
         return connectSocket;
     }
 
     public void closeSocket() {
         System.out.println("Conexion Cerrada");      
-        ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource("../img/img1.png")));
+        ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
         ProcesosMC.BtnOpenCloseSocket.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");

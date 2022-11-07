@@ -13,6 +13,12 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import com.sanms.siso.eft.utils.MiHilo;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javafx.concurrent.Worker;
+import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -42,7 +48,7 @@ public class InstanceManager extends Thread {
 
     private Proxy proxy;
 
-    public InstanceManager(ThreadGroup tg, String name, String rutaParametros,String rutaTemplate, List<Stream> listStream) {
+    public InstanceManager(ThreadGroup tg, String name, String rutaParametros, String rutaTemplate, List<Stream> listStream) {
         this(tg, name);
         this.rutaParametros = rutaParametros;
         this.rutaTemplate = rutaTemplate;
@@ -135,7 +141,7 @@ public class InstanceManager extends Thread {
     public void setRutaTemplate(String rutaTemplate) {
         this.rutaTemplate = rutaTemplate;
     }
-        
+
     public List<Stream> getListStream() {
         return listStream;
     }
@@ -193,47 +199,51 @@ public class InstanceManager extends Thread {
     }
 
     public String getTemplate() {
-        
-        
+
         return template;
     }
 
     public void setTemplate(String template) {
         this.template = template;
     }
-    
+
     @Override
     public void run() {
         int txn = getNumTxn();
+        int result = 0;
         for (int count = 0; count < txn; count++) {
             try {
 
-                execute();
+            result = execute();
                 sleep(1500);
             } catch (Exception e) {
             }
-            //proxy.release();
+            if (result == 0) {
+                JOptionPane.showMessageDialog(null, "Envio Exitoso");
+            }else{
+                JOptionPane.showMessageDialog(null, "No se completo el envio");
+            }
+            
+            try {
+                //Worker worker = new Worker();
+            } catch (Exception e) {
+            }
+            
             System.out.println("Finalizado");
         }
     }
 
-    public void execute() {
+    public int execute() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         int pid = this.threads;
+        
         ProcesarOperacion processor = new ProcesarOperacion();
-        processor.setup(rutaParametros,rutaTemplate,listStream,pid);
-        String result = "";
-        try {
-            result = processor.ConstruirTrama();    
-        } catch (Exception ex) {
-            //throw ex;
-        }
-
+        processor.setup(rutaParametros, rutaTemplate, listStream, pid);         
+        String result = processor.ConstruirTrama();
         ProxyResult apiResult = new ProxyResult();
-        //ProxyCommResult resultProxy = proxy.process("0200E23A440188E08002000000000400010016459334000207305943000007251538170010041538170725072559420511100000007963110000004040400000000098122340880299999490000   PROCESOS MC PRUEBAS SA                  604012CC200035477620108012321000349631  0021530150299999429900401", apiResult);
         ProxyCommResult resultProxy = proxy.process(result, apiResult);
         System.out.println("Result: " + resultProxy.getStringResponse());
         System.out.println("Enviando");
-
+        return resultProxy.getResult();
     }
 
 }
