@@ -3,6 +3,7 @@ package com.sanms.siso.eft.instance;
 import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.processor.ProcesarOperacion;
+import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
@@ -15,7 +16,7 @@ import javax.swing.JTable;
 import com.sanms.siso.eft.utils.MiHilo;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javafx.concurrent.Worker;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -214,30 +215,44 @@ public class InstanceManager extends Thread {
         for (int count = 0; count < txn; count++) {
             try {
 
-            result = execute();
+                result = execute();
                 sleep(1500);
             } catch (Exception e) {
             }
             if (result == 0) {
                 JOptionPane.showMessageDialog(null, "Envio Exitoso");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "No se completo el envio");
             }
-            
+
             try {
-                //Worker worker = new Worker();
+                Worker worker = new Worker();
+                worker.setTable(table);
+                worker.setListObject(getListObject());
+                worker.setInstance(getInstance());
+                worker.setThread(getThreads());
+                worker.setTxn(count);
+                worker.setsNroTerm("1");//Revisar este valor Lennin
+                worker.setTitle("");
+                worker.setNroTxnOk(succesCount);
+                worker.setNroTxnError(errorCount);
+                worker.setRespCode(0);
+                worker.setTime(time.format(new Date()));
+                worker.execute();
+                setRunning(true);
+                Thread.sleep(200);
             } catch (Exception e) {
             }
-            
+
             System.out.println("Finalizado");
         }
     }
 
     public int execute() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         int pid = this.threads;
-        
+
         ProcesarOperacion processor = new ProcesarOperacion();
-        processor.setup(rutaParametros, rutaTemplate, listStream, pid);         
+        processor.setup(rutaParametros, rutaTemplate, listStream, pid);
         String result = processor.ConstruirTrama();
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = proxy.process(result, apiResult);
