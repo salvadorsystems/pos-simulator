@@ -32,7 +32,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private int connectClient = -1;
     private String ruta;    
 
-    ProxySocket socketProxy = new ProxySocket();
+    ProxySocket socketProxy;
     ViewHost windowTCPIP = new ViewHost(this, true);
     ArchivoConfiguracion archivoConfiguracion;
     Operacion operacion;
@@ -40,9 +40,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
     List<Generator> listGenerator;
 
     public ProcesosMC() {
+        this.socketProxy = new ProxySocket(jTable1);
         initComponents();
         initWorkSpace();
-
     }
 
     @SuppressWarnings("unchecked")

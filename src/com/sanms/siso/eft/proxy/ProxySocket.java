@@ -1,8 +1,6 @@
 package com.sanms.siso.eft.proxy;
 
-import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
-import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
@@ -10,6 +8,7 @@ import com.sanms.siso.eft.view.ProcesosMC;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -27,6 +26,11 @@ public class ProxySocket {
     private String parametersPath;
     private String templatesPath;
     private List<Stream> listStream;
+    public JTable table;
+
+    public ProxySocket(JTable table) {
+        this.table = table;
+    }
 
     public int getNumIns() {
         return numIns;
@@ -83,14 +87,14 @@ public class ProxySocket {
     public void setTemplatesPath(String templatesPath) {
         this.templatesPath = templatesPath;
     }
-        
+
     public int openSocketAny() {
         proxyTest = new Proxy[numIns];
         for (int i = 0; i < numIns; i++) {
             proxyTest[i] = new Proxy();
             connectSocket = proxyTest[i].setup(apiHost, apiPort, false, 30);
             if (connectSocket == 0) {
-                System.out.println("Conexion Abierta");              
+                System.out.println("Conexion Abierta");
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
                 ProcesosMC.BtnOpenCloseSocket.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(apiHost);
@@ -99,12 +103,12 @@ public class ProxySocket {
                 JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
                         "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
-        }   
+        }
         return connectSocket;
     }
 
     public void closeSocket() {
-        System.out.println("Conexion Cerrada");      
+        System.out.println("Conexion Cerrada");
         ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
         ProcesosMC.BtnOpenCloseSocket.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
@@ -118,12 +122,13 @@ public class ProxySocket {
         ThreadGroup parentGroup = new ThreadGroup("Parent Thread");
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
-            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]",parametersPath,templatesPath,listStream);
+            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]", parametersPath, templatesPath, listStream);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
             System.out.println("proxy :" + proxyTest[i]);
             execute[i].start();
             System.out.println("enviado" + execute[i]);
+            
         }
     }
 

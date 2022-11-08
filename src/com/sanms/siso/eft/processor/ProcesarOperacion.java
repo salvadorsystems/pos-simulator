@@ -67,7 +67,7 @@ public class ProcesarOperacion {
         Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
 
         String respuesta = req.generateStream();
-
+        
         System.out.println(respuesta);
         return respuesta;
     }
