@@ -232,16 +232,16 @@ public class InstanceManager extends Thread {
                 worker.setInstance(getInstance());
                 worker.setThread(getThreads());
                 worker.setTxn(count);
-                worker.setsNroTerm("1");//Revisar este valor Lennin
+                worker.setsNroTerm("1");
                 worker.setTitle("");
                 worker.setNroTxnOk(succesCount);
                 worker.setNroTxnError(errorCount);
                 worker.setRespCode(0);
-                worker.setTime(time.format(new Date()));
+                //worker.setTime(time.format(new Date()));
                 worker.execute();
                 setRunning(true);
                 Thread.sleep(200);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
             }
 
             System.out.println("Finalizado");

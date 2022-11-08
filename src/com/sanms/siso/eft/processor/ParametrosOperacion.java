@@ -43,11 +43,19 @@ public class ParametrosOperacion {
 
     private String rutaParametros = "";
     Map<String, Map<String, Map<String, String>>> templateMapList;
-
+    HashMap<String, String> params;
     public ParametrosOperacion(String rutaParametros) {
         this.rutaParametros = rutaParametros;
     }
 
+    public HashMap<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(HashMap<String, String> params) {
+        this.params = params;
+    }
+        
     public HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> map = null;
         if (txnName.isEmpty()) {
@@ -128,7 +136,7 @@ public class ParametrosOperacion {
 
     public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> hMac = obtenerParametros("Macros", pid);
-        HashMap<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = null;
         for (Stream stream : listStream) {
