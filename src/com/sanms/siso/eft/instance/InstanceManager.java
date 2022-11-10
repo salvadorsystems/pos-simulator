@@ -250,7 +250,7 @@ public class InstanceManager extends Thread {
 
     public int execute() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         int pid = this.threads;
-
+        
         ProcesarOperacion processor = new ProcesarOperacion();
         processor.setup(rutaParametros, rutaTemplate, listStream, pid);
         String result = processor.ConstruirTrama();
