@@ -7,6 +7,7 @@ package com.sanms.siso.eft.processor;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
+import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
 import java.io.BufferedReader;
@@ -44,6 +45,7 @@ public class ParametrosOperacion {
     private String rutaParametros = "";
     Map<String, Map<String, Map<String, String>>> templateMapList;
     HashMap<String, String> params;
+
     public ParametrosOperacion(String rutaParametros) {
         this.rutaParametros = rutaParametros;
     }
@@ -55,8 +57,8 @@ public class ParametrosOperacion {
     public void setParams(HashMap<String, String> params) {
         this.params = params;
     }
-        
-    public HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+
+    private HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> map = null;
         if (txnName.isEmpty()) {
             JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1005.getMensaje());
@@ -157,6 +159,39 @@ public class ParametrosOperacion {
             }
         }
         return req;
+    }
+
+    HashMap<String, String> obtenerDatos(String rutaTemplate, String template, String alias, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+        HashMap<String, String> datos = new HashMap<>();
+        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
+        params = new HashMap<>();
+        templateMapList = TemplateTool.setup(rutaTemplate);
+        Template req = TemplateTool.createTemplate(templateMapList, template);
+        HashMap<String, String> hmReq = obtenerParametros(alias, pid);
+        params.putAll(hmReq);
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            Object val = entry.getValue();
+            for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
+                Object key1 = entry1.getKey();
+                if (val.equals("{" + key1 + "}")) {
+                    params.put(entry.getKey(), entry1.getValue());
+                }
+            }
+            String key = entry.getKey();
+            String value = entry.getValue();
+            req.saveValue(key, value);
+        }
+
+        for (Field field : req.getFieldList()) {
+            
+            if(!field.getValue().isEmpty()){
+                System.out.println(field.getAlias()+"-"+field.getValue());
+                datos.put(field.getAlias(), field.getValue());
+            }           
+        }
+
+        System.out.println("GENERATE : " + req.generateStream());
+        return datos;
     }
 
     public String sysdate(String filename, String format, String nonusage0, String nonusage1, int pid) throws IOException, FileNotFoundException, InterruptedException {

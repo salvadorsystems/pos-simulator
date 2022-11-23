@@ -66,23 +66,29 @@ public class ProcesarOperacion {
 
         Template req1 = TemplateTool.createTemplate(templateMapList, "isoProcesoMC");
         Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
-
+        HashMap<String, String> datosTotal = new HashMap<>();
+        for (Stream stream : listStream) {
+            HashMap<String, String> datos = parametrosOperacion.obtenerDatos(rutaTemplate, stream.getTemplate(), stream.getAlias(), pid);
+            datosTotal.putAll(datos);
+        }
         
+        System.out.println("CC : "+datosTotal);
+
         String respuesta = req.generateStream();
-        System.out.println("fff: "+req.getValue("iccData"));
-        System.out.println("fgg :"+parametrosOperacion.getParams());
+        System.out.println("fff: " + req.getValue("iccData"));
+        System.out.println("fgg :" + parametrosOperacion.getParams());
         req1.saveFromBuffer(respuesta);
-        System.out.println("fff11: "+req1.generateStream());
-        System.out.println("fff12: "+req1.getValue("iccData"));
-       for (Map.Entry<String, String> entry : parametrosOperacion.getParams().entrySet()) {
+        System.out.println("fff11: " + req1.generateStream());
+        System.out.println("fff12: " + req1.getValue("iccData"));
+        for (Map.Entry<String, String> entry : parametrosOperacion.getParams().entrySet()) {
             String key = entry.getKey();
             String val = entry.getValue();
-            if(!req1.getValue(key).isEmpty()){
-                System.out.println(key+"-"+val);
+            if (!req1.getValue(key).isEmpty()) {
+                System.out.println(key + "-" + val);
             } else {
-                
+
             }
-        }        
+        }
         System.out.println(respuesta);
         return respuesta;
     }
