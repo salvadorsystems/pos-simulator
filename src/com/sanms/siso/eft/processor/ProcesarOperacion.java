@@ -5,10 +5,12 @@
 package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
+import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,30 +68,35 @@ public class ProcesarOperacion {
 
         Template req1 = TemplateTool.createTemplate(templateMapList, "isoProcesoMC");
         Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
+
+        String respuesta = req.generateStream();
+        System.out.println("fff: " + req.generateStream());
+        System.out.println("fgg :" + parametrosOperacion.getParams());
+        req1.saveFromBuffer(respuesta);
+        System.out.println("fff11: " + req1.generateStream());
+        System.out.println("fff12: " + req1.getValue("iccData"));
+        ArrayList<Field> listField = req1.getFieldList();
+        System.out.println("FIELD : " + req1.getFieldList());
+        for (int i = 0; i < listField.size(); i++) {
+
+            System.out.println("N° " + i + "-" + listField.get(i).getAlias() + "-" + listField.get(i).getValue());
+        }
+        /*for (Map.Entry<String, String> entry : parametrosOperacion.getParams().entrySet()) {
+            String key = entry.getKey();
+            String val = entry.getValue();
+            if(!req1.getValue(key).isEmpty()){
+                System.out.println(key+"-"+val);
+            } else {
+                
+            }
+        }   */
+        System.out.println(respuesta);
         HashMap<String, String> datosTotal = new HashMap<>();
         for (Stream stream : listStream) {
             HashMap<String, String> datos = parametrosOperacion.obtenerDatos(rutaTemplate, stream.getTemplate(), stream.getAlias(), pid);
             datosTotal.putAll(datos);
         }
-        
         System.out.println("CC : "+datosTotal);
-
-        String respuesta = req.generateStream();
-        System.out.println("fff: " + req.getValue("iccData"));
-        System.out.println("fgg :" + parametrosOperacion.getParams());
-        req1.saveFromBuffer(respuesta);
-        System.out.println("fff11: " + req1.generateStream());
-        System.out.println("fff12: " + req1.getValue("iccData"));
-        for (Map.Entry<String, String> entry : parametrosOperacion.getParams().entrySet()) {
-            String key = entry.getKey();
-            String val = entry.getValue();
-            if (!req1.getValue(key).isEmpty()) {
-                System.out.println(key + "-" + val);
-            } else {
-
-            }
-        }
-        System.out.println(respuesta);
         return respuesta;
     }
 

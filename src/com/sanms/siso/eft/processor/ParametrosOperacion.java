@@ -22,6 +22,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -160,7 +161,27 @@ public class ParametrosOperacion {
         }
         return req;
     }
-
+    
+    public ArrayList<Field> obtenerParametrosMCS(String rutaTemplate, String alias, String template, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+        ArrayList<Field> listField = null;
+        Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(rutaTemplate);
+        Template req = TemplateTool.createTemplate(templateMapList, template);
+        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
+        HashMap<String, String> hmReq = obtenerParametros(alias, pid);
+        for (Map.Entry<String, String> entry : hmReq.entrySet()) {
+            Object val = entry.getValue();
+            for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
+                Object key1 = entry1.getKey();
+                if (val.equals("{" + key1 + "}")) {
+                    hmReq.put(entry.getKey(), entry1.getValue());
+                }
+            }
+            String key = entry.getKey();
+            String value = entry.getValue();
+            req.saveValue(key, value);
+        }
+        return listField;
+    }
     HashMap<String, String> obtenerDatos(String rutaTemplate, String template, String alias, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> datos = new HashMap<>();
         HashMap<String, String> hMac = obtenerParametros("Macros", pid);
@@ -183,7 +204,7 @@ public class ParametrosOperacion {
         }
 
         for (Field field : req.getFieldList()) {
-            
+
             if(!field.getValue().isEmpty()){
                 System.out.println(field.getAlias()+"-"+field.getValue());
                 datos.put(field.getAlias(), field.getValue());
