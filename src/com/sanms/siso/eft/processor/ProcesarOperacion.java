@@ -79,7 +79,7 @@ public class ProcesarOperacion {
         System.out.println("FIELD : " + req1.getFieldList());
         for (int i = 0; i < listField.size(); i++) {
 
-            System.out.println("N° "+i+"-"+listField.get(i).getAlias()+"-"+listField.get(i).getValue());
+            System.out.println("N° " + i + "-" + listField.get(i).getAlias() + "-" + listField.get(i).getValue());
         }
         /*for (Map.Entry<String, String> entry : parametrosOperacion.getParams().entrySet()) {
             String key = entry.getKey();
@@ -91,6 +91,12 @@ public class ProcesarOperacion {
             }
         }   */
         System.out.println(respuesta);
+        HashMap<String, String> datosTotal = new HashMap<>();
+        for (Stream stream : listStream) {
+            HashMap<String, String> datos = parametrosOperacion.obtenerDatos(rutaTemplate, stream.getTemplate(), stream.getAlias(), pid);
+            datosTotal.putAll(datos);
+        }
+        System.out.println("CC : "+datosTotal);
         return respuesta;
     }
 

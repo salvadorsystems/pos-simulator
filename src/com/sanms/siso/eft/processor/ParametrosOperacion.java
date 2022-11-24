@@ -59,7 +59,7 @@ public class ParametrosOperacion {
         this.params = params;
     }
 
-    public HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+    private HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> map = null;
         if (txnName.isEmpty()) {
             JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1005.getMensaje());
@@ -161,7 +161,7 @@ public class ParametrosOperacion {
         }
         return req;
     }
-
+    
     public ArrayList<Field> obtenerParametrosMCS(String rutaTemplate, String alias, String template, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         ArrayList<Field> listField = null;
         Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(rutaTemplate);
@@ -181,6 +181,38 @@ public class ParametrosOperacion {
             req.saveValue(key, value);
         }
         return listField;
+    }
+    HashMap<String, String> obtenerDatos(String rutaTemplate, String template, String alias, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+        HashMap<String, String> datos = new HashMap<>();
+        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
+        params = new HashMap<>();
+        templateMapList = TemplateTool.setup(rutaTemplate);
+        Template req = TemplateTool.createTemplate(templateMapList, template);
+        HashMap<String, String> hmReq = obtenerParametros(alias, pid);
+        params.putAll(hmReq);
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            Object val = entry.getValue();
+            for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
+                Object key1 = entry1.getKey();
+                if (val.equals("{" + key1 + "}")) {
+                    params.put(entry.getKey(), entry1.getValue());
+                }
+            }
+            String key = entry.getKey();
+            String value = entry.getValue();
+            req.saveValue(key, value);
+        }
+
+        for (Field field : req.getFieldList()) {
+
+            if(!field.getValue().isEmpty()){
+                System.out.println(field.getAlias()+"-"+field.getValue());
+                datos.put(field.getAlias(), field.getValue());
+            }           
+        }
+
+        System.out.println("GENERATE : " + req.generateStream());
+        return datos;
     }
 
     public String sysdate(String filename, String format, String nonusage0, String nonusage1, int pid) throws IOException, FileNotFoundException, InterruptedException {
