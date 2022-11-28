@@ -27,9 +27,11 @@ public class ProxySocket {
     private String templatesPath;
     private List<Stream> listStream;
     public JTable table;
+    public JTable tableResponse;
 
-    public ProxySocket(JTable table) {
+    public ProxySocket(JTable table, JTable tableResponse) {
         this.table = table;
+        this.tableResponse = tableResponse;
     }
 
     public int getNumIns() {
@@ -125,7 +127,8 @@ public class ProxySocket {
             execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]", parametersPath, templatesPath, listStream);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
-            System.out.println("proxy :" + proxyTest[i]);
+            execute[i].setTable(table);
+            execute[i].setTableResponse(tableResponse);
             execute[i].start();
             System.out.println("enviado" + execute[i]);
             
