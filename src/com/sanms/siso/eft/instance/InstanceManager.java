@@ -1,22 +1,22 @@
 package com.sanms.siso.eft.instance;
 
-import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.model.Stream;
-import com.sanms.siso.eft.processor.ProcesarOperacion;
+import com.sanms.siso.eft.processor.ParametrosOperacion;
 import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
 import com.sanms.siso.eft.view.ProcesosMC;
-import com.sft.core.socket.DefaultSocketClient;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
-import com.sanms.siso.eft.utils.MiHilo;
+import com.sanms.siso.formatter.Field;
+import com.sanms.siso.formatter.Template;
+import com.sanms.siso.tools.TemplateTool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -32,7 +32,10 @@ public class InstanceManager extends Thread {
     private int numTxn;
     private int instance;
     public JTable table;
+    public JTable tableResponse;
     public List<Object[]> listObject;
+    public ArrayList<Field> listField ;
+    public ArrayList<Field> listFieldResponse ;
     private SimpleDateFormat time;
     private boolean running;
 
@@ -103,6 +106,14 @@ public class InstanceManager extends Thread {
         this.table = table;
     }
 
+    public JTable getTableResponse() {
+        return tableResponse;
+    }
+
+    public void setTableResponse(JTable tableResponse) {
+        this.tableResponse = tableResponse;
+    }
+        
     public List<Object[]> getListObject() {
         return listObject;
     }
@@ -228,6 +239,7 @@ public class InstanceManager extends Thread {
             try {
                 Worker worker = new Worker();
                 worker.setTable(table);
+                worker.setTableResponse(tableResponse);                
                 worker.setListObject(getListObject());
                 worker.setInstance(getInstance());
                 worker.setThread(getThreads());
@@ -237,7 +249,8 @@ public class InstanceManager extends Thread {
                 worker.setNroTxnOk(succesCount);
                 worker.setNroTxnError(errorCount);
                 worker.setRespCode(0);
-                //worker.setTime(time.format(new Date()));
+                worker.setListField(listField);
+                worker.setListFieldResponse(listFieldResponse);
                 worker.execute();
                 setRunning(true);
                 Thread.sleep(200);
@@ -250,13 +263,31 @@ public class InstanceManager extends Thread {
 
     public int execute() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         int pid = this.threads;
+        String template = null;
+        ParametrosOperacion parametrosOperacion = new ParametrosOperacion(rutaParametros);
+        Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(rutaTemplate);
+        Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(rutaTemplate);
+        Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
+        String request = req.generateStream();
         
-        ProcesarOperacion processor = new ProcesarOperacion();
-        processor.setup(rutaParametros, rutaTemplate, listStream, pid);
-        String result = processor.ConstruirTrama();
+        for (Stream stream : listStream) {
+            template = stream.getTemplate();
+        }
+        ProcesosMC.txtRequerimiento.setText(request);
+        Template reqFormat = TemplateTool.createTemplate(templateMapList,template );
+        reqFormat.saveFromBuffer(request);
+        
+        listField = reqFormat.getFieldList();
+        
         ProxyResult apiResult = new ProxyResult();
-        ProxyCommResult resultProxy = proxy.process(result, apiResult);
-        System.out.println("Result: " + resultProxy.getStringResponse());
+        ProxyCommResult resultProxy = proxy.process(request, apiResult);
+        System.out.println("Response: " + resultProxy.getStringResponse());
+        
+        Template reqFormatResponse = TemplateTool.createTemplate(templateMapListResponse,template );
+        reqFormatResponse.saveFromBuffer(resultProxy.getStringResponse());
+        listFieldResponse = reqFormatResponse.getFieldList();
+        
+        ProcesosMC.txtRespuesta.setText(resultProxy.getStringResponse());
         System.out.println("Enviando");
         return resultProxy.getResult();
     }

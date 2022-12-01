@@ -96,7 +96,8 @@ public class ProcesarOperacion {
             HashMap<String, String> datos = parametrosOperacion.obtenerDatos(rutaTemplate, stream.getTemplate(), stream.getAlias(), pid);
             datosTotal.putAll(datos);
         }
-        System.out.println("CC : "+datosTotal);
+        
+        System.out.println("CC : "+respuesta);
         return respuesta;
     }
 
