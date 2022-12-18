@@ -96,6 +96,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         Reportes = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -421,6 +422,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
         });
         Reportes.add(jMenuItem5);
 
+        jMenuItem6.setText("Genera Reporte EXCEL");
+        Reportes.add(jMenuItem6);
+
         jMenuBar1.add(Reportes);
 
         setJMenuBar(jMenuBar1);
@@ -739,6 +743,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
