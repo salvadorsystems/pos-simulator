@@ -17,9 +17,13 @@ import com.sanms.siso.eft.proxy.ProxySocket;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -84,8 +88,14 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jListTxn = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
+        menuConfig = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        Reportes = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,7 +123,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -280,11 +290,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelConfiguration1Layout.createSequentialGroup()
-                        .addComponent(lblTCPIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTCPIP, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(panelConfiguration1Layout.createSequentialGroup()
                         .addComponent(lblPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -372,15 +382,46 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
 
-        jMenu1.setText("File");
+        menuConfig.setText("Configuraciones");
+
+        jMenuItem1.setText("TCP/IP");
+        menuConfig.add(jMenuItem1);
+
+        jMenuItem2.setText("Ruta Host");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        menuConfig.add(jMenuItem2);
+
+        jMenuBar1.add(menuConfig);
+
+        jMenu1.setText("Ejecutar");
+
+        jMenuItem3.setText("Conectar");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText(" Enviar");
+        jMenu1.add(jMenuItem4);
+
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        Reportes.setText("Reportes");
+
+        jMenuItem5.setText("Generar Reporte PDF");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        Reportes.add(jMenuItem5);
+
+        jMenuBar1.add(Reportes);
 
         setJMenuBar(jMenuBar1);
 
@@ -394,10 +435,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     .addComponent(panelConfiguration2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(RESPUESTA)
-                    .addComponent(panelConfiguration1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelConfiguration1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(RESPUESTA))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -575,6 +618,21 @@ public final class ProcesosMC extends javax.swing.JFrame {
         setListtxn2();
     }//GEN-LAST:event_jListTxnMouseClicked
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        try {
+            // TODO add your handling code here:
+            socketProxy.generarReportePDF();
+        } catch (JRException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     public void setListtxn2() {
         String pathConfig = jListTxn.getSelectedValue();
         listGenerator = operacion.getGenerators();
@@ -662,6 +720,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     public static javax.swing.JButton BtnSendMessage;
     private javax.swing.JCheckBox CboxNumI;
     private javax.swing.JTabbedPane RESPUESTA;
+    private javax.swing.JMenu Reportes;
     private javax.swing.JButton btnCargar;
     private javax.swing.JButton btnTCPIP;
     public static javax.swing.JLabel imgConn;
@@ -674,8 +733,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
     public static javax.swing.JList<String> jListConfig;
     public static javax.swing.JList<String> jListTxn;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -687,6 +750,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     public static javax.swing.JLabel lblPort;
     public static javax.swing.JLabel lblTCPIP;
+    private javax.swing.JMenu menuConfig;
     private javax.swing.JPanel panelConfiguration;
     private javax.swing.JPanel panelConfiguration1;
     private javax.swing.JPanel panelConfiguration2;

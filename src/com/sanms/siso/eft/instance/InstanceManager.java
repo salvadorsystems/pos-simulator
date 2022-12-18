@@ -13,12 +13,25 @@ import javax.swing.JTable;
 import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.springframework.util.ResourceUtils;
 import org.xml.sax.SAXException;
 
 /**
@@ -290,6 +303,31 @@ public class InstanceManager extends Thread {
         ProcesosMC.txtRespuesta.setText(resultProxy.getStringResponse());
         System.out.println("Enviando");
         return resultProxy.getResult();
+    }
+    
+    public void generarReportePDF() throws FileNotFoundException, JRException, IOException{
+        
+        System.out.println("Generar PEFT");
+        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        final JasperReport report = (JasperReport) JRLoader.loadObject(file);
+        HashMap<String, Object> parameters = new HashMap<>();
+        
+        parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+        byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
+        String encodedString = Base64.getEncoder().encodeToString(reporte);
+        //System.out.println("PDF BITS: " + encodedString);
+
+        File filePDF = new File("../simulador-procesosmc/ReporteTransaccion.pdf");
+
+        try ( FileOutputStream fos = new FileOutputStream(filePDF);) {
+            byte[] decoder = Base64.getDecoder().decode(encodedString);
+
+            fos.write(decoder);
+            JOptionPane.showMessageDialog(null, "PDF File Saved");
+            System.out.println("PDF Se Genero Correctamente");
+        }
+        
     }
 
 }
