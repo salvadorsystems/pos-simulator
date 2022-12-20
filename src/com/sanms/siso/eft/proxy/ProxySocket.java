@@ -5,10 +5,12 @@ import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.EnumErrores;
 import com.sanms.siso.eft.view.ProcesosMC;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -21,15 +23,18 @@ public class ProxySocket {
     private Proxy proxyTest[];
     private int numIns;
     private int numTxn;
+    private int posIns;
     private String apiHost;
     private String apiPort;
     private String parametersPath;
     private String templatesPath;
     private List<Stream> listStream;
     public JTable table;
+    public JTable tableResponse;
 
-    public ProxySocket(JTable table) {
+    public ProxySocket(JTable table, JTable tableResponse) {
         this.table = table;
+        this.tableResponse = tableResponse;
     }
 
     public int getNumIns() {
@@ -125,11 +130,22 @@ public class ProxySocket {
             execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]", parametersPath, templatesPath, listStream);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
-            System.out.println("proxy :" + proxyTest[i]);
+            execute[i].setTable(table);
+            execute[i].setTableResponse(tableResponse);
             execute[i].start();
             System.out.println("enviado" + execute[i]);
-            
+            posIns = i;
         }
+    }
+    
+    public void generarReportePDF() throws JRException, IOException{
+        
+        execute[posIns].generarReportePDF();
+        
+    }
+
+    public void generarReporteXLS() throws JRException, IOException {
+        execute[posIns].generarReporteXLS();
     }
 
 }
