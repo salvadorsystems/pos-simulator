@@ -34,7 +34,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     static String apiHost;
     static String apiPort;
     private int connectClient = -1;
-    private String ruta;    
+    private String ruta;
 
     ProxySocket socketProxy;
     ViewHost windowTCPIP = new ViewHost(this, true);
@@ -43,9 +43,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
     List<Stream> listStreams;
     List<Generator> listGenerator;
 
-    public ProcesosMC() {        
+    public ProcesosMC() {
         initComponents();
-        this.socketProxy = new ProxySocket(jTable1,jTable2);
+        this.socketProxy = new ProxySocket(jTable1, jTable2);
         initWorkSpace();
     }
 
@@ -95,8 +95,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         Reportes = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuPDF = new javax.swing.JMenuItem();
+        jMenuXLS = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -414,16 +414,21 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         Reportes.setText("Reportes");
 
-        jMenuItem5.setText("Generar Reporte PDF");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMenuPDF.setText("Generar Reporte PDF");
+        jMenuPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMenuPDFActionPerformed(evt);
             }
         });
-        Reportes.add(jMenuItem5);
+        Reportes.add(jMenuPDF);
 
-        jMenuItem6.setText("Genera Reporte EXCEL");
-        Reportes.add(jMenuItem6);
+        jMenuXLS.setText("Genera Reporte EXCEL");
+        jMenuXLS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuXLSActionPerformed(evt);
+            }
+        });
+        Reportes.add(jMenuXLS);
 
         jMenuBar1.add(Reportes);
 
@@ -508,6 +513,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
         btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
         txtNumIns.setEnabled(false);
         BtnSendMessage.setEnabled(false);
+        jMenuPDF.setEnabled(false);
+        jMenuXLS.setEnabled(false);
         txtNumIns.setText("1");
         txtNumTxn.setText("1");
         ArchivoRuta processorWorkPath = new ArchivoRuta();
@@ -543,6 +550,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
                             socketProxy.closeSocket();
                             BtnSendMessage.setEnabled(false);
                             connectClient = -1;
+                            ProcesosMC.jMenuPDF.setEnabled(false);
+                            ProcesosMC.jMenuXLS.setEnabled(false);
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("error: " + e);
@@ -626,7 +635,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPDFActionPerformed
         try {
             // TODO add your handling code here:
             socketProxy.generarReportePDF();
@@ -635,7 +644,18 @@ public final class ProcesosMC extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jMenuPDFActionPerformed
+
+    private void jMenuXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuXLSActionPerformed
+        try {
+            // TODO add your handling code here:
+            socketProxy.generarReporteXLS();
+        } catch (JRException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuXLSActionPerformed
 
     public void setListtxn2() {
         String pathConfig = jListTxn.getSelectedValue();
@@ -655,7 +675,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig))) {
             archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig), ArchivoConfiguracion.class);
             if (archivoConfiguracion != null) {
-                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();                
+                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
                 if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe))) {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
@@ -742,8 +762,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
+    public static javax.swing.JMenuItem jMenuPDF;
+    public static javax.swing.JMenuItem jMenuXLS;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

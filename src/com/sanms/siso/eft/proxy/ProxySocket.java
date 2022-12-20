@@ -144,4 +144,8 @@ public class ProxySocket {
         
     }
 
+    public void generarReporteXLS() throws JRException, IOException {
+        execute[posIns].generarReporteXLS();
+    }
+
 }

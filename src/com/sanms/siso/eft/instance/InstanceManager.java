@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,7 +31,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
 import org.springframework.util.ResourceUtils;
 import org.xml.sax.SAXException;
 
@@ -47,8 +52,8 @@ public class InstanceManager extends Thread {
     public JTable table;
     public JTable tableResponse;
     public List<Object[]> listObject;
-    public ArrayList<Field> listField ;
-    public ArrayList<Field> listFieldResponse ;
+    public ArrayList<Field> listField;
+    public ArrayList<Field> listFieldResponse;
     private SimpleDateFormat time;
     private boolean running;
 
@@ -126,7 +131,7 @@ public class InstanceManager extends Thread {
     public void setTableResponse(JTable tableResponse) {
         this.tableResponse = tableResponse;
     }
-        
+
     public List<Object[]> getListObject() {
         return listObject;
     }
@@ -241,10 +246,12 @@ public class InstanceManager extends Thread {
 
                 result = execute();
                 sleep(1500);
-            } catch (Exception e) {
+            } catch (IOException | InterruptedException | ParserConfigurationException | SAXException e) {
             }
             if (result == 0) {
                 JOptionPane.showMessageDialog(null, "Envio Exitoso");
+                ProcesosMC.jMenuPDF.setEnabled(true);
+                ProcesosMC.jMenuXLS.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se completo el envio");
             }
@@ -252,7 +259,7 @@ public class InstanceManager extends Thread {
             try {
                 Worker worker = new Worker();
                 worker.setTable(table);
-                worker.setTableResponse(tableResponse);                
+                worker.setTableResponse(tableResponse);
                 worker.setListObject(getListObject());
                 worker.setInstance(getInstance());
                 worker.setThread(getThreads());
@@ -282,36 +289,36 @@ public class InstanceManager extends Thread {
         Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(rutaTemplate);
         Template req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate, pid);
         String request = req.generateStream();
-        
+
         for (Stream stream : listStream) {
             template = stream.getTemplate();
         }
         ProcesosMC.txtRequerimiento.setText(request);
-        Template reqFormat = TemplateTool.createTemplate(templateMapList,template );
+        Template reqFormat = TemplateTool.createTemplate(templateMapList, template);
         reqFormat.saveFromBuffer(request);
-        
+
         listField = reqFormat.getFieldList();
-        
+
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = proxy.process(request, apiResult);
         System.out.println("Response: " + resultProxy.getStringResponse());
-        
-        Template reqFormatResponse = TemplateTool.createTemplate(templateMapListResponse,template );
+
+        Template reqFormatResponse = TemplateTool.createTemplate(templateMapListResponse, template);
         reqFormatResponse.saveFromBuffer(resultProxy.getStringResponse());
         listFieldResponse = reqFormatResponse.getFieldList();
-        
+
         ProcesosMC.txtRespuesta.setText(resultProxy.getStringResponse());
         System.out.println("Enviando");
         return resultProxy.getResult();
     }
-    
-    public void generarReportePDF() throws FileNotFoundException, JRException, IOException{
-        
-        System.out.println("Generar PEFT");
+
+    public void generarReportePDF() throws FileNotFoundException, JRException, IOException {
+
+        System.out.println("Generar PDF");
         File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
-        
+
         parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
         byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -327,7 +334,38 @@ public class InstanceManager extends Thread {
             JOptionPane.showMessageDialog(null, "PDF File Saved");
             System.out.println("PDF Se Genero Correctamente");
         }
-        
+
     }
 
+    public void generarReporteXLS() throws FileNotFoundException, JRException, IOException {
+        System.out.println("Generar XLS");
+        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        final JasperReport report = (JasperReport) JRLoader.loadObject(file);
+        HashMap<String, Object> parameters = new HashMap<>();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+
+        JRXlsExporter exporter = new JRXlsExporter();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+        SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+        configuration.setOnePagePerSheet(true);
+        configuration.setDetectCellType(true);
+        configuration.setCollapseRowSpan(false);
+        exporter.setConfiguration(configuration);
+        exporter.exportReport();
+
+        byte[] reporte = baos.toByteArray();
+        String encodedString = Base64.getEncoder().encodeToString(reporte);
+        File fileXLS = new File("../simulador-procesosmc/ReporteTransaccion.xls");
+        try ( FileOutputStream fos = new FileOutputStream(fileXLS);) {
+            byte[] decoder = Base64.getDecoder().decode(encodedString);
+
+            fos.write(decoder);
+            JOptionPane.showMessageDialog(null, "PDF File Saved");
+            System.out.println("Excel Se Genero Correctamente");
+        }
+    }
 }
