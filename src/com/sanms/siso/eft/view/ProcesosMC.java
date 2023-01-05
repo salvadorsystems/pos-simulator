@@ -102,11 +102,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         RESPUESTA.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Datos de transacción"));
 
+        txtRequerimiento.setEditable(false);
         txtRequerimiento.setColumns(20);
         txtRequerimiento.setLineWrap(true);
         txtRequerimiento.setRows(5);
         jScrollPane5.setViewportView(txtRequerimiento);
 
+        txtRespuesta.setEditable(false);
         txtRespuesta.setColumns(20);
         txtRespuesta.setLineWrap(true);
         txtRespuesta.setRows(5);
@@ -389,10 +391,15 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         menuConfig.setText("Configuraciones");
 
-        jMenuItem1.setText("TCP/IP");
+        jMenuItem1.setText("Configurar TCP/IP");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         menuConfig.add(jMenuItem1);
 
-        jMenuItem2.setText("Ruta Host");
+        jMenuItem2.setText("Seleccionar Transaccion");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -598,7 +605,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
     //@SuppressWarnings("null")
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         // TODO add your handling code here:
-        try {
+            chooserHost();
+    }//GEN-LAST:event_btnCargarActionPerformed
+
+    private void chooserHost(){
+                try {
             JFileChooser jf = new JFileChooser(Constantes.BASE_SISOROOT);
             jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jf.setMultiSelectionEnabled(false);
@@ -614,8 +625,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
             }
         } catch (HeadlessException e) {
         }
-    }//GEN-LAST:event_btnCargarActionPerformed
-
+    }
+    
     private void jListConfigMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListConfigMouseClicked
         // TODO add your handling code here:
         setListTxn();
@@ -633,6 +644,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+        chooserHost();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPDFActionPerformed
@@ -656,6 +668,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
             Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuXLSActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        windowTCPIP.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public void setListtxn2() {
         String pathConfig = jListTxn.getSelectedValue();
