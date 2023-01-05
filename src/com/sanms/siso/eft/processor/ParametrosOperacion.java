@@ -39,7 +39,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author CANVIA
+ * @author Salvador
  */
 public class ParametrosOperacion {
 
