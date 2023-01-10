@@ -315,7 +315,7 @@ public class InstanceManager extends Thread {
     public void generarReportePDF() throws FileNotFoundException, JRException, IOException {
 
         System.out.println("Generar PDF");
-        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        File file = ResourceUtils.getFile("D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\src\\resources\\reportes\\Reportes_PDF_XLS.jasper");
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
 
@@ -339,7 +339,7 @@ public class InstanceManager extends Thread {
 
     public void generarReporteXLS() throws FileNotFoundException, JRException, IOException {
         System.out.println("Generar XLS");
-        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        File file = ResourceUtils.getFile("D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\src\\resources\\reportes\\Reportes_PDF_XLS.jasper");
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
