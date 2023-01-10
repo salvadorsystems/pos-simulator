@@ -6,6 +6,7 @@ import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
+import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.view.ProcesosMC;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -315,7 +316,7 @@ public class InstanceManager extends Thread {
     public void generarReportePDF() throws FileNotFoundException, JRException, IOException {
 
         System.out.println("Generar PDF");
-        File file = ResourceUtils.getFile("D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\src\\resources\\reportes\\Reportes_PDF_XLS.jasper");
+        File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
 
@@ -339,7 +340,7 @@ public class InstanceManager extends Thread {
 
     public void generarReporteXLS() throws FileNotFoundException, JRException, IOException {
         System.out.println("Generar XLS");
-        File file = ResourceUtils.getFile("D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\src\\resources\\reportes\\Reportes_PDF_XLS.jasper");
+        File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
