@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2023-01-10T11:05:34 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exportInvoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e039b43e-6146-4165-80c6-863f744e3a32">
+<!-- 2023-01-10T18:01:13 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exportInvoice" pageWidth="561" pageHeight="1500" columnWidth="550" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e039b43e-6146-4165-80c6-863f744e3a32">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -50,6 +50,9 @@
 		<field name="value" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="dsInvoice" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="txnName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -63,9 +66,9 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="135" splitType="Stretch">
+		<band height="107" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="50" width="560" height="75" uuid="f3bc42cb-b96e-4070-82d9-cbae5ddfa242">
+				<reportElement x="0" y="30" width="560" height="75" uuid="f3bc42cb-b96e-4070-82d9-cbae5ddfa242">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -211,15 +214,16 @@
 				</jr:table>
 			</componentElement>
 			<textField>
-				<reportElement x="160" y="10" width="250" height="30" uuid="bc132a31-e537-484e-ba24-6749105502ea"/>
-				<textFieldExpression><![CDATA[$P{dsInvoice}.getFieldValue( "com.sanms.siso.formatter.Field@49d0774b" )]]></textFieldExpression>
+				<reportElement x="177" y="0" width="203" height="30" uuid="87283d32-1c3f-47e9-bc35-1678650b58b7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{txnName}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="16">
+		<band>
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="19"/>
+		<band/>
 	</pageFooter>
 </jasperReport>

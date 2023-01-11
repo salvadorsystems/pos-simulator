@@ -36,6 +36,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private int connectClient = -1;
     private String ruta;
 
+    private String txnName;
     ProxySocket socketProxy;
     ViewHost windowTCPIP = new ViewHost(this, true);
     ArchivoConfiguracion archivoConfiguracion;
@@ -580,6 +581,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSendMessageActionPerformed
         // TODO add your handling code here:
+        socketProxy.setTnxName(txnName);
         socketProxy.setListStream(listStreams);
         socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
         socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
@@ -675,15 +677,16 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public void setListtxn2() {
-        String pathConfig = jListTxn.getSelectedValue();
+        //String pathConfig = jListTxn.getSelectedValue();
+        txnName = jListTxn.getSelectedValue();
         listGenerator = operacion.getGenerators();
         for (Generator generator : listGenerator) {
-            if (generator.getDetail().equalsIgnoreCase(pathConfig)) {
+            if (generator.getDetail().equalsIgnoreCase(txnName)) {
                 listStreams = generator.getStreams();
             }
         }
         System.out.println("" + listStreams.toString());
-        System.out.println("-->2 " + pathConfig);
+        System.out.println("-->2 " + txnName);
     }
 
     public void setListTxn() {

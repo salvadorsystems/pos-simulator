@@ -21,5 +21,6 @@ public class Constantes {
     public static final String RUTA_IMG_ON = "../img/img2.png";
     public static final String RUTA_IMG_IPADRESS = "../img/ipAdress9.png";
     public static final String BASE_SISOROOT = "C:\\SISO";    
-    public static final String RUTA_PLANTILLA = "../simulador-procesosmc/src/resources/reportes/Reportes_PDF_XLS.jasper";
+    public static final String RUTA_PLANTILLA_PDF = "../simulador-procesosmc/src/resources/reportes/Reporte_PDF.jasper";
+    public static final String RUTA_PLANTILLA_XLS = "../simulador-procesosmc/src/resources/reportes/Reporte_XLS.jasper";
 }
