@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "consultamovimientos.config",
+    "generatorsFile": "consultamovimientos.json",
     "parametersFile": "consultamovimientos.inf",
     "logLevel": "D",
     "prefix": "DYN_",
