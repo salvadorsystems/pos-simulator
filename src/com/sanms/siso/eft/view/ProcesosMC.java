@@ -517,14 +517,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     private void initWorkSpace() {
-        imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
-        btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
-        txtNumIns.setEnabled(false);
-        BtnSendMessage.setEnabled(false);
-        jMenuPDF.setEnabled(false);
-        jMenuXLS.setEnabled(false);
-        txtNumIns.setText("1");
-        txtNumTxn.setText("1");
+        configuracionComponentes();
         ArchivoRuta processorWorkPath = new ArchivoRuta();
         processorWorkPath.setWorkPath(Constantes.RUTA_HOST_CONFIG);
         processorWorkPath.setWorkParent(Constantes.RUTA_HOST);
@@ -538,6 +531,16 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jListTxn.setSelectedIndex(0);
     }
 
+    private void configuracionComponentes(){
+        imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
+        btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
+        txtNumIns.setEnabled(false);
+        BtnSendMessage.setEnabled(false);
+        jMenuPDF.setEnabled(false);
+        jMenuXLS.setEnabled(false);
+        txtNumIns.setText("1");
+        txtNumTxn.setText("1");
+    }
     private void BtnOpenCloseSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOpenCloseSocketActionPerformed
 
         if (!apiHost.isEmpty()) {
