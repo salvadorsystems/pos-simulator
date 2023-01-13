@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "relacioncuentas.config",
+    "generatorsFile": "relacioncuentas.json",
     "parametersFile": "relacioncuentas.inf",
     "logLevel": "D",
     "prefix": "DYN_",

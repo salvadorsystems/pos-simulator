@@ -1,0 +1,45 @@
+{
+   "detail":"Depósitos en cuentas terceros",
+   "generators":[
+      {	
+         "detail":"Deposito Cta Terceros",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqDepositoTerceros",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Extorno Deposito Cta Terceros",
+         "streams":[
+            {
+               "alias":"ReqExtorno",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"B90OriginalData",
+               "template":"reqB90OriginalData"
+            },
+            {
+               "alias":"ReqExtornoDepositoTerceros",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

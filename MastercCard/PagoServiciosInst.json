@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "pagoserviciosinst.config",
+    "generatorsFile": "pagoserviciosinst.json",
     "parametersFile": "pagoserviciosinst.inf",
     "logLevel": "D",
     "prefix": "DYN_",

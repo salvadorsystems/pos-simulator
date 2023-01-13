@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "pagocuotascreditos.config",
+    "generatorsFile": "pagocuotascreditos.json",
     "parametersFile": "pagocuotascreditos.inf",
     "logLevel": "D",
     "prefix": "DYN_",
