@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "relacioncredito.config",
+    "generatorsFile": "relacioncredito.json",
     "parametersFile": "relacioncredito.inf",
     "logLevel": "D",
     "prefix": "DYN_",

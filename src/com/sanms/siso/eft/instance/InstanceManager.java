@@ -6,6 +6,7 @@ import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
+import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.view.ProcesosMC;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -47,6 +48,7 @@ public class InstanceManager extends Thread {
 
     private int connect;
     private int threads;
+    private String txnName;
     private int numTxn;
     private int instance;
     public JTable table;
@@ -98,6 +100,14 @@ public class InstanceManager extends Thread {
 
     public void setThreads(int threads) {
         this.threads = threads;
+    }
+
+    public String getTxnName() {
+        return txnName;
+    }
+
+    public void setTxnName(String txnName) {
+        this.txnName = txnName;
     }
 
     public int getNumTxn() {
@@ -315,23 +325,22 @@ public class InstanceManager extends Thread {
     public void generarReportePDF() throws FileNotFoundException, JRException, IOException {
 
         System.out.println("Generar PDF");
-        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_PDF);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
-
+        parameters.put("txnName",txnName);
         parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
         byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
         String encodedString = Base64.getEncoder().encodeToString(reporte);
-        //System.out.println("PDF BITS: " + encodedString);
 
-        File filePDF = new File("../simulador-procesosmc/ReporteTransaccion.pdf");
+        File filePDF = new File("../simulador-procesosmc/reporte.pdf");
 
         try ( FileOutputStream fos = new FileOutputStream(filePDF);) {
             byte[] decoder = Base64.getDecoder().decode(encodedString);
 
             fos.write(decoder);
-            JOptionPane.showMessageDialog(null, "PDF File Saved");
+            JOptionPane.showMessageDialog(null, "PDF generado conrrectamente en la siguiente Ruta: \n"+filePDF.getCanonicalPath());
             System.out.println("PDF Se Genero Correctamente");
         }
 
@@ -339,11 +348,11 @@ public class InstanceManager extends Thread {
 
     public void generarReporteXLS() throws FileNotFoundException, JRException, IOException {
         System.out.println("Generar XLS");
-        File file = ResourceUtils.getFile("C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\src\\resources\\reportes\\ReportePDF.jasper");
+        File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_XLS);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+        parameters.put("txnName",txnName);
         parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
 
@@ -359,12 +368,12 @@ public class InstanceManager extends Thread {
 
         byte[] reporte = baos.toByteArray();
         String encodedString = Base64.getEncoder().encodeToString(reporte);
-        File fileXLS = new File("../simulador-procesosmc/ReporteTransaccion.xls");
+        File fileXLS = new File("../simulador-procesosmc/reporte.xls");
         try ( FileOutputStream fos = new FileOutputStream(fileXLS);) {
             byte[] decoder = Base64.getDecoder().decode(encodedString);
 
             fos.write(decoder);
-            JOptionPane.showMessageDialog(null, "PDF File Saved");
+            JOptionPane.showMessageDialog(null, "EXCEL generado correctamente en la siguiente Ruta: \n"+fileXLS.getCanonicalPath());
             System.out.println("Excel Se Genero Correctamente");
         }
     }

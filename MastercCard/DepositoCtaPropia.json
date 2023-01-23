@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "depositoctapropia.config",
+    "generatorsFile": "depositoctapropia.json",
     "parametersFile": "depositoctapropia.inf",
     "logLevel": "D",
     "prefix": "DYN_",

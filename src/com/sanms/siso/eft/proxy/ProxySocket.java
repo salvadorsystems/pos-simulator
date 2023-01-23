@@ -18,6 +18,7 @@ import net.sf.jasperreports.engine.JRException;
  */
 public class ProxySocket {
 
+    private String tnxName;
     private InstanceManager execute[];
     private int connectSocket = -1;
     private Proxy proxyTest[];
@@ -99,7 +100,7 @@ public class ProxySocket {
             proxyTest[i] = new Proxy();
             connectSocket = proxyTest[i].setup(apiHost, apiPort, false, 30);
             if (connectSocket == 0) {
-                System.out.println("Conexion Abierta");
+                System.out.println("Connexion Abierta");
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
                 ProcesosMC.BtnOpenCloseSocket.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(apiHost);
@@ -128,6 +129,7 @@ public class ProxySocket {
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
             execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]", parametersPath, templatesPath, listStream);
+            execute[i].setTxnName(tnxName);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
             execute[i].setTable(table);
@@ -148,4 +150,11 @@ public class ProxySocket {
         execute[posIns].generarReporteXLS();
     }
 
+    public String getTnxName() {
+        return tnxName;
+    }
+
+    public void setTnxName(String tnxName) {
+        this.tnxName = tnxName;
+    }
 }

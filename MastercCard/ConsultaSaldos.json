@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "consultasaldos.config",
+    "generatorsFile": "consultasaldos.json",
     "parametersFile": "consultasaldos.inf",
     "logLevel": "D",
     "prefix": "DYN_",

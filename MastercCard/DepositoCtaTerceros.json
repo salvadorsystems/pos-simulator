@@ -1,7 +1,7 @@
 {
     "workPath": "config",
     "templatesFile": "templates.config",
-    "generatorsFile": "depositoterceros.config",
+    "generatorsFile": "depositoterceros.json",
     "parametersFile": "depositoterceros.inf",
     "logLevel": "D",
     "prefix": "DYN_",
