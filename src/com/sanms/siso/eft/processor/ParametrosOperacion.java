@@ -47,21 +47,23 @@ public class ParametrosOperacion {
     private static final Logger log = Logger.getLogger(ParametrosOperacion.class);
     private String rutaParametros = "";
     Map<String, Map<String, Map<String, String>>> templateMapList;
-    HashMap<String, String> params;
+    Map<String, String> params;
 
     public ParametrosOperacion(String rutaParametros) {
         this.rutaParametros = rutaParametros;
     }
 
-    public HashMap<String, String> getParams() {
+    public Map<String, String> getParams() {
         return params;
     }
 
-    public void setParams(HashMap<String, String> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
     }
 
+    @SuppressWarnings("null")
     private HashMap<String, String> obtenerParametros(String txnName) throws ParserConfigurationException {
+        @SuppressWarnings("UnusedAssignment")
         HashMap<String, String> map = null;
         if (txnName.isEmpty()) {
             JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1005.getMensaje());
@@ -71,14 +73,12 @@ public class ParametrosOperacion {
         Document doc = null;
         try {
             doc = dcb.parse(file);
-        } catch (SAXException ex) {
-            log.error(ParametrosOperacion.class.getName()+"->"+ex);            
-        } catch (IOException ex) {
-            log.error(ParametrosOperacion.class.getName()+"->"+ex);            
+        } catch (SAXException | IOException ex) {
+            log.error(ParametrosOperacion.class.getName() + "->" + ex);
         }
         doc.getDocumentElement().normalize();
         NodeList nodeParent = doc.getElementsByTagName("request");
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
         for (int i = 0; i < nodeParent.getLength(); i++) {
             Element eElementParent = (Element) nodeParent.item(i);
             String token = eElementParent.getAttribute("token");
@@ -104,14 +104,13 @@ public class ParametrosOperacion {
                                 try {
                                     txnDate = sysdate(Constantes.BASE_URL_TMP + "mastercard.date", "MMdd", "", "");
                                 } catch (FileNotFoundException ex) {
-                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);                                             
-                                } catch (InterruptedException ex) {
-                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);                                             
-                                } catch (IOException ex) {
-                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);         
+                                    log.error(ParametrosOperacion.class.getName() + "->" + ex);
+                                } catch (InterruptedException | IOException ex) {
+                                    log.error(ParametrosOperacion.class.getName() + "->" + ex);
                                 }
                                 map.put(nodeChildLevel.item(j).getNodeName(), txnDate);
                                 break;
+
 
                             case "timeHHMMSS":
                                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
@@ -121,11 +120,9 @@ public class ParametrosOperacion {
                                     try {
                                         txnTime = systime(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", "", "");
                                     } catch (FileNotFoundException ex) {
-                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);                                                 
-                                    } catch (InterruptedException ex) {
-                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);                                                 
-                                    } catch (IOException ex) {
-                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);         
+                                        log.error(ParametrosOperacion.class.getName() + "->" + ex);
+                                    } catch (InterruptedException | IOException ex) {
+                                        log.error(ParametrosOperacion.class.getName() + "->" + ex);
                                     }
                                     map.put(nodeChildLevel.item(j).getNodeName(), txnTime);
                                 } else {
@@ -170,7 +167,7 @@ public class ParametrosOperacion {
         try {
             hMac = obtenerParametros("Macros");
         } catch (ParserConfigurationException ex) {
-            log.error(ParametrosOperacion.class.getName()+"->"+ex);                    
+            log.error(ParametrosOperacion.class.getName() + "->" + ex);
         }
         params = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
@@ -181,7 +178,7 @@ public class ParametrosOperacion {
             try {
                 hmReq = obtenerParametros(stream.getAlias());
             } catch (ParserConfigurationException ex) {
-                log.error(ParametrosOperacion.class.getName()+"->"+ex);                    
+                log.error(ParametrosOperacion.class.getName() + "->" + ex);
             }
             params.putAll(hmReq);
             for (Map.Entry<String, String> entry : params.entrySet()) {

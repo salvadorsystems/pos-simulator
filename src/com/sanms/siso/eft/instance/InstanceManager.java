@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  */
 public class InstanceManager extends Thread {
     
-    private static final Logger log = Logger.getLogger(ParametrosOperacion.class);
+    private static final Logger log = Logger.getLogger(InstanceManager.class);
     private int connect;
     
     private String txnName;
@@ -241,11 +241,13 @@ public class InstanceManager extends Thread {
         for (int count = 0; count < txn; count++) {
             result = execute();
             if (result == 0) {
-                JOptionPane.showMessageDialog(null, "Envio Exitoso");
+                JOptionPane.showMessageDialog(null, "El mensaje se envio correctamente");
+                log.info("El mensaje se envio correctamente");
                 ProcesosMC.jMenuPDF.setEnabled(true);
                 ProcesosMC.jMenuXLS.setEnabled(true);
             } else {
-                JOptionPane.showMessageDialog(null, "No se completo el envio");
+                JOptionPane.showMessageDialog(null, "Ups!, No se pudo completar el envio");
+                log.info("Ups!, No se pudo completar el envio");
             }
             try {
                 Worker worker = new Worker();
@@ -267,7 +269,7 @@ public class InstanceManager extends Thread {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            log.info("Finalizado");
+            log.info("Proceso Finalizado");
         }
     }
     
@@ -296,7 +298,7 @@ public class InstanceManager extends Thread {
         
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = proxy.process(request, apiResult);
-        log.info("Respuesta de Host: " + "[" + resultProxy.getStringResponse() + "]");
+        log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
         
         Template reqFormatResponse = TemplateTool.createTemplate(templateMapListResponse, plantilla);
         reqFormatResponse.saveFromBuffer(resultProxy.getStringResponse());
@@ -317,14 +319,14 @@ public class InstanceManager extends Thread {
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
         byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
         String encodedString = Base64.getEncoder().encodeToString(reporte);        
-        File filePDF = new File("../simulador-procesosmc/reporte.pdf");
-        
+        File filePDF = new File("../simulador-procesosmc/reportes/reporte.pdf");        
         try ( FileOutputStream fos = new FileOutputStream(filePDF);) {
             byte[] decoder = Base64.getDecoder().decode(encodedString);            
             fos.write(decoder);
-            JOptionPane.showMessageDialog(null, "PDF generado conrrectamente en la siguiente Ruta: \n" + filePDF.getCanonicalPath());            
-            log.info("PDF Se Genero Correctamente");
+            JOptionPane.showMessageDialog(null, "PDF Se Genero Correctamente en la siguiente Ruta: \n" + filePDF.getCanonicalPath());            
+            log.info("PDF Se Genero Correctamente en la siguiente Ruta: " + filePDF.getCanonicalPath());
         } catch (IOException err) {
+            JOptionPane.showMessageDialog(null, "Error al generar PDF: " + err); 
             log.error("Error al generar PDF: " + err);
         }
         
@@ -352,12 +354,15 @@ public class InstanceManager extends Thread {
         
         byte[] reporte = baos.toByteArray();
         String encodedString = Base64.getEncoder().encodeToString(reporte);
-        File fileXLS = new File("../simulador-procesosmc/reporte.xls");
+        File fileXLS = new File("../simulador-procesosmc/reportes/reporte.xls");
         try ( FileOutputStream fos = new FileOutputStream(fileXLS);) {
             byte[] decoder = Base64.getDecoder().decode(encodedString);            
             fos.write(decoder);
             JOptionPane.showMessageDialog(null, "Excel generado correctamente en la siguiente Ruta: \n" + fileXLS.getCanonicalPath());            
-            log.info("Excel Se Genero Correctamente");
+            log.info("Excel generado correctamente en la siguiente Ruta: " + fileXLS.getCanonicalPath());
+        } catch (IOException err) {
+            JOptionPane.showMessageDialog(null, "Error al generar Excel: " + err); 
+            log.error("Error al generar Excel: " + err);
         }
     }
 }

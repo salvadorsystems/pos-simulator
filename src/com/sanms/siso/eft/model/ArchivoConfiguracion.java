@@ -18,20 +18,6 @@ public class ArchivoConfiguracion {
     private String reportFlag;
     private String reportPath;
 
-    public ArchivoConfiguracion(String workPath, String templatesFile, String generatorsFile, String parametersFile, String logLevel, String prefix, String tcpFile, String securityFile, String statisticFile, String reportFlag, String reportPath) {
-        this.workPath = workPath;
-        this.templatesFile = templatesFile;
-        this.generatorsFile = generatorsFile;
-        this.parametersFile = parametersFile;
-        this.logLevel = logLevel;
-        this.prefix = prefix;
-        this.tcpFile = tcpFile;
-        this.securityFile = securityFile;
-        this.statisticFile = statisticFile;
-        this.reportFlag = reportFlag;
-        this.reportPath = reportPath;
-    }
-
     public String getWorkPath() {
         return workPath;
     }

@@ -9,13 +9,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author salvador
  */
 public class ArchivoRuta {
-
+    private static final Logger log = Logger.getLogger(ArchivoRuta.class);
     private String workPath;
     private String workParent;
 
@@ -55,8 +56,9 @@ public class ArchivoRuta {
         String json = gson.toJson(processorWorkPath);
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter("../simulador-procesosmc/ProcesosMC.json"))) {
             bw.write(json);
-            System.out.println("Fichero Modificado");
+            log.info("Fichero Modificado");            
         } catch (IOException ex) {
+            log.error("Error: " + ex); 
             JOptionPane.showMessageDialog(null, "Error: " + ex);
         }
     }
