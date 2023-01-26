@@ -3,10 +3,15 @@ package com.sanms.siso.eft.proxy;
 import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
-import com.sanms.siso.eft.utils.EnumErrores;
+import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.eft.view.ProcesosMC;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -106,7 +111,7 @@ public class ProxySocket {
                 ProcesosMC.lblTCPIP.setText(apiHost);
                 ProcesosMC.lblPort.setText(apiPort);
             } else {
-                JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
+                JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
                         "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -125,10 +130,9 @@ public class ProxySocket {
     }
 
     public void sendMessageSocket() {
-        ThreadGroup parentGroup = new ThreadGroup("Parent Thread");
         execute = new InstanceManager[numIns];
         for (int i = 0; i < numIns; i++) {
-            execute[i] = new InstanceManager(parentGroup, "Thread [" + i + "]", parametersPath, templatesPath, listStream);
+            execute[i] = new InstanceManager(parametersPath, templatesPath, listStream);
             execute[i].setTxnName(tnxName);
             execute[i].setNumTxn(numTxn);
             execute[i].setProxy(proxyTest[i]);
@@ -139,11 +143,11 @@ public class ProxySocket {
             posIns = i;
         }
     }
-    
-    public void generarReportePDF() throws JRException, IOException{
-        
+
+    public void generarReportePDF() throws JRException, IOException {
+
         execute[posIns].generarReportePDF();
-        
+
     }
 
     public void generarReporteXLS() throws JRException, IOException {

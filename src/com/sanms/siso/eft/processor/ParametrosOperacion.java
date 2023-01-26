@@ -6,7 +6,7 @@ package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Constantes;
-import com.sanms.siso.eft.utils.EnumErrores;
+import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
@@ -36,6 +36,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -43,6 +44,7 @@ import org.xml.sax.SAXException;
  */
 public class ParametrosOperacion {
 
+    private static final Logger log = Logger.getLogger(ParametrosOperacion.class);
     private String rutaParametros = "";
     Map<String, Map<String, Map<String, String>>> templateMapList;
     HashMap<String, String> params;
@@ -59,14 +61,21 @@ public class ParametrosOperacion {
         this.params = params;
     }
 
-    private HashMap<String, String> obtenerParametros(String txnName, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
+    private HashMap<String, String> obtenerParametros(String txnName) throws ParserConfigurationException {
         HashMap<String, String> map = null;
         if (txnName.isEmpty()) {
-            JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1005.getMensaje());
+            JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1005.getMensaje());
         }
         File file = new File(rutaParametros);
         DocumentBuilder dcb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = dcb.parse(file);
+        Document doc = null;
+        try {
+            doc = dcb.parse(file);
+        } catch (SAXException ex) {
+            log.error(ParametrosOperacion.class.getName()+"->"+ex);            
+        } catch (IOException ex) {
+            log.error(ParametrosOperacion.class.getName()+"->"+ex);            
+        }
         doc.getDocumentElement().normalize();
         NodeList nodeParent = doc.getElementsByTagName("request");
         map = new HashMap<String, String>();
@@ -91,37 +100,56 @@ public class ParametrosOperacion {
                         String values = value.substring(inicio, fin);
                         switch (values) {
                             case "dateMMDD":
-                                String txnDate = sysdate(Constantes.BASE_URL_TMP + "mastercard.date", "MMdd", "", "", pid);
+                                String txnDate = null;
+                                try {
+                                    txnDate = sysdate(Constantes.BASE_URL_TMP + "mastercard.date", "MMdd", "", "");
+                                } catch (FileNotFoundException ex) {
+                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);                                             
+                                } catch (InterruptedException ex) {
+                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);                                             
+                                } catch (IOException ex) {
+                                    log.error(ParametrosOperacion.class.getName()+"->"+ex);         
+                                }
                                 map.put(nodeChildLevel.item(j).getNodeName(), txnDate);
                                 break;
+
                             case "timeHHMMSS":
                                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
                                 listParameters = parameters.split(";");
                                 if (listParameters.length < 2) {
-                                    String txnTime = systime(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", "", "", pid);
+                                    String txnTime = null;
+                                    try {
+                                        txnTime = systime(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", "", "");
+                                    } catch (FileNotFoundException ex) {
+                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);                                                 
+                                    } catch (InterruptedException ex) {
+                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);                                                 
+                                    } catch (IOException ex) {
+                                        log.error(ParametrosOperacion.class.getName()+"->"+ex);         
+                                    }
                                     map.put(nodeChildLevel.item(j).getNodeName(), txnTime);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
+                                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
                                 }
                                 break;
                             case "sequence":
                                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
                                 listParameters = parameters.split(";");
                                 if (listParameters.length < 4) {
-                                    String trace = secuence(Constantes.BASE_URL_CFG + listParameters[0], listParameters[1], listParameters[2], "", pid);
+                                    String trace = secuence(Constantes.BASE_URL_CFG + listParameters[0], listParameters[1], listParameters[2], "");
                                     map.put(nodeChildLevel.item(j).getNodeName(), trace);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
+                                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
                                 }
                                 break;
                             case "read":
                                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
                                 listParameters = parameters.split(";");
                                 if (listParameters.length < 4) {
-                                    String localTime = reader(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", listParameters[2], "", pid);
+                                    String localTime = reader(Constantes.BASE_URL_CFG + listParameters[0], "HHmmss", listParameters[2], "");
                                     map.put(nodeChildLevel.item(j).getNodeName(), localTime);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
+                                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
                                 }
                                 break;
                             case "":
@@ -137,14 +165,24 @@ public class ParametrosOperacion {
         return map;
     }
 
-    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
-        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
+    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate) throws FileNotFoundException {
+        HashMap<String, String> hMac = null;
+        try {
+            hMac = obtenerParametros("Macros");
+        } catch (ParserConfigurationException ex) {
+            log.error(ParametrosOperacion.class.getName()+"->"+ex);                    
+        }
         params = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = null;
         for (Stream stream : listStream) {
             req = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
-            HashMap<String, String> hmReq = obtenerParametros(stream.getAlias(), pid);
+            HashMap<String, String> hmReq = null;
+            try {
+                hmReq = obtenerParametros(stream.getAlias());
+            } catch (ParserConfigurationException ex) {
+                log.error(ParametrosOperacion.class.getName()+"->"+ex);                    
+            }
             params.putAll(hmReq);
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 Object val = entry.getValue();
@@ -161,13 +199,13 @@ public class ParametrosOperacion {
         }
         return req;
     }
-    
+
     public ArrayList<Field> obtenerParametrosMCS(String rutaTemplate, String alias, String template, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         ArrayList<Field> listField = null;
         Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = TemplateTool.createTemplate(templateMapList, template);
-        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
-        HashMap<String, String> hmReq = obtenerParametros(alias, pid);
+        HashMap<String, String> hMac = obtenerParametros("Macros");
+        HashMap<String, String> hmReq = obtenerParametros(alias);
         for (Map.Entry<String, String> entry : hmReq.entrySet()) {
             Object val = entry.getValue();
             for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
@@ -182,13 +220,14 @@ public class ParametrosOperacion {
         }
         return listField;
     }
+
     HashMap<String, String> obtenerDatos(String rutaTemplate, String template, String alias, int pid) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, InterruptedException {
         HashMap<String, String> datos = new HashMap<>();
-        HashMap<String, String> hMac = obtenerParametros("Macros", pid);
+        HashMap<String, String> hMac = obtenerParametros("Macros");
         params = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = TemplateTool.createTemplate(templateMapList, template);
-        HashMap<String, String> hmReq = obtenerParametros(alias, pid);
+        HashMap<String, String> hmReq = obtenerParametros(alias);
         params.putAll(hmReq);
         for (Map.Entry<String, String> entry : params.entrySet()) {
             Object val = entry.getValue();
@@ -205,29 +244,29 @@ public class ParametrosOperacion {
 
         for (Field field : req.getFieldList()) {
 
-            if(!field.getValue().isEmpty()){
-                System.out.println(field.getAlias()+"-"+field.getValue());
+            if (!field.getValue().isEmpty()) {
+                System.out.println(field.getAlias() + "-" + field.getValue());
                 datos.put(field.getAlias(), field.getValue());
-            }           
+            }
         }
 
         System.out.println("GENERATE : " + req.generateStream());
         return datos;
     }
 
-    public String sysdate(String filename, String format, String nonusage0, String nonusage1, int pid) throws IOException, FileNotFoundException, InterruptedException {
+    public String sysdate(String filename, String format, String nonusage0, String nonusage1) throws IOException, FileNotFoundException, InterruptedException {
         String sysDate = new SimpleDateFormat(format).format(new Date());
         writeOnFile(filename, sysDate);
         return sysDate;
     }
 
-    public String systime(String filename, String format, String nonusage0, String nonusage1, int pid) throws IOException, FileNotFoundException, InterruptedException {
+    public String systime(String filename, String format, String nonusage0, String nonusage1) throws IOException, FileNotFoundException, InterruptedException {
         String sysTime = new SimpleDateFormat(format).format(new Date());
         writeOnFile(filename, sysTime);
         return sysTime;
     }
 
-    public String secuence(String filename, String length, String step, String nonusage1, int pid) {
+    public String secuence(String filename, String length, String step, String nonusage1) {
         //logger.debug("ParametersSimulator.secuence(): inicio");
         int currentValue = 0;
         String formatValue = "";
@@ -281,7 +320,7 @@ public class ParametrosOperacion {
         return fileLock;
     }
 
-    public String reader(String filename, String format, String length, String nonusage1, int pid) {
+    public String reader(String filename, String format, String length, String nonusage1) {
         //logger.debug("ParametersSimulator.reader(): inicio");
         String currentValue = "";
         try {

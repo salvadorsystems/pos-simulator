@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import com.sanms.siso.eft.proxy.ProxySocket;
 import com.sanms.siso.eft.utils.Constantes;
-import com.sanms.siso.eft.utils.EnumErrores;
+import com.sanms.siso.eft.utils.Errores;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
@@ -531,7 +533,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jListTxn.setSelectedIndex(0);
     }
 
-    private void configuracionComponentes(){
+    private void configuracionComponentes() {
         imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
         btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
         txtNumIns.setEnabled(false);
@@ -568,13 +570,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
                         System.out.println("error: " + e);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
+                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
                 }
             } else {
-                JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1002.getMensaje());
+                JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1002.getMensaje());
             }
         } else {
-            JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
+            JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
         }
     }//GEN-LAST:event_BtnOpenCloseSocketActionPerformed
 
@@ -610,11 +612,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
     //@SuppressWarnings("null")
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         // TODO add your handling code here:
-            chooserHost();
+        chooserHost();
     }//GEN-LAST:event_btnCargarActionPerformed
 
-    private void chooserHost(){
-                try {
+    private void chooserHost() {
+        try {
             JFileChooser jf = new JFileChooser(Constantes.BASE_SISOROOT);
             jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jf.setMultiSelectionEnabled(false);
@@ -631,7 +633,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         } catch (HeadlessException e) {
         }
     }
-    
+
     private void jListConfigMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListConfigMouseClicked
         // TODO add your handling code here:
         setListTxn();
@@ -703,13 +705,13 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
                 } else {
-                    JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
+                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
             } else {
                 clearFields();
             }
         } else {
-            JOptionPane.showMessageDialog(null, EnumErrores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
+            JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
             clearFields();
         }
         jListTxn.setSelectedIndex(0);
@@ -758,6 +760,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ProcesosMC().setVisible(true);
+                PropertyConfigurator.configure(Constantes.RUTA_LOG4J_PROPERTIES);
             }
         });
     }
