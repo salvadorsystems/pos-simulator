@@ -8,7 +8,7 @@ package com.sanms.siso.eft.utils;
  *
  * @author salvador
  */
-public enum EnumErrores {
+public enum Errores {
     ERROR_VALIDACION_OBLIGATORIEDAD_1000("1000", "Campo de instancias debe ser numerico"),
     ERROR_VALIDACION_OBLIGATORIEDAD_1002("1002", "Campo de instancias esta vacio"),
     ERROR_VALIDACION_OBLIGATORIEDAD_1003("1003", "IP no encontrado, ingresa la ip y puerto"),
@@ -17,7 +17,7 @@ public enum EnumErrores {
     ERROR_VALIDACION_OBLIGATORIEDAD_1006("1006", "Formato de Archivo Json no es valido."),
     ERROR_VALIDACION_OBLIGATORIEDAD_1007("1007", "Parametros con formato erroneo del campo: ");
 
-    private EnumErrores(String cod, String msg) {
+    private Errores(String cod, String msg) {
         this.cod = cod;
         this.msg = msg;
     }
@@ -35,7 +35,7 @@ public enum EnumErrores {
 
     public static String getMensaje(String cod) {
         String msg = "";
-        for (EnumErrores enumHTTP : EnumErrores.values()) {
+        for (Errores enumHTTP : Errores.values()) {
             if (enumHTTP.cod.equalsIgnoreCase(cod)) {
                 msg = enumHTTP.msg;
                 break;

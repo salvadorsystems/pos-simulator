@@ -41,18 +41,18 @@
 	</request>
 	<request token="ReqFinanciero">
 		<pan>{NRO_TARJETA}</pan>
-		<txnDate>dateMMDD()</txnDate>
-		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
-		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
-		<localTime>read(tmp/mastercard.time;A;4)</localTime>
-		<localDate>dateMMDD()</localDate>
+		<txnDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.date;MMdd;4;0)</txnDate>
+		<txnTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.time;HHmmss;6;0)</txnTime>
+		<trace>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.trace;N;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localtime;HHmmss;6;0)</localTime>
+		<localDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localdate;MMdd;4;0)</localDate>
 		<expirationDate>{EXPIRE_DATE}</expirationDate>
 		<merchantType>{MERCH_TYPE}</merchantType>			
 		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
 		<acqId>{ACQ_ID}</acqId>
 		<fwdId>{FWD_ID}</fwdId>
 		<terminal>{TERMINAL}</terminal>
-		<dateSettlement>dateMMDD()</dateSettlement>
+		<dateSettlement>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.stlmdate;MMdd;4;0)</dateSettlement>
 		<addDataPrivate>98491260</addDataPrivate>
 		<currencyCode>{SOLES}</currencyCode>
 		<networkData>CC2000354786</networkData>
@@ -65,7 +65,7 @@
 		<priBitmap>{PRI_BITMAP}</priBitmap>
 		<secBitmap>{SEC_BITMAP}</secBitmap>	
 		<processingCode>{CONSULTA_CTA_CREDITO}</processingCode>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>	
+		<referenceNumber>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.ref;N;12;1)</referenceNumber>	
 		<acceptorId>{ACCEPTORID}</acceptorId>
 		<acceptorName>{ACCEPTORNAME}</acceptorName>
 		<pin>{PIN}</pin>
@@ -75,7 +75,7 @@
 		<priBitmap>{PRI_BITMAP_TJT}</priBitmap>
 		<secBitmap>{SEC_BITMAP_TJT}</secBitmap>	
 		<processingCode>{CONSULTA_CTA_CREDITO}</processingCode>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>	
+		<referenceNumber>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.ref;N;12;1)</referenceNumber>	
 		<acceptorId>{ACCEPTORID}</acceptorId>
 		<acceptorName>{ACCEPTORNAME}</acceptorName>
 		<pin>{PIN}</pin>
