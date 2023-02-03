@@ -308,7 +308,7 @@ public class InstanceManager extends Thread {
         return resultProxy.getResult();
     }
     
-    public void generarReportePDF() throws java.io.IOException, JRException, IOException {
+    public void generarReportePDF() throws JRException, IOException {
         
         log.info("Se solicito generar PDF");
         File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_PDF);
@@ -332,7 +332,7 @@ public class InstanceManager extends Thread {
         
     }
     
-    public void generarReporteXLS() throws java.io.IOException, JRException, IOException {        
+    public void generarReporteXLS() throws JRException, IOException {        
         log.info("Se solicito generar EXCEL");
         File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_XLS);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
