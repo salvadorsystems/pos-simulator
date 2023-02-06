@@ -283,6 +283,7 @@ public class InstanceManager extends Thread {
         try {
             req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate);
             request = req.generateStream();
+            log.info("SRQ : " + "[" + request + "]");
         } catch (FileNotFoundException ex) {
             log.error(ex);
         }
