@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
@@ -488,9 +487,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void getconfigHost(String path) {
         Gson gson = new Gson();
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(path))) {
+        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(path).toString())) {
             try {
-                ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path), ArchivoHost.class);
+                ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path).toString(), ArchivoHost.class);
                 if (processorHost != null) {
                     apiHost = processorHost.getRemoteHost();
                     apiPort = String.valueOf(processorHost.getPort());
@@ -527,7 +526,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         txtPath.setText(processorWorkPath.getWorkPath());
         ruta = processorWorkPath.getWorkParent();
         getconfigHost(processorWorkPath.getWorkPath());
-        ProcesarArchivos.listConfigFiles(processorWorkPath.getWorkParent());
+        ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
         jListConfig.setSelectedIndex(0);
         setListTxn();
         jListTxn.setSelectedIndex(0);
@@ -624,7 +623,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             File seleccion_ruta = jf.getSelectedFile();
             if (seleccion_ruta != null) {
                 ruta = seleccion_ruta.getParent();
-                ProcesarArchivos.listConfigFiles(seleccion_ruta.getParent());
+                ProcesarArchivos.listarArchivosConfiguracion(seleccion_ruta.getParent());
                 ArchivoRuta.setConfigWorkPath(seleccion_ruta.getAbsolutePath(), seleccion_ruta.getParent());
                 getconfigHost(seleccion_ruta.getAbsolutePath());
                 windowTCPIP.path = seleccion_ruta.getAbsolutePath();
@@ -697,12 +696,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
     public void setListTxn() {
         String rutaFileConfig = ruta + "\\" + jListConfig.getSelectedValue();
         Gson gson = new Gson();
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig))) {
-            archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig), ArchivoConfiguracion.class);
+        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString())) {
+            archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString(), ArchivoConfiguracion.class);
             if (archivoConfiguracion != null) {
                 String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
-                if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe))) {
-                    operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe), Operacion.class);
+                if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString())) {
+                    operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
                 } else {
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);

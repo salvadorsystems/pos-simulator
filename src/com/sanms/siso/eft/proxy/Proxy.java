@@ -24,7 +24,7 @@ public class Proxy extends ProxyDefinition {
     ServerAddress sa;
     boolean fastConnect;
     private static Charset byteCharSet = Charset.defaultCharset();
-    static SocketClientFactory SECPROXYFACTORY = SocketClientFactory.SOCKETCLIENTFACTORY_DEFAULT;
+    static SocketClientFactory socketClientFactory = SocketClientFactory.SOCKETCLIENTFACTORY_DEFAULT;
 
     public Proxy() {
         socketProcessor = null;
@@ -33,19 +33,18 @@ public class Proxy extends ProxyDefinition {
     }
 
     public int setup(String host, String port, boolean fastconnect, int timeout) {
-        socketProcessor = new DefaultSocketClient(SECPROXYFACTORY);
+        socketProcessor = new DefaultSocketClient(socketClientFactory);
         sa = new ServerAddress();
         sa.setName(String.valueOf(this.hashCode()));
         sa.setHost(host);
         sa.setService(port);
         sa.setTimeout(timeout);
         fastConnect = fastconnect;
-        if (!fastConnect) {
-            if (!socketProcessor.connect(sa.getHost(), sa.getService(), true, true, sa.getTimeout())) {
+        if (!fastConnect && !socketProcessor.connect(sa.getHost(), sa.getService().toString(), true, true, sa.getTimeout())) {
                 return TIBTEST_RESULT_ERROR_SETUP_CONNECT;
-            }
-        }
-        return TIBTEST_RESULT_SUCCESS;
+        }else{
+            return TIBTEST_RESULT_SUCCESS;
+        }        
     }
 
     public void release() {

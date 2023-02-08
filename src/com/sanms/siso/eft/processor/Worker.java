@@ -6,7 +6,6 @@
 package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.formatter.Field;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
@@ -15,7 +14,7 @@ import javax.swing.table.TableColumnModel;
 
 /**
  *
- * @author varmas
+ * @author salvador
  */
 public class Worker extends SwingWorker<Integer, Object[]> {
 
@@ -32,8 +31,8 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private int instance;
     private String time;
     private List<Object[]> listObject;
-    public ArrayList<Field> listField;
-    public ArrayList<Field> listFieldResponse;
+    private List<Field> listField;
+    private List<Field> listFieldResponse;
 
     public JTable getTable() {
         return table;
@@ -139,19 +138,19 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         this.listObject = listObject;
     }
 
-    public ArrayList<Field> getListField() {
+    public List<Field> getListField() {
         return listField;
     }
 
-    public void setListField(ArrayList<Field> listField) {
+    public void setListField(List<Field> listField) {
         this.listField = listField;
     }
 
-    public ArrayList<Field> getListFieldResponse() {
+    public List<Field> getListFieldResponse() {
         return listFieldResponse;
     }
 
-    public void setListFieldResponse(ArrayList<Field> listFieldResponse) {
+    public void setListFieldResponse(List<Field> listFieldResponse) {
         this.listFieldResponse = listFieldResponse;
     }
     
@@ -160,12 +159,8 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     @Override
     protected Integer doInBackground() throws Exception {
 
-        Object row[]
-                = {
-                    "ddddaaa", getsNroTerm(), getTxn(), getTitle(), getNroTxnOk(), getNroTxnError(), getRespCode(), getTime()
-                };
-
-        publish(row);
+        
+        publish((Object[]) null);
 
         return null;
     }

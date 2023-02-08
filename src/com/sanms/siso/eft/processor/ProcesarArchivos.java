@@ -12,6 +12,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,17 +20,13 @@ import javax.swing.DefaultListModel;
  */
 public class ProcesarArchivos {
 
-    public String executeProcessCCE(String nombreTxn, int pid) {
-        String respuesta = null;
+    private static final Logger log = Logger.getLogger(ProcesarArchivos.class);
 
-        return respuesta;
+    private ProcesarArchivos() {
+        // Do nothing because of X and Y.
     }
 
-    public void setup() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public static String[] listConfigFiles(String path) {
+    public static String[] listarArchivosConfiguracion(String path) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
         ProcesosMC.jListConfig.setModel(modelo);
         String[] pathnames;
@@ -44,37 +41,30 @@ public class ProcesarArchivos {
         return pathnames;
     }
 
-    public static void listarOperaciones(Operacion operacion){
+    public static void listarOperaciones(Operacion operacion) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
         ProcesosMC.jListTxn.setModel(modelo);
         List<Generator> listGenerator = operacion.getGenerators();
         for (Generator generator : listGenerator) {
             modelo.addElement(generator.getDetail());
-        }               
+        }
     }
 
-    public static String convertJsonToString(String path) {
-        String fichero = "";
+    public static StringBuilder convertJsonToString(String path) {
+        StringBuilder fichero = new StringBuilder();
         try ( BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                fichero += linea;
+                fichero.append(linea);
             }
         } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            log.error(ex);            
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            
+            log.error(ex);   
         }
         return fichero;
     }
-
-    public static Object jsonConvertClass(Object object, String fichero) {
-        Gson gson = new Gson();
-        object = gson.fromJson(fichero, Object.class);
-
-        return object;
-    }
-
     public static boolean isJSONValid(String jsonInString) {
         Gson gson = new Gson();
         try {
