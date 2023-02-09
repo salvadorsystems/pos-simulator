@@ -1,6 +1,7 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
+import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.processor.ProcesarArchivos;
 import com.sanms.siso.eft.model.ArchivoHost;
@@ -32,6 +33,7 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public final class ProcesosMC extends javax.swing.JFrame {
 
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ProcesosMC.class);
     static String apiHost;
     static String apiPort;
     private int connectClient = -1;
@@ -501,7 +503,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     clearFields();
                 }
             } catch (com.google.gson.JsonSyntaxException ex) {
-                System.out.println("error :" + ex);
+                log.info("error :" + ex);
             }
         } else {
             clearFields();
@@ -566,7 +568,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                             ProcesosMC.jMenuXLS.setEnabled(false);
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("error: " + e);
+                        log.info("error: " + e);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
@@ -577,22 +579,22 @@ public final class ProcesosMC extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
         }
-    }//GEN-LAST:event_BtnOpenCloseSocketActionPerformed
+    }
 
-    private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTCPIPActionPerformed
+    private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {
         windowTCPIP.setVisible(true);
-    }//GEN-LAST:event_btnTCPIPActionPerformed
+    }
 
-    private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSendMessageActionPerformed
+    private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         socketProxy.setTnxName(txnName);
         socketProxy.setListStream(listStreams);
         socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
         socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
         socketProxy.sendMessageSocket();
-    }//GEN-LAST:event_BtnSendMessageActionPerformed
+    }
 
-    private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CboxNumIActionPerformed
+    private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (CboxNumI.isSelected() == true) {
             txtNumIns.setEnabled(true);
@@ -602,7 +604,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             txtNumIns.setEnabled(false);
         }
 
-    }//GEN-LAST:event_CboxNumIActionPerformed
+    }
 
     private void CboxNumIMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CboxNumIMouseClicked
         // TODO add your handling code here:
@@ -653,7 +655,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         chooserHost();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPDFActionPerformed
+    private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             // TODO add your handling code here:
             socketProxy.generarReportePDF();
@@ -662,7 +664,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuPDFActionPerformed
+    }
 
     private void jMenuXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuXLSActionPerformed
         try {

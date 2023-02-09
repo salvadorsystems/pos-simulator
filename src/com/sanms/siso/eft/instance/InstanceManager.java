@@ -46,7 +46,6 @@ import org.apache.log4j.Logger;
 public class InstanceManager extends Thread {
     
     private static final Logger log = Logger.getLogger(InstanceManager.class);
-    private int connect;
     
     private String txnName;
     private int numTxn;
@@ -63,10 +62,7 @@ public class InstanceManager extends Thread {
     private List<Stream> listStream;
     private int errorCount = 0;
     private int succesCount = 0;
-    
-    private String apiHost = "";
-    private String apiPort = "";
-    private int apiTimeOut = 0;
+
     private String template;
     private String rutaTemplate;
     
@@ -79,14 +75,6 @@ public class InstanceManager extends Thread {
     }
     
     public InstanceManager() {
-    }
-    
-    public int getConnect() {
-        return connect;
-    }
-    
-    public void setConnect(int connect) {
-        this.connect = connect;
     }
     
     public String getTxnName() {
@@ -157,66 +145,14 @@ public class InstanceManager extends Thread {
         return rutaParametros;
     }
     
-    public void setRutaParametros(String rutaParametros) {
-        this.rutaParametros = rutaParametros;
-    }
-    
     public String getRutaTemplate() {
         return rutaTemplate;
-    }
-    
-    public void setRutaTemplate(String rutaTemplate) {
-        this.rutaTemplate = rutaTemplate;
     }
     
     public List<Stream> getListStream() {
         return listStream;
     }
-    
-    public void setListStream(List<Stream> listStream) {
-        this.listStream = listStream;
-    }
-    
-    public int getErrorCount() {
-        return errorCount;
-    }
-    
-    public void setErrorCount(int errorCount) {
-        this.errorCount = errorCount;
-    }
-    
-    public int getSuccesCount() {
-        return succesCount;
-    }
-    
-    public void setSuccesCount(int succesCount) {
-        this.succesCount = succesCount;
-    }
-    
-    public String getApiHost() {
-        return apiHost;
-    }
-    
-    public void setApiHost(String apiHost) {
-        this.apiHost = apiHost;
-    }
-    
-    public String getApiPort() {
-        return apiPort;
-    }
-    
-    public void setApiPort(String apiPort) {
-        this.apiPort = apiPort;
-    }
-    
-    public int getApiTimeOut() {
-        return apiTimeOut;
-    }
-    
-    public void setApiTimeOut(int apiTimeOut) {
-        this.apiTimeOut = apiTimeOut;
-    }
-    
+
     public Proxy getProxy() {
         return proxy;
     }
@@ -236,11 +172,8 @@ public class InstanceManager extends Thread {
     
     @Override
     public void run() {
-        int txn = getNumTxn();
-        int result = 0;
-        for (int count = 0; count < txn; count++) {
-            result = execute();
-            if (result == 0) {
+        for (int count = 0; count < getNumTxn(); count++) {
+            if (execute() == 0) {
                 JOptionPane.showMessageDialog(null, "El mensaje se envio correctamente");
                 log.info("El mensaje se envio correctamente");
                 ProcesosMC.jMenuPDF.setEnabled(true);
@@ -276,19 +209,19 @@ public class InstanceManager extends Thread {
     public int execute() {
         String plantilla = null;
         String request = null;
-        ParametrosOperacion parametrosOperacion = new ParametrosOperacion(rutaParametros);
-        Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(rutaTemplate);
-        Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(rutaTemplate);
+        ParametrosOperacion parametrosOperacion = new ParametrosOperacion(getRutaParametros());
+        Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(getRutaTemplate());
+        Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(getRutaTemplate());
         Template req;
         try {
-            req = parametrosOperacion.obtenerParametrosCmpl(listStream, rutaTemplate);
+            req = parametrosOperacion.obtenerParametrosCmpl(getListStream(), getRutaTemplate());
             request = req.generateStream();
             log.info("SRQ : " + "[" + request + "]");
         } catch (FileNotFoundException ex) {
             log.error(ex);
         }
         
-        for (Stream stream : listStream) {
+        for (Stream stream : getListStream()) {
             plantilla = stream.getTemplate();
         }
         ProcesosMC.txtRequerimiento.setText(request);
@@ -298,7 +231,7 @@ public class InstanceManager extends Thread {
         listField = reqFormat.getFieldList();
         
         ProxyResult apiResult = new ProxyResult();
-        ProxyCommResult resultProxy = proxy.process(request, apiResult);
+        ProxyCommResult resultProxy = getProxy().process(request, apiResult);
         log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
         
         Template reqFormatResponse = TemplateTool.createTemplate(templateMapListResponse, plantilla);
@@ -315,7 +248,7 @@ public class InstanceManager extends Thread {
         File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_PDF);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("txnName", txnName);
+        parameters.put("txnName", getTxnName());
         parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
         byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -339,7 +272,7 @@ public class InstanceManager extends Thread {
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);
         HashMap<String, Object> parameters = new HashMap<>();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        parameters.put("txnName", txnName);
+        parameters.put("txnName", getTxnName());
         parameters.put("dsInvoice", new JRBeanCollectionDataSource(listFieldResponse, false));
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
         
