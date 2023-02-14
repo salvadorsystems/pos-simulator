@@ -236,7 +236,7 @@ public class ParametrosOperacion {
             try {
                 fileLock = fileChanel.tryLock();
             } catch (final OverlappingFileLockException | IOException e) {
-                log.error(e);
+                log.debug(e);
             }
         }
         return fileLock;

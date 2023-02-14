@@ -5,6 +5,7 @@
 package com.sanms.siso.eft.model;
 
 import com.google.gson.Gson;
+import com.sanms.siso.eft.utils.Constantes;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class ArchivoRuta {
         Gson gson = new Gson();
         ArchivoRuta processorWorkPath = new ArchivoRuta(path, parent);
         String json = gson.toJson(processorWorkPath);
-        try ( BufferedWriter bw = new BufferedWriter(new FileWriter("../simulador-procesosmc/ProcesosMC.json"))) {
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(Constantes.RUTA_HOST))) {
             bw.write(json);
             log.info("Fichero Modificado");            
         } catch (IOException ex) {

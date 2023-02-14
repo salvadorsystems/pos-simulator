@@ -11,7 +11,7 @@ import com.sft.core.socket.util.ServerAddress;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
-import java.util.concurrent.atomic.AtomicLong;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,8 +19,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Proxy extends ProxyDefinition {
 
+    private static final Logger log = Logger.getLogger(Proxy.class);
     DefaultSocketClient socketProcessor;
-    static AtomicLong sequence = new AtomicLong();
     ServerAddress sa;
     boolean fastConnect;
     private static Charset byteCharSet = Charset.defaultCharset();
@@ -41,18 +41,20 @@ public class Proxy extends ProxyDefinition {
         sa.setTimeout(timeout);
         fastConnect = fastconnect;
         if (!fastConnect && !socketProcessor.connect(sa.getHost(), sa.getService().toString(), true, true, sa.getTimeout())) {
-                return TIBTEST_RESULT_ERROR_SETUP_CONNECT;
-        }else{
+            return TIBTEST_RESULT_ERROR_SETUP_CONNECT;
+        } else {
+            log.info("Socket Abierta " + socketProcessor.hashCode());
             return TIBTEST_RESULT_SUCCESS;
-        }        
+        }
     }
 
     public void release() {
         if (!fastConnect) {
             if (socketProcessor != null && socketProcessor.isConnected()) {
+                log.info("Socket Cerada : " + socketProcessor.hashCode());
                 socketProcessor.close();
                 socketProcessor = null;
-                sa = null;
+                sa = null;                
             }
         }
     }

@@ -28,7 +28,7 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private int nroTxnOk;
     private int nroTxnError;
     private int numOrder;
-    private int instance;
+    private String instance;
     private String time;
     private List<Object[]> listObject;
     private List<Field> listField;
@@ -114,11 +114,11 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         this.numOrder = numOrder;
     }
 
-    public int getInstance() {
+    public String getInstance() {
         return instance;
     }
 
-    public void setInstance(int instance) {
+    public void setInstance(String instance) {
         this.instance = instance;
     }
 

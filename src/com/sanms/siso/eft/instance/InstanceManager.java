@@ -47,9 +47,9 @@ public class InstanceManager extends Thread {
     
     private static final Logger log = Logger.getLogger(InstanceManager.class);
     
-    private String txnName;
+    private String txnName;    
     private int numTxn;
-    private int instance;
+    private String instance;
     private JTable table;
     private JTable tableResponse;
     private List<Object[]> listObject;
@@ -68,7 +68,8 @@ public class InstanceManager extends Thread {
     
     private Proxy proxy;
     
-    public InstanceManager(String rutaParametros, String rutaTemplate, List<Stream> listStream) {
+    public InstanceManager(String instance,String rutaParametros, String rutaTemplate, List<Stream> listStream) {
+        this.instance = instance;
         this.rutaParametros = rutaParametros;
         this.rutaTemplate = rutaTemplate;
         this.listStream = listStream;
@@ -93,11 +94,11 @@ public class InstanceManager extends Thread {
         this.numTxn = numTxn;
     }
     
-    public int getInstance() {
+    public String getInstance() {
         return instance;
     }
     
-    public void setInstance(int instance) {
+    public void setInstance(String instance) {
         this.instance = instance;
     }
     
@@ -174,8 +175,7 @@ public class InstanceManager extends Thread {
     public void run() {
         for (int count = 0; count < getNumTxn(); count++) {
             if (execute() == 0) {
-                JOptionPane.showMessageDialog(null, "El mensaje se envio correctamente");
-                log.info("El mensaje se envio correctamente");
+                log.info("Instancia "+ getInstance()+" se envio el mensaje : "+ count);
                 ProcesosMC.jMenuPDF.setEnabled(true);
                 ProcesosMC.jMenuXLS.setEnabled(true);
             } else {
@@ -183,7 +183,7 @@ public class InstanceManager extends Thread {
                 log.info("Ups!, No se pudo completar el envio");
             }
             try {
-                Worker worker = new Worker();
+                Worker worker = new Worker();   
                 worker.setTable(table);
                 worker.setTableResponse(tableResponse);
                 worker.setListObject(getListObject());
@@ -197,12 +197,12 @@ public class InstanceManager extends Thread {
                 worker.setListField(listField);
                 worker.setListFieldResponse(listFieldResponse);
                 worker.execute();
-                setRunning(true);
-                Thread.sleep(200);
+                //setRunning(true);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            log.info("Proceso Finalizado");
+            //log.info("Mensaje "+"");
         }
     }
     
