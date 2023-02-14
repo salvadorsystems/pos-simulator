@@ -4,11 +4,16 @@
  */
 package com.sanms.siso.eft.processor;
 
+import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.proxy.Proxy;
+import java.io.IOException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
+import net.sf.jasperreports.engine.JRException;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,15 +21,19 @@ import javax.swing.SwingWorker;
  */
 public class TrabajoBack extends SwingWorker<Integer, Object[]> {
 
+    private static final Logger log = Logger.getLogger(TrabajoBack.class);
     private String txnName;
     private int NumIns;
     private int numTxn;
+    private int posIns;
     private JTable tableRequest;
     private JTable tableResponse;
     private Proxy[] listProxy;
     private String parametrosPath;
     private String templatePath;
     private List<Stream> listStream;
+    
+    private InstanceManager execute[];
 
     public TrabajoBack(Proxy[] listProxy, String parametrosPath, String templatePath, List<Stream> listStream) {
         this.listProxy = listProxy;
@@ -107,7 +116,51 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
         
     @Override
     protected Integer doInBackground() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        
+        return 0;
     }
 
+     @Override
+    protected void process(final List<Object[]> rows) {
+        
+        
+        
+    }
+    
+        public void sendMessageSocket() {
+        execute = new InstanceManager[getNumIns()];
+        System.out.println("Listado Proxys : " + listProxy);
+        for (int i = 0; i < getNumIns(); i++) {
+            execute[i] = new InstanceManager("[Hilo " + i + "]", getParametrosPath(), getTemplatePath(), getListStream());
+            execute[i].setTxnName(getTxnName());
+            execute[i].setNumTxn(getNumTxn());
+            execute[i].setProxy(listProxy[i]);
+            execute[i].setTable(getTableRequest());
+            execute[i].setTableResponse(getTableResponse());
+            execute[i].start();
+            posIns = i;
+        }
+        for (int i = 0; i < getNumIns(); i++) {
+            do {
+                try {
+                    Thread.sleep(0);
+                } catch (InterruptedException exc) {
+                    System.out.println("Hilo principal interrumpido.");
+                }
+            } while (execute[i].isAlive());
+            log.info("Hilo Principal finalizado.");
+        }
+        JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");
+    }
+        
+            public void generarReportePDF() throws JRException, IOException {
+
+        execute[posIns].generarReportePDF();
+
+    }
+
+    public void generarReporteXLS() throws JRException, IOException {
+        execute[posIns].generarReporteXLS();
+    }
 }
