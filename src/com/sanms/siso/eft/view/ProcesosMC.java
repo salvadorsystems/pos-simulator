@@ -49,7 +49,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     public ProcesosMC() {
         initComponents();
-        this.socketProxy = new ProxySocket(jTable1, jTable2);
+        this.socketProxy = new ProxySocket(jTable1, jTable2,jTable3);
         initWorkSpace();
     }
 
@@ -65,10 +65,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
         txtRespuesta = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         panelConfiguration = new javax.swing.JPanel();
         btnTCPIP = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -156,31 +158,18 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
                 "CAMPO", "ISO", "TIPO", "LONG", "DATOS"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
+        ));
+        jScrollPane4.setViewportView(jTable1);
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(120);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(60);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
-        }
-
-        RESPUESTA.addTab("REQUERIMIENTO", jScrollPane1);
+        RESPUESTA.addTab("REQUERIMIENTO", jScrollPane4);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -193,9 +182,24 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 "CAMPO", "ISO", "TIPO", "LONG", "DATOS"
             }
         ));
-        jScrollPane4.setViewportView(jTable2);
+        jScrollPane7.setViewportView(jTable2);
 
-        RESPUESTA.addTab("RESPUESTA", jScrollPane4);
+        RESPUESTA.addTab("RESPUESTA", jScrollPane7);
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Thread", "socket", "estado", "Hora Req", "Req", "Hora Resp", "Total(ms) ", "TPS"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable3);
+
+        RESPUESTA.addTab("ESTADO", jScrollPane8);
 
         panelConfiguration.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Configure la IP e Instancias"));
 
@@ -597,7 +601,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         socketProxy.setListStream(listStreams);
         socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
         socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
-        socketProxy.sendMessageSocket();
+        socketProxy.enviarMensajeSocket();
     }
 
     private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {
@@ -801,14 +805,16 @@ public final class ProcesosMC extends javax.swing.JFrame {
     public static javax.swing.JMenuItem jMenuPDF;
     public static javax.swing.JMenuItem jMenuXLS;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     public static javax.swing.JLabel lblPort;
     public static javax.swing.JLabel lblTCPIP;
     private javax.swing.JMenu menuConfig;

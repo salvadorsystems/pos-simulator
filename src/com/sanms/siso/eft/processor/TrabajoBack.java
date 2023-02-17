@@ -8,10 +8,13 @@ import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.proxy.Proxy;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.log4j.Logger;
 
@@ -28,11 +31,14 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
     private int posIns;
     private JTable tableRequest;
     private JTable tableResponse;
+    private JTable tableStatus;
     private Proxy[] listProxy;
     private String parametrosPath;
     private String templatePath;
     private List<Stream> listStream;
-    
+    private List<String> listThreadId;
+    private List<Integer> listSocketId;
+
     private InstanceManager execute[];
 
     public TrabajoBack(Proxy[] listProxy, String parametrosPath, String templatePath, List<Stream> listStream) {
@@ -82,6 +88,14 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
         this.tableResponse = tableResponse;
     }
 
+    public JTable getTableStatus() {
+        return tableStatus;
+    }
+
+    public void setTableStatus(JTable tableStatus) {
+        this.tableStatus = tableStatus;
+    }
+
     public Proxy[] getListProxy() {
         return listProxy;
     }
@@ -113,32 +127,48 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
     public void setListStream(List<Stream> listStream) {
         this.listStream = listStream;
     }
-        
+
     @Override
     protected Integer doInBackground() throws Exception {
 
-        
+        sendMessageSocket();
+        publish((Object[]) null);
         return 0;
     }
 
-     @Override
+    @Override
     protected void process(final List<Object[]> rows) {
-        
-        
-        
+//        DefaultTableModel tableModel = (DefaultTableModel) getTableStatus().getModel();
+//        TableColumnModel columnModel = getTableStatus().getColumnModel();
+//        tableModel.setNumRows(listSocketId.size());
+//        tableModel.setColumnCount(5);
+//
+//        for (int i = 0; i < listSocketId.size(); i++) {
+//
+//            tableModel.setValueAt(listThreadId.get(i), i, 0);
+//            tableModel.setValueAt(listSocketId.get(i), i, 1);
+//
+//        }
+
     }
-    
-        public void sendMessageSocket() {
+
+    public void sendMessageSocket() {
         execute = new InstanceManager[getNumIns()];
-        System.out.println("Listado Proxys : " + listProxy);
-        for (int i = 0; i < getNumIns(); i++) {
+        listThreadId = new ArrayList<>();
+        listSocketId = new ArrayList<>();
+        for (int i = 0; i < getNumIns(); i++) {            
             execute[i] = new InstanceManager("[Hilo " + i + "]", getParametrosPath(), getTemplatePath(), getListStream());
             execute[i].setTxnName(getTxnName());
             execute[i].setNumTxn(getNumTxn());
             execute[i].setProxy(listProxy[i]);
-            execute[i].setTable(getTableRequest());
+            execute[i].setListThreadId(listThreadId);
+            execute[i].setListSocketId(listSocketId);
+            execute[i].setTableRequest(getTableRequest());
             execute[i].setTableResponse(getTableResponse());
+            execute[i].setTableStatus(getTableStatus());
             execute[i].start();
+            listThreadId.add(""+execute[i].getId());
+            listSocketId.add(listProxy[i].hashCode());
             posIns = i;
         }
         for (int i = 0; i < getNumIns(); i++) {
@@ -146,15 +176,15 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
                 try {
                     Thread.sleep(0);
                 } catch (InterruptedException exc) {
-                    System.out.println("Hilo principal interrumpido.");
+                    log.info("Hilo principal interrumpido.");
                 }
             } while (execute[i].isAlive());
             log.info("Hilo Principal finalizado.");
         }
         JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");
     }
-        
-            public void generarReportePDF() throws JRException, IOException {
+
+    public void generarReportePDF() throws JRException, IOException {
 
         execute[posIns].generarReportePDF();
 

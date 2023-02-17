@@ -36,10 +36,12 @@ public class ProxySocket {
     private List<Stream> listStream;
     private JTable tableRequest;
     private JTable tableResponse;
+    private JTable tableStatus;
 
-    public ProxySocket(JTable tableRequest, JTable tableResponse) {
+    public ProxySocket(JTable tableRequest, JTable tableResponse, JTable tableStatus) {
         this.tableRequest = tableRequest;
         this.tableResponse = tableResponse;
+        this.tableStatus = tableStatus;
     }
 
     public String getTnxName() {
@@ -121,7 +123,15 @@ public class ProxySocket {
     public void setTableResponse(JTable tableResponse) {
         this.tableResponse = tableResponse;
     }   
-    
+
+    public JTable getTableStatus() {
+        return tableStatus;
+    }
+
+    public void setTableStatus(JTable tableStatus) {
+        this.tableStatus = tableStatus;
+    }
+        
     public int openSocketAny() {
         proxy = new Proxy[getNumIns()];
         for (int i = 0; i < getNumIns(); i++) {
@@ -159,7 +169,7 @@ public class ProxySocket {
             execute[i].setTxnName(getTnxName());
             execute[i].setNumTxn(getNumTxn());
             execute[i].setProxy(proxy[i]);
-            execute[i].setTable(getTableRequest());
+            execute[i].setTableRequest(getTableRequest());
             execute[i].setTableResponse(getTableResponse());
             execute[i].start();
             posIns = i;
@@ -184,17 +194,20 @@ public class ProxySocket {
         tarea.setNumTxn(getNumTxn());
         tarea.setTableRequest(getTableRequest());
         tarea.setTableResponse(getTableResponse());
+        tarea.setTableStatus(getTableStatus());
         tarea.execute();
     }
 
     public void generarReportePDF() throws JRException, IOException {
 
-        execute[posIns].generarReportePDF();
+        //execute[posIns].generarReportePDF();
+        tarea.generarReportePDF();
 
     }
 
     public void generarReporteXLS() throws JRException, IOException {
-        execute[posIns].generarReporteXLS();
+        //execute[posIns].generarReporteXLS();
+        tarea.generarReporteXLS();
     }
 
 }

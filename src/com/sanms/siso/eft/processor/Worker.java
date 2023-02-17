@@ -18,8 +18,9 @@ import javax.swing.table.TableColumnModel;
  */
 public class Worker extends SwingWorker<Integer, Object[]> {
 
-    private JTable table;
+    private JTable tableRquest;
     private JTable tableResponse;
+    private JTable tableStatus;
     private int thread;
     private String sNroTerm;
     private int txn;
@@ -33,13 +34,15 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private List<Object[]> listObject;
     private List<Field> listField;
     private List<Field> listFieldResponse;
+    private List<String> listThreadId;
+    private List<Integer> listSocketId;
 
-    public JTable getTable() {
-        return table;
+    public JTable getTableRquest() {
+        return tableRquest;
     }
 
-    public void setTable(JTable table) {
-        this.table = table;
+    public void setTableRquest(JTable tableRquest) {
+        this.tableRquest = tableRquest;
     }
 
     public JTable getTableResponse() {
@@ -48,6 +51,14 @@ public class Worker extends SwingWorker<Integer, Object[]> {
 
     public void setTableResponse(JTable tableResponse) {
         this.tableResponse = tableResponse;
+    }
+
+    public JTable getTableStatus() {
+        return tableStatus;
+    }
+
+    public void setTableStatus(JTable tableStatus) {
+        this.tableStatus = tableStatus;
     }
 
     public int getThread() {
@@ -153,13 +164,26 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     public void setListFieldResponse(List<Field> listFieldResponse) {
         this.listFieldResponse = listFieldResponse;
     }
-    
-    
+
+    public List<String> getListThreadId() {
+        return listThreadId;
+    }
+
+    public void setListThreadId(List<String> listThreadId) {
+        this.listThreadId = listThreadId;
+    }
+
+    public List<Integer> getListSocketId() {
+        return listSocketId;
+    }
+
+    public void setListSocketId(List<Integer> listSocketId) {
+        this.listSocketId = listSocketId;
+    }
 
     @Override
     protected Integer doInBackground() throws Exception {
 
-        
         publish((Object[]) null);
 
         return null;
@@ -167,8 +191,8 @@ public class Worker extends SwingWorker<Integer, Object[]> {
 
     @Override
     protected void process(final List<Object[]> rows) {
-        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-        TableColumnModel columnModel = table.getColumnModel();
+        DefaultTableModel tableModel = (DefaultTableModel) getTableRquest().getModel();
+        TableColumnModel columnModel = getTableRquest().getColumnModel();
 
         tableModel.setNumRows(listField.size());
         tableModel.setColumnCount(5);
@@ -190,10 +214,10 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         }
 
         /**
-         * 
+         *
          */
-        DefaultTableModel tableModelResponse =  (DefaultTableModel) tableResponse.getModel();
-        TableColumnModel columnModelResponse = tableResponse.getColumnModel();
+        DefaultTableModel tableModelResponse = (DefaultTableModel) getTableResponse().getModel();
+        TableColumnModel columnModelResponse = getTableResponse().getColumnModel();
 
         tableModelResponse.setNumRows(listFieldResponse.size());
         tableModelResponse.setColumnCount(5);
@@ -213,6 +237,22 @@ public class Worker extends SwingWorker<Integer, Object[]> {
                 j++;
             }
         }
+        /**
+         *
+         */
+        DefaultTableModel tableModelStatus = (DefaultTableModel) getTableStatus().getModel();
+        
+        tableModelStatus.setNumRows(listSocketId.size());
+        tableModelStatus.setColumnCount(5);
+
+        for (int k = 0; k < getListSocketId().size(); k++) {
+
+            tableModelStatus.setValueAt(listThreadId.get(k), k, 0);
+            tableModelStatus.setValueAt(listSocketId.get(k), k, 1);
+            tableModelStatus.setValueAt(getTxn(), k, 4);
+
+        }
+
     }
 
 }

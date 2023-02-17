@@ -50,8 +50,9 @@ public class InstanceManager extends Thread {
     private String txnName;    
     private int numTxn;
     private String instance;
-    private JTable table;
+    private JTable tableRequest;
     private JTable tableResponse;
+    private JTable tableStatus;
     private List<Object[]> listObject;
     private ArrayList<Field> listField;
     private ArrayList<Field> listFieldResponse;
@@ -67,6 +68,8 @@ public class InstanceManager extends Thread {
     private String rutaTemplate;
     
     private Proxy proxy;
+    private List<String> listThreadId;
+    private List<Integer> listSocketId;
     
     public InstanceManager(String instance,String rutaParametros, String rutaTemplate, List<Stream> listStream) {
         this.instance = instance;
@@ -102,12 +105,12 @@ public class InstanceManager extends Thread {
         this.instance = instance;
     }
     
-    public JTable getTable() {
-        return table;
+    public JTable getTableRequest() {
+        return tableRequest;
     }
     
-    public void setTable(JTable table) {
-        this.table = table;
+    public void setTableRequest(JTable tableRequest) {
+        this.tableRequest = tableRequest;
     }
     
     public JTable getTableResponse() {
@@ -117,7 +120,15 @@ public class InstanceManager extends Thread {
     public void setTableResponse(JTable tableResponse) {
         this.tableResponse = tableResponse;
     }
-    
+
+    public JTable getTableStatus() {
+        return tableStatus;
+    }
+
+    public void setTableStatus(JTable tableStatus) {
+        this.tableStatus = tableStatus;
+    }
+            
     public List<Object[]> getListObject() {
         return listObject;
     }
@@ -170,6 +181,22 @@ public class InstanceManager extends Thread {
     public void setTemplate(String template) {
         this.template = template;
     }
+
+    public List<String> getListThreadId() {
+        return listThreadId;
+    }
+
+    public void setListThreadId(List<String> listThreadId) {
+        this.listThreadId = listThreadId;
+    }      
+
+    public List<Integer> getListSocketId() {
+        return listSocketId;
+    }
+
+    public void setListSocketId(List<Integer> listSocketId) {
+        this.listSocketId = listSocketId;
+    }        
     
     @Override
     public void run() {
@@ -178,17 +205,19 @@ public class InstanceManager extends Thread {
                 log.info("Instancia "+ getInstance()+" se envio el mensaje : "+ count);
                 ProcesosMC.jMenuPDF.setEnabled(true);
                 ProcesosMC.jMenuXLS.setEnabled(true);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Ups!, No se pudo completar el envio");
                 log.info("Ups!, No se pudo completar el envio");
             }
             try {
                 Worker worker = new Worker();   
-                worker.setTable(table);
-                worker.setTableResponse(tableResponse);
+                worker.setTableRquest(getTableRequest());
+                worker.setTableResponse(getTableResponse());
+                worker.setTableStatus(getTableStatus());
                 worker.setListObject(getListObject());
                 worker.setInstance(getInstance());
-                worker.setTxn(count);
+                worker.setTxn(count+1);
                 worker.setsNroTerm("1");
                 worker.setTitle("");
                 worker.setNroTxnOk(succesCount);
@@ -196,13 +225,14 @@ public class InstanceManager extends Thread {
                 worker.setRespCode(0);
                 worker.setListField(listField);
                 worker.setListFieldResponse(listFieldResponse);
+                worker.setListSocketId(getListSocketId());
+                worker.setListThreadId(getListThreadId());
                 worker.execute();
                 //setRunning(true);
                 Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }
-            //log.info("Mensaje "+"");
+            }      
         }
     }
     

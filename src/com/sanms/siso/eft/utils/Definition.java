@@ -9,7 +9,7 @@ import java.math.BigInteger;
 
 /**
  *
- * @author ldavila
+ * @author salvador
  */
 public class Definition
 {

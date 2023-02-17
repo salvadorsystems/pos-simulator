@@ -157,6 +157,9 @@ public class ParametrosOperacion {
                     }
                 }
                 String key = entry.getKey();
+                if(key.equalsIgnoreCase("localTime")){
+                    log.info("localTime : "+entry.getValue());
+                }
                 String value = entry.getValue();
                 req.saveValue(key, value);
             }
