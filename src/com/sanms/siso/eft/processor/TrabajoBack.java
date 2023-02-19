@@ -39,7 +39,8 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
     private List<String> listThreadId;
     private List<Integer> listSocketId;
 
-    private InstanceManager execute[];
+    //private InstanceManager execute[];
+    private InstanceManager execute;
 
     public TrabajoBack(Proxy[] listProxy, String parametrosPath, String templatePath, List<Stream> listStream) {
         this.listProxy = listProxy;
@@ -153,21 +154,21 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
     }
 
     public void sendMessageSocket() {
-        execute = new InstanceManager[getNumIns()];
+        //execute = new InstanceManager[getNumIns()];
         listThreadId = new ArrayList<>();
         listSocketId = new ArrayList<>();
-        for (int i = 0; i < getNumIns(); i++) {            
-            execute[i] = new InstanceManager("[Hilo " + i + "]", getParametrosPath(), getTemplatePath(), getListStream());
-            execute[i].setTxnName(getTxnName());
-            execute[i].setNumTxn(getNumTxn());
-            execute[i].setProxy(listProxy[i]);
-            execute[i].setListThreadId(listThreadId);
-            execute[i].setListSocketId(listSocketId);
-            execute[i].setTableRequest(getTableRequest());
-            execute[i].setTableResponse(getTableResponse());
-            execute[i].setTableStatus(getTableStatus());
-            execute[i].start();
-            listThreadId.add(""+execute[i].getId());
+        for (int i = 0; i < getNumIns(); i++) {
+            execute = new InstanceManager("[Hilo " + i + "]", getParametrosPath(), getTemplatePath(), getListStream());
+            execute.setTxnName(getTxnName());
+            execute.setNumTxn(getNumTxn());
+            execute.setProxy(listProxy[i]);
+            execute.setListThreadId(listThreadId);
+            execute.setListSocketId(listSocketId);
+            execute.setTableRequest(getTableRequest());
+            execute.setTableResponse(getTableResponse());
+            execute.setTableStatus(getTableStatus());
+            execute.start();
+            listThreadId.add("" + execute.getId());
             listSocketId.add(listProxy[i].hashCode());
             posIns = i;
         }
@@ -178,7 +179,7 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
                 } catch (InterruptedException exc) {
                     log.info("Hilo principal interrumpido.");
                 }
-            } while (execute[i].isAlive());
+            } while (execute.isAlive());
             log.info("Hilo Principal finalizado.");
         }
         JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");
@@ -186,11 +187,12 @@ public class TrabajoBack extends SwingWorker<Integer, Object[]> {
 
     public void generarReportePDF() throws JRException, IOException {
 
-        execute[posIns].generarReportePDF();
+        //execute[posIns].generarReportePDF();
+        execute.generarReportePDF();
 
     }
 
     public void generarReporteXLS() throws JRException, IOException {
-        execute[posIns].generarReporteXLS();
+        execute.generarReporteXLS();
     }
 }
