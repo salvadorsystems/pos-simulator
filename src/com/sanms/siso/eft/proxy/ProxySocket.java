@@ -161,32 +161,6 @@ public class ProxySocket {
         }
     }
 
-    public void sendMessageSocket() {
-        execute = new InstanceManager[getNumIns()];
-        System.out.println("Listado Proxys : " + proxy);
-        for (int i = 0; i < getNumIns(); i++) {
-            execute[i] = new InstanceManager("[Hilo " + i + "]", getParametersPath(), getTemplatesPath(), getListStream());
-            execute[i].setTxnName(getTnxName());
-            execute[i].setNumTxn(getNumTxn());
-            execute[i].setProxy(proxy[i]);
-            execute[i].setTableRequest(getTableRequest());
-            execute[i].setTableResponse(getTableResponse());
-            execute[i].start();
-            posIns = i;
-        }
-        for (int i = 0; i < getNumIns(); i++) {
-            do {
-                try {
-                    Thread.sleep(0);
-                } catch (InterruptedException exc) {
-                    System.out.println("Hilo principal interrumpido.");
-                }
-            } while (execute[i].isAlive());
-            log.info("Hilo Principal finalizado.");
-        }
-        JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");
-    }
-
     public void enviarMensajeSocket() {
         tarea = new TrabajoBack(proxy, getParametersPath(), getTemplatesPath(), getListStream());
         tarea.setTxnName(getTnxName());

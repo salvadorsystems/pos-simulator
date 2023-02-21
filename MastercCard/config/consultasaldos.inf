@@ -29,13 +29,13 @@
 	<request token="ReqFinanciero">
 		<pan>{NRO_TARJETA}</pan>
 		<amount>{MONTO}</amount>		
-		<txnDate>dateMMDD()</txnDate>
-		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
-		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
-		<localTime>read(tmp/mastercard.time;A;4)</localTime>
-		<localDate>dateMMDD()</localDate>
+		<txnDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.date;MMdd)</txnDate>
+		<txnTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<localDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localdate;MMdd)</localDate>
 		<expirationDate>{EXP_DATE}</expirationDate>
-        <dateSettlement>dateMMDD()</dateSettlement>		
+        <dateSettlement>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.stlmdate;MMdd)</dateSettlement>		
 		<merchantType>{MERCH_TYPE}</merchantType>
 		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
 		<acqId>{ACQ_ID}</acqId>
@@ -52,7 +52,7 @@
 		<secBitmap>{SEC_BITMAP}</secBitmap>	
 		<processingCode>{CONSULTA_SALDOS}</processingCode>
 		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>		
+		<referenceNumber>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.ref;12;1)</referenceNumber>		
 		<acceptorId>{ACCEPTORID}</acceptorId>
 		<acceptorName>{ACCEPTORNAME}</acceptorName>
 		<pin>{PIN}</pin>
