@@ -49,7 +49,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     public ProcesosMC() {
         initComponents();
-        this.socketProxy = new ProxySocket(jTable1, jTable2,jTable3);
+        this.socketProxy = new ProxySocket(jTable1, jTable2, jTable3);
         initWorkSpace();
     }
 
@@ -344,11 +344,6 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         txtPath.setEditable(false);
 
-        jListConfig.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jListConfig.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListConfigMouseClicked(evt);
@@ -529,14 +524,23 @@ public final class ProcesosMC extends javax.swing.JFrame {
         ArchivoRuta processorWorkPath;
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString())) {
             processorWorkPath = gson.fromJson(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString(), ArchivoRuta.class);
-            windowTCPIP.path = processorWorkPath.getWorkPath();
-            txtPath.setText(processorWorkPath.getWorkPath());
-            ruta = processorWorkPath.getWorkParent();
-            getconfigHost(processorWorkPath.getWorkPath());
-            ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
-            jListConfig.setSelectedIndex(0);
-            setListTxn();
-            jListTxn.setSelectedIndex(0);
+            File f = new File(processorWorkPath.getWorkPath());
+            if (f.exists()) {
+                windowTCPIP.path = processorWorkPath.getWorkPath();
+                txtPath.setText(processorWorkPath.getWorkPath());
+            }
+            f = new File(processorWorkPath.getWorkParent());
+            if (f.exists()) {
+                ruta = processorWorkPath.getWorkParent();
+                getconfigHost(processorWorkPath.getWorkPath());
+                ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
+                jListConfig.setSelectedIndex(0);
+                setListTxn();
+                jListTxn.setSelectedIndex(0);
+            }else{
+                txtPath.setText("Seleccionar Configuracion del cliente");
+            }
+
         } else {
             clearFields();
             log.info("Json tiene un formato invalido");
@@ -635,7 +639,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             File seleccion_ruta = jf.getSelectedFile();
             if (seleccion_ruta != null) {
                 ruta = seleccion_ruta.getParent();
-                ProcesarArchivos.listarArchivosConfiguracion(seleccion_ruta.getParent());                                
+                ProcesarArchivos.listarArchivosConfiguracion(seleccion_ruta.getParent());
                 jListConfig.setSelectedIndex(0);
                 setListTxn();
                 jListTxn.setSelectedIndex(0);
