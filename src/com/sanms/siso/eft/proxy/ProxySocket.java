@@ -139,7 +139,7 @@ public class ProxySocket {
             connectSocket = proxy[i].setup(getApiHost(), getApiPort(), false, 30);
             if (connectSocket == 0) {
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
-                ProcesosMC.BtnOpenCloseSocket.setText("Desconectar");
+                ProcesosMC.btnConnect.setText("Desconectar");
                 ProcesosMC.lblTCPIP.setText(getApiHost());
                 ProcesosMC.lblPort.setText(getApiPort());
             } else {
@@ -153,7 +153,7 @@ public class ProxySocket {
 
     public void closeSocket() {
         ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
-        ProcesosMC.BtnOpenCloseSocket.setText("Conectar");
+        ProcesosMC.btnConnect.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
         for (int i = 0; i < getNumIns(); i++) {
