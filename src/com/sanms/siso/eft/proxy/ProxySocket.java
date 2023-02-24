@@ -2,7 +2,7 @@ package com.sanms.siso.eft.proxy;
 
 import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.Stream;
-import com.sanms.siso.eft.processor.TrabajoBack;
+import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.eft.view.ProcesosMC;
@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 public class ProxySocket {
 
     private static final Logger log = Logger.getLogger(ProxySocket.class);
-    private TrabajoBack tarea;
+    private Worker tarea;
     private String tnxName;
     private InstanceManager execute[];
     private int connectSocket = -1;
@@ -162,7 +162,7 @@ public class ProxySocket {
     }
 
     public void enviarMensajeSocket() {
-        tarea = new TrabajoBack(proxy, getParametersPath(), getTemplatesPath(), getListStream());
+        tarea = new Worker(proxy, getParametersPath(), getTemplatesPath(), getListStream());
         tarea.setTxnName(getTnxName());
         tarea.setNumIns(getNumIns());
         tarea.setNumTxn(getNumTxn());
