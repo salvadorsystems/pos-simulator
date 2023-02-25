@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -52,14 +54,12 @@ public class InstanceManager extends Thread {
     private String txnName;
     private int numTxn;
     private String instance;
-    private JTable tableRequest;
-    private JTable tableResponse;
-    private JTable tableStatus;
     private List<Object[]> listObject;
-    private ArrayList<Field> listField;
+    private ArrayList<Field> listFieldRequest;
     private ArrayList<Field> listFieldResponse;
     private SimpleDateFormat time;
     private boolean running;
+    DateTimeFormatter dtf;
 
     private String rutaParametros;
     private List<Stream> listStream;
@@ -87,7 +87,7 @@ public class InstanceManager extends Thread {
         this.listStream = listStream;
     }
 
-    public InstanceManager() {
+    public InstanceManager() {        
     }
 
     public String getTxnName() {
@@ -112,30 +112,6 @@ public class InstanceManager extends Thread {
 
     public void setInstance(String instance) {
         this.instance = instance;
-    }
-
-    public JTable getTableRequest() {
-        return tableRequest;
-    }
-
-    public void setTableRequest(JTable tableRequest) {
-        this.tableRequest = tableRequest;
-    }
-
-    public JTable getTableResponse() {
-        return tableResponse;
-    }
-
-    public void setTableResponse(JTable tableResponse) {
-        this.tableResponse = tableResponse;
-    }
-
-    public JTable getTableStatus() {
-        return tableStatus;
-    }
-
-    public void setTableStatus(JTable tableStatus) {
-        this.tableStatus = tableStatus;
     }
 
     public List<Object[]> getListObject() {
@@ -249,66 +225,31 @@ public class InstanceManager extends Thread {
 
     @Override
     public void run() {
+        dtf = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         for (int count = 0; count < getNumTxn(); count++) {
-            if (execute() == 0) {
+            if (execute(count) == 0) {
                 log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
                 ProcesosMC.jMenuPDF.setEnabled(true);
                 ProcesosMC.jMenuXLS.setEnabled(true);
-                tableModelStatus.setValueAt(count + 1, i, 4);
+                
+                tableModelStatus.setValueAt(dtf.format(LocalDateTime.now()), i, 5);
+                tableModelStatus.setValueAt(count + 1, i, 6);
             } else {
                 JOptionPane.showMessageDialog(null, "Ups!, No se pudo completar el envio");
                 log.info("Ups!, No se pudo completar el envio");
             }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException ex) {
-                log.error(ex);
-            }
-            tableModelRequest.setNumRows(listField.size());
-            tableModelRequest.setColumnCount(5);
-            columnModelRequest.getColumn(0).setPreferredWidth(120);
-            columnModelRequest.getColumn(1).setPreferredWidth(50);
-            columnModelRequest.getColumn(2).setPreferredWidth(50);
-            columnModelRequest.getColumn(3).setPreferredWidth(60);
-            columnModelRequest.getColumn(4).setPreferredWidth(200);
-            int i = 0;
-            for (Field field : listField) {
-                if (!field.getValue().isEmpty()) {
-                    tableModelRequest.setValueAt(field.getAlias(), i, 0);
-                    tableModelRequest.setValueAt(field.getIsoBit(), i, 1);
-                    tableModelRequest.setValueAt(field.getFormat(), i, 2);
-                    tableModelRequest.setValueAt(field.getValueSize(), i, 3);
-                    tableModelRequest.setValueAt(field.getValue(), i, 4);
-                    i++;
-                }
-            }
             /**
-             *
+             * Display Data in Request table
              */
-            tableModelResponse.setNumRows(listFieldResponse.size());
-            tableModelResponse.setColumnCount(5);
-            columnModelResponse.getColumn(0).setPreferredWidth(120);
-            columnModelResponse.getColumn(1).setPreferredWidth(50);
-            columnModelResponse.getColumn(2).setPreferredWidth(50);
-            columnModelResponse.getColumn(3).setPreferredWidth(60);
-            columnModelResponse.getColumn(4).setPreferredWidth(200);
-            int j = 0;
-            for (Field field : listFieldResponse) {
-                if (!field.getValue().isEmpty()) {
-                    tableModelResponse.setValueAt(field.getAlias(), j, 0);
-                    tableModelResponse.setValueAt(field.getIsoBit(), j, 1);
-                    tableModelResponse.setValueAt(field.getFormat(), j, 2);
-                    tableModelResponse.setValueAt(field.getValueSize(), j, 3);
-                    tableModelResponse.setValueAt(field.getValue(), j, 4);
-                    j++;
-                }
-            }
-
+            setTable(tableModelRequest, columnModelRequest, listFieldRequest);
+            /**
+             * Display Data in Response table
+             */
+            setTable(tableModelResponse, columnModelResponse, listFieldResponse);
         }
-
     }
 
-    public int execute() {
+    public int execute(int count) {
         String plantilla = null;
         String request = null;
         ParametrosOperacion parametrosOperacion = new ParametrosOperacion(getRutaParametros());
@@ -330,8 +271,9 @@ public class InstanceManager extends Thread {
         Template reqFormat = TemplateTool.createTemplate(templateMapList, plantilla);
         reqFormat.saveFromBuffer(request);
 
-        listField = reqFormat.getFieldList();
-
+        listFieldRequest = reqFormat.getFieldList();
+        tableModelStatus.setValueAt(dtf.format(LocalDateTime.now()), i, 3);
+        tableModelStatus.setValueAt(count + 1, i, 4);
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = getProxy().process(request, apiResult);
         log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
@@ -344,8 +286,28 @@ public class InstanceManager extends Thread {
         return resultProxy.getResult();
     }
 
-    public void generarReportePDF() throws JRException, IOException {
+    private void setTable(DefaultTableModel tableModel, TableColumnModel columnModel, ArrayList<Field> listField) {
+        tableModel.setNumRows(listField.size());
+        tableModel.setColumnCount(5);
+        columnModel.getColumn(0).setPreferredWidth(120);
+        columnModel.getColumn(1).setPreferredWidth(50);
+        columnModel.getColumn(2).setPreferredWidth(50);
+        columnModel.getColumn(3).setPreferredWidth(60);
+        columnModel.getColumn(4).setPreferredWidth(200);
+        int j = 0;
+        for (Field field : listField) {
+            if (!field.getValue().isEmpty()) {
+                tableModel.setValueAt(field.getAlias(), j, 0);
+                tableModel.setValueAt(field.getIsoBit(), j, 1);
+                tableModel.setValueAt(field.getFormat(), j, 2);
+                tableModel.setValueAt(field.getValueSize(), j, 3);
+                tableModel.setValueAt(field.getValue(), j, 4);
+                j++;
+            }
+        }
+    }
 
+    public void generarReportePDF() throws JRException, IOException {
         log.info("Se solicito generar PDF");
         File file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_PDF);
         final JasperReport report = (JasperReport) JRLoader.loadObject(file);

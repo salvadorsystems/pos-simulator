@@ -146,6 +146,7 @@ public class ProxySocket {
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
                         "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                break;
             }
         }
         return connectSocket;

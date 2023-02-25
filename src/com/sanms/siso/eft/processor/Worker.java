@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author CANVIA
+ * @author salvador
  */
 public class Worker extends SwingWorker<Integer, Object[]> {
 
@@ -165,22 +165,12 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         }
 
         for (int i = 0; i < getNumIns(); i++) {
-            try {
-                execute[i].start();
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                System.out.println("interrumpido");
-            }
-            posIns = i;
+            execute[i].start();    
         }
 
         for (int i = 0; i < getNumIns(); i++) {
             do {
-                try {
-                    Thread.sleep(0);
-                } catch (InterruptedException exc) {
-                    log.info("Hilo principal interrumpido.");
-                }
+                
             } while (execute[i].isAlive());
         }
 
@@ -196,6 +186,7 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         for (int i = 0; i < listThreadId.size(); i++) {
             tableModelStatus.setValueAt(listThreadId.get(i), i, 0);
             tableModelStatus.setValueAt(listSocketId.get(i), i, 1);
+            tableModelStatus.setValueAt("Conectado", i, 2);
         }
     }
 
