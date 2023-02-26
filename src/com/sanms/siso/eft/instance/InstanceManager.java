@@ -9,7 +9,6 @@ import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.view.ProcesosMC;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import javax.swing.JTable;
 import com.sanms.siso.formatter.Field;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -59,12 +57,10 @@ public class InstanceManager extends Thread {
     private ArrayList<Field> listFieldResponse;
     private SimpleDateFormat time;
     private boolean running;
-    DateTimeFormatter dtf;
+    private DateTimeFormatter dtf;
 
     private String rutaParametros;
     private List<Stream> listStream;
-    private int errorCount = 0;
-    private int succesCount = 0;
     private int i;
     private String template;
     private String rutaTemplate;
@@ -78,16 +74,25 @@ public class InstanceManager extends Thread {
     public DefaultTableModel tableModelStatus;
     private TableColumnModel columnModelRequest;
     private TableColumnModel columnModelResponse;
+    private TableColumnModel columnModelStatus;
 
-    public InstanceManager(int i, String instance, String rutaParametros, String rutaTemplate, List<Stream> listStream) {
+    public InstanceManager(int i, String instance, String rutaParametros, String rutaTemplate, List<Stream> listStream, DefaultTableModel tableModelRequest,
+            DefaultTableModel tableModelResponse, DefaultTableModel tableModelStatus,
+            TableColumnModel columnModelRequest, TableColumnModel columnModelResponse, TableColumnModel columnModelStatus) {
         this.i = i;
         this.instance = instance;
         this.rutaParametros = rutaParametros;
         this.rutaTemplate = rutaTemplate;
         this.listStream = listStream;
+        this.tableModelRequest = tableModelRequest;
+        this.tableModelResponse = tableModelResponse;
+        this.tableModelStatus = tableModelStatus;
+        this.columnModelRequest = columnModelRequest;
+        this.columnModelResponse = columnModelResponse;
+        this.columnModelStatus = columnModelStatus;
     }
 
-    public InstanceManager() {        
+    public InstanceManager() {
     }
 
     public String getTxnName() {
@@ -183,46 +188,6 @@ public class InstanceManager extends Thread {
         this.listSocketId = listSocketId;
     }
 
-    public DefaultTableModel getTableModelRequest() {
-        return tableModelRequest;
-    }
-
-    public void setTableModelRequest(DefaultTableModel tableModelRequest) {
-        this.tableModelRequest = tableModelRequest;
-    }
-
-    public DefaultTableModel getTableModelResponse() {
-        return tableModelResponse;
-    }
-
-    public void setTableModelResponse(DefaultTableModel tableModelResponse) {
-        this.tableModelResponse = tableModelResponse;
-    }
-
-    public DefaultTableModel getTableModelStatus() {
-        return tableModelStatus;
-    }
-
-    public void setTableModelStatus(DefaultTableModel tableModelStatus) {
-        this.tableModelStatus = tableModelStatus;
-    }
-
-    public TableColumnModel getColumnModelRequest() {
-        return columnModelRequest;
-    }
-
-    public void setColumnModelRequest(TableColumnModel columnModelRequest) {
-        this.columnModelRequest = columnModelRequest;
-    }
-
-    public TableColumnModel getColumnModelResponse() {
-        return columnModelResponse;
-    }
-
-    public void setColumnModelResponse(TableColumnModel columnModelResponse) {
-        this.columnModelResponse = columnModelResponse;
-    }
-
     @Override
     public void run() {
         dtf = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
@@ -231,7 +196,7 @@ public class InstanceManager extends Thread {
                 log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
                 ProcesosMC.jMenuPDF.setEnabled(true);
                 ProcesosMC.jMenuXLS.setEnabled(true);
-                
+
                 tableModelStatus.setValueAt(dtf.format(LocalDateTime.now()), i, 5);
                 tableModelStatus.setValueAt(count + 1, i, 6);
             } else {

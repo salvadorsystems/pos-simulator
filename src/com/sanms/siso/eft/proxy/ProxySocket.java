@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.log4j.Logger;
 
@@ -23,25 +24,31 @@ public class ProxySocket {
     private static final Logger log = Logger.getLogger(ProxySocket.class);
     private Worker tarea;
     private String tnxName;
-    private InstanceManager execute[];
     private int connectSocket = -1;
     private Proxy proxy[];
     private int numIns;
     private int numTxn;
-    private int posIns;
     private String apiHost;
     private String apiPort;
     private String parametersPath;
     private String templatesPath;
     private List<Stream> listStream;
-    private JTable tableRequest;
-    private JTable tableResponse;
-    private JTable tableStatus;
+    private final DefaultTableModel tableModelRequest;
+    private final DefaultTableModel tableModelResponse;
+    private final DefaultTableModel tableModelStatus;
 
-    public ProxySocket(JTable tableRequest, JTable tableResponse, JTable tableStatus) {
-        this.tableRequest = tableRequest;
-        this.tableResponse = tableResponse;
-        this.tableStatus = tableStatus;
+    private final TableColumnModel columnModelRequest;
+    private final TableColumnModel columnModelResponse;
+    private final TableColumnModel columnModelStatus;
+
+    public ProxySocket(DefaultTableModel tableModelRequest, DefaultTableModel tableModelResponse, DefaultTableModel tableModelStatus,
+            TableColumnModel columnModelRequest, TableColumnModel columnModelResponse, TableColumnModel columnModelStatus) {
+        this.tableModelRequest = tableModelRequest;
+        this.tableModelResponse = tableModelResponse;
+        this.tableModelStatus = tableModelStatus;
+        this.columnModelRequest = columnModelRequest;
+        this.columnModelResponse = columnModelResponse;
+        this.columnModelStatus = columnModelStatus;
     }
 
     public String getTnxName() {
@@ -108,30 +115,6 @@ public class ProxySocket {
         this.templatesPath = templatesPath;
     }
 
-    public JTable getTableRequest() {
-        return tableRequest;
-    }
-
-    public void setTableRequest(JTable tableRequest) {
-        this.tableRequest = tableRequest;
-    }
-
-    public JTable getTableResponse() {
-        return tableResponse;
-    }
-
-    public void setTableResponse(JTable tableResponse) {
-        this.tableResponse = tableResponse;
-    }   
-
-    public JTable getTableStatus() {
-        return tableStatus;
-    }
-
-    public void setTableStatus(JTable tableStatus) {
-        this.tableStatus = tableStatus;
-    }
-        
     public int openSocketAny() {
         proxy = new Proxy[getNumIns()];
         for (int i = 0; i < getNumIns(); i++) {
@@ -139,13 +122,13 @@ public class ProxySocket {
             connectSocket = proxy[i].setup(getApiHost(), getApiPort(), false, 30);
             if (connectSocket == 0) {
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
-                ProcesosMC.btnConnect.setText("Desconectar");
+                ProcesosMC.btnConnect.setText("Desconectar");                
                 ProcesosMC.lblTCPIP.setText(getApiHost());
                 ProcesosMC.lblPort.setText(getApiPort());
             } else {
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
-                        "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                        "Error de conexión", JOptionPane.ERROR_MESSAGE);               
                 break;
             }
         }
@@ -158,30 +141,27 @@ public class ProxySocket {
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
         for (int i = 0; i < getNumIns(); i++) {
+            tableModelStatus.setValueAt("Desconectado", i, 2);
             proxy[i].release();
         }
     }
 
     public void enviarMensajeSocket() {
-        tarea = new Worker(proxy, getParametersPath(), getTemplatesPath(), getListStream());
+        tarea = new Worker(proxy, getParametersPath(), getTemplatesPath(), getListStream(), tableModelRequest, tableModelResponse, tableModelStatus,
+                columnModelRequest, columnModelResponse, columnModelStatus);
         tarea.setTxnName(getTnxName());
         tarea.setNumIns(getNumIns());
         tarea.setNumTxn(getNumTxn());
-        tarea.setTableRequest(getTableRequest());
-        tarea.setTableResponse(getTableResponse());
-        tarea.setTableStatus(getTableStatus());
         tarea.execute();
     }
 
     public void generarReportePDF() throws JRException, IOException {
 
-        //execute[posIns].generarReportePDF();
         tarea.generarReportePDF();
 
     }
 
     public void generarReporteXLS() throws JRException, IOException {
-        //execute[posIns].generarReporteXLS();
         tarea.generarReporteXLS();
     }
 

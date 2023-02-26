@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -49,7 +51,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     public ProcesosMC() {
         initComponents();
-        this.socketProxy = new ProxySocket(jTable1, jTable2, jTable3);
+        this.socketProxy = new ProxySocket((DefaultTableModel) jTable1.getModel(), (DefaultTableModel) jTable2.getModel(), 
+                (DefaultTableModel) jTable3.getModel(),jTable1.getColumnModel(), jTable2.getColumnModel(),
+                jTable3.getColumnModel() );
         initWorkSpace();
     }
 

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -29,9 +28,6 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private int NumIns;
     private int numTxn;
     private int posIns;
-    private JTable tableRequest;
-    private JTable tableResponse;
-    private JTable tableStatus;
     private Proxy[] listProxy;
     private String parametrosPath;
     private String templatePath;
@@ -39,21 +35,29 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private List<String> listThreadId;
     private List<Integer> listSocketId;
 
-    private DefaultTableModel tableModelRequest;
-    private DefaultTableModel tableModelResponse;
-    private DefaultTableModel tableModelStatus;
+    private final DefaultTableModel tableModelRequest;
+    private final DefaultTableModel tableModelResponse;
+    private final DefaultTableModel tableModelStatus;
 
-    private TableColumnModel columnModelRequest;
-    private TableColumnModel columnModelResponse;
+    private final TableColumnModel columnModelRequest;
+    private final TableColumnModel columnModelResponse;
+    private final TableColumnModel columnModelStatus;
 
     private InstanceManager execute[];
-    //private InstanceManager execute;
 
-    public Worker(Proxy[] listProxy, String parametrosPath, String templatePath, List<Stream> listStream) {
+    public Worker(Proxy[] listProxy, String parametrosPath, String templatePath, List<Stream> listStream, DefaultTableModel tableModelRequest,
+            DefaultTableModel tableModelResponse, DefaultTableModel tableModelStatus,
+            TableColumnModel columnModelRequest, TableColumnModel columnModelResponse, TableColumnModel columnModelStatus) {
         this.listProxy = listProxy;
         this.parametrosPath = parametrosPath;
         this.templatePath = templatePath;
         this.listStream = listStream;
+        this.tableModelRequest = tableModelRequest;
+        this.tableModelResponse = tableModelResponse;
+        this.tableModelStatus = tableModelStatus;
+        this.columnModelRequest = columnModelRequest;
+        this.columnModelResponse = columnModelResponse;
+        this.columnModelStatus = columnModelStatus;
     }
 
     public String getTxnName() {
@@ -78,30 +82,6 @@ public class Worker extends SwingWorker<Integer, Object[]> {
 
     public void setNumTxn(int numTxn) {
         this.numTxn = numTxn;
-    }
-
-    public JTable getTableRequest() {
-        return tableRequest;
-    }
-
-    public void setTableRequest(JTable tableRequest) {
-        this.tableRequest = tableRequest;
-    }
-
-    public JTable getTableResponse() {
-        return tableResponse;
-    }
-
-    public void setTableResponse(JTable tableResponse) {
-        this.tableResponse = tableResponse;
-    }
-
-    public JTable getTableStatus() {
-        return tableStatus;
-    }
-
-    public void setTableStatus(JTable tableStatus) {
-        this.tableStatus = tableStatus;
     }
 
     public Proxy[] getListProxy() {
@@ -138,44 +118,36 @@ public class Worker extends SwingWorker<Integer, Object[]> {
 
     @Override
     protected Integer doInBackground() throws Exception {
-        tableModelRequest = (DefaultTableModel) tableRequest.getModel();
-        tableModelResponse = (DefaultTableModel) tableResponse.getModel();
-        tableModelStatus = (DefaultTableModel) tableStatus.getModel();
-        columnModelRequest = getTableRequest().getColumnModel();
-        columnModelResponse = getTableResponse().getColumnModel();
         listThreadId = new ArrayList<>();
         listSocketId = new ArrayList<>();
         execute = new InstanceManager[getNumIns()];
         publish();
         for (int i = 0; i < getNumIns(); i++) {
-            execute[i] = new InstanceManager(i, "[Hilo " + i + "]", getParametrosPath(), getTemplatePath(), getListStream());
+            execute[i] = new InstanceManager(i, "[Hilo " + i + "]", getParametrosPath(), getTemplatePath(),
+                    getListStream(), tableModelRequest, tableModelResponse, tableModelStatus,
+                    columnModelRequest, columnModelResponse, columnModelStatus);
             execute[i].setTxnName(getTxnName());
             execute[i].setNumTxn(getNumTxn());
             execute[i].setProxy(listProxy[i]);
             execute[i].setListThreadId(listThreadId);
             execute[i].setListSocketId(listSocketId);
-            execute[i].setTableModelRequest(tableModelRequest);
-            execute[i].setTableModelResponse(tableModelResponse);
-            execute[i].setTableModelStatus(tableModelStatus);
-            execute[i].setColumnModelRequest(columnModelRequest);
-            execute[i].setColumnModelResponse(columnModelResponse);
             listThreadId.add("" + execute[i].getId());
             listSocketId.add(listProxy[i].hashCode());
             posIns = i;
         }
 
         for (int i = 0; i < getNumIns(); i++) {
-            execute[i].start();    
+            execute[i].start();
         }
 
         for (int i = 0; i < getNumIns(); i++) {
             do {
-                
+
             } while (execute[i].isAlive());
         }
 
         log.info("Hilo Principal finalizado.");
-        JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");        
+        JOptionPane.showMessageDialog(null, "El mensaje enviado con exito");
 
         return 0;
     }
@@ -193,7 +165,6 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     public void generarReportePDF() throws JRException, IOException {
 
         execute[posIns].generarReportePDF();
-        //execute.generarReportePDF();
 
     }
 
