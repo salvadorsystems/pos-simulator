@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -57,7 +58,9 @@ public class InstanceManager extends Thread {
     private ArrayList<Field> listFieldResponse;
     private SimpleDateFormat time;
     private boolean running;
-    private DateTimeFormatter dtf;
+    private long timeInit;
+    private long timeEnd;
+    private long diferencia = 0;
 
     private String rutaParametros;
     private List<Stream> listStream;
@@ -190,15 +193,19 @@ public class InstanceManager extends Thread {
 
     @Override
     public void run() {
-        dtf = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         for (int count = 0; count < getNumTxn(); count++) {
             if (execute(count) == 0) {
-                log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
-                ProcesosMC.jMenuPDF.setEnabled(true);
-                ProcesosMC.jMenuXLS.setEnabled(true);
-
-                tableModelStatus.setValueAt(dtf.format(LocalDateTime.now()), i, 5);
-                tableModelStatus.setValueAt(count + 1, i, 6);
+                try {                    
+                    ProcesosMC.jMenuPDF.setEnabled(true);
+                    ProcesosMC.jMenuXLS.setEnabled(true);
+                    timeEnd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").parse(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS").format(LocalDateTime.now())).getTime();
+                    diferencia += (timeEnd - timeInit);
+                    tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 5);
+                    tableModelStatus.setValueAt(count + 1, i, 6);
+                    log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
+                } catch (ParseException ex) {
+                    log.error(ex);
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Ups!, No se pudo completar el envio");
                 log.info("Ups!, No se pudo completar el envio");
@@ -212,6 +219,7 @@ public class InstanceManager extends Thread {
              */
             setTable(tableModelResponse, columnModelResponse, listFieldResponse);
         }
+        tableModelStatus.setValueAt(diferencia, i, 7);
     }
 
     public int execute(int count) {
@@ -237,7 +245,12 @@ public class InstanceManager extends Thread {
         reqFormat.saveFromBuffer(request);
 
         listFieldRequest = reqFormat.getFieldList();
-        tableModelStatus.setValueAt(dtf.format(LocalDateTime.now()), i, 3);
+        try {
+            timeInit = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").parse(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS").format(LocalDateTime.now())).getTime();
+        } catch (ParseException ex) {
+            log.error(ex);
+        }
+        tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 3);
         tableModelStatus.setValueAt(count + 1, i, 4);
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = getProxy().process(request, apiResult);
