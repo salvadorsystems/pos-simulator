@@ -19,7 +19,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Seleccionar Transaccion"/>
+                <Property name="text" type="java.lang.String" value="Select Custom"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
@@ -51,7 +51,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuPDF">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Generar Reporte PDF"/>
+                <Property name="text" type="java.lang.String" value="Generate last Report - PDF"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuPDFActionPerformed"/>
@@ -62,7 +62,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuXLS">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Genera Reporte EXCEL"/>
+                <Property name="text" type="java.lang.String" value="Generate last Report - EXCEL"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuXLSActionPerformed"/>
@@ -70,6 +70,14 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
               </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Generate Full Report - EXCEL"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem5ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -120,7 +128,7 @@
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="panelConfiguration" max="32767" attributes="0"/>
-                  <Component id="panelConfiguration1" pref="0" max="32767" attributes="0"/>
+                  <Component id="panelConfiguration1" pref="136" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -263,7 +271,7 @@
             <Component class="javax.swing.JTable" name="jTable1">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="4">
+                  <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="CAMPO" type="java.lang.Object"/>
                     <Column editable="true" title="ISO" type="java.lang.Object"/>
                     <Column editable="true" title="TIPO" type="java.lang.Object"/>
@@ -292,7 +300,7 @@
             <Component class="javax.swing.JTable" name="jTable2">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="4">
+                  <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="CAMPO" type="java.lang.Object"/>
                     <Column editable="true" title="ISO" type="java.lang.Object"/>
                     <Column editable="true" title="TIPO" type="java.lang.Object"/>
@@ -321,7 +329,8 @@
             <Component class="javax.swing.JTable" name="jTable3">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="4">
+                  <Table columnCount="9" rowCount="0">
+                    <Column editable="true" title="N&#xb0;" type="java.lang.Object"/>
                     <Column editable="true" title="Thread" type="java.lang.Object"/>
                     <Column editable="true" title="socket" type="java.lang.Object"/>
                     <Column editable="true" title="estado" type="java.lang.Object"/>

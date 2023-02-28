@@ -200,8 +200,8 @@ public class InstanceManager extends Thread {
                     ProcesosMC.jMenuXLS.setEnabled(true);
                     timeEnd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").parse(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS").format(LocalDateTime.now())).getTime();
                     diferencia += (timeEnd - timeInit);
-                    tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 5);
-                    tableModelStatus.setValueAt(count + 1, i, 6);
+                    tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 6);
+                    tableModelStatus.setValueAt(count + 1, i, 7);
                     log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
                 } catch (ParseException ex) {
                     log.error(ex);
@@ -219,7 +219,7 @@ public class InstanceManager extends Thread {
              */
             setTable(tableModelResponse, columnModelResponse, listFieldResponse);
         }
-        tableModelStatus.setValueAt(diferencia, i, 7);
+        tableModelStatus.setValueAt(diferencia, i, 8);
     }
 
     public int execute(int count) {
@@ -250,8 +250,8 @@ public class InstanceManager extends Thread {
         } catch (ParseException ex) {
             log.error(ex);
         }
-        tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 3);
-        tableModelStatus.setValueAt(count + 1, i, 4);
+        tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 4);
+        tableModelStatus.setValueAt(count + 1, i, 5);
         ProxyResult apiResult = new ProxyResult();
         ProxyCommResult resultProxy = getProxy().process(request, apiResult);
         log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
@@ -282,7 +282,7 @@ public class InstanceManager extends Thread {
                 tableModel.setValueAt(field.getValue(), j, 4);
                 j++;
             }
-        }
+        }        
     }
 
     public void generarReportePDF() throws JRException, IOException {

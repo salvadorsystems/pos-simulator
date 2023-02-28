@@ -6,6 +6,7 @@ import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.eft.view.ProcesosMC;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -140,9 +141,11 @@ public class ProxySocket {
         ProcesosMC.btnConnect.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
-        for (int i = 0; i < getNumIns(); i++) {
-            tableModelStatus.setValueAt("Desconectado", i, 2);
+        for (int i = 0; i < getNumIns(); i++) {            
             proxy[i].release();
+        }
+        for (int i = 0; i < tableModelStatus.getRowCount(); i++) {
+            tableModelStatus.setValueAt("Desconectado", i, 3);
         }
     }
 
@@ -165,4 +168,7 @@ public class ProxySocket {
         tarea.generarReporteXLS();
     }
 
+    public void generateFullReport() throws FileNotFoundException, JRException {
+        tarea.generateFullReport();
+    }
 }

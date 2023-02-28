@@ -1,7 +1,6 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.ArchivoConfiguracion;
 import com.sanms.siso.eft.processor.ProcesarArchivos;
 import com.sanms.siso.eft.model.ArchivoHost;
@@ -25,7 +24,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -51,9 +49,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     public ProcesosMC() {
         initComponents();
-        this.socketProxy = new ProxySocket((DefaultTableModel) jTable1.getModel(), (DefaultTableModel) jTable2.getModel(), 
-                (DefaultTableModel) jTable3.getModel(),jTable1.getColumnModel(), jTable2.getColumnModel(),
-                jTable3.getColumnModel() );
+        this.socketProxy = new ProxySocket((DefaultTableModel) jTable1.getModel(), (DefaultTableModel) jTable2.getModel(),
+                (DefaultTableModel) jTable3.getModel(), jTable1.getColumnModel(), jTable2.getColumnModel(),
+                jTable3.getColumnModel());
         initWorkSpace();
     }
 
@@ -107,6 +105,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         Reportes = new javax.swing.JMenu();
         jMenuPDF = new javax.swing.JMenuItem();
         jMenuXLS = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,10 +161,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "CAMPO", "ISO", "TIPO", "LONG", "DATOS"
@@ -177,10 +173,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "CAMPO", "ISO", "TIPO", "LONG", "DATOS"
@@ -192,13 +185,10 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Thread", "socket", "estado", "Hora Req", "Req", "Hora Resp", "Res", "Total(ms) "
+                "N°", "Thread", "socket", "estado", "Hora Req", "Req", "Hora Resp", "Res", "Total(ms) "
             }
         ));
         jScrollPane8.setViewportView(jTable3);
@@ -409,7 +399,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         });
         menuConfig.add(jMenuItem1);
 
-        jMenuItem2.setText("Seleccionar Transaccion");
+        jMenuItem2.setText("Select Custom");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -431,7 +421,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         Reportes.setText("Reportes");
 
-        jMenuPDF.setText("Generar Reporte PDF");
+        jMenuPDF.setText("Generate last Report - PDF");
         jMenuPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuPDFActionPerformed(evt);
@@ -439,13 +429,21 @@ public final class ProcesosMC extends javax.swing.JFrame {
         });
         Reportes.add(jMenuPDF);
 
-        jMenuXLS.setText("Genera Reporte EXCEL");
+        jMenuXLS.setText("Generate last Report - EXCEL");
         jMenuXLS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuXLSActionPerformed(evt);
             }
         });
         Reportes.add(jMenuXLS);
+
+        jMenuItem5.setText("Generate Full Report - EXCEL");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        Reportes.add(jMenuItem5);
 
         jMenuBar1.add(Reportes);
 
@@ -472,7 +470,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelConfiguration1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(panelConfiguration1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelConfiguration2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -564,7 +562,6 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     private void BtnOpenCloseSocketActionPerformed(java.awt.event.ActionEvent evt) {
-
         if (!apiHost.isEmpty()) {
             if (validateField(txtNumIns.getText()) && validateField(txtNumTxn.getText())) {
                 if (validateNumber(txtNumIns.getText()) && validateNumber(txtNumTxn.getText())) {
@@ -750,6 +747,18 @@ public final class ProcesosMC extends javax.swing.JFrame {
         socketProxy.enviarMensajeSocket();
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            socketProxy.generateFullReport();
+        } catch (JRException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     public void setListtxn2() {
         //String pathConfig = jListTxn.getSelectedValue();
         txnName = jListTxn.getSelectedValue();
@@ -759,8 +768,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 listStreams = generator.getStreams();
             }
         }
-        System.out.println("" + listStreams.toString());
-        System.out.println("-->2 " + txnName);
+        log.info("Seleccion: " + txnName);
     }
 
     public void setListTxn() {
@@ -857,6 +865,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     public static javax.swing.JMenuItem jMenuPDF;
     public static javax.swing.JMenuItem jMenuXLS;
     private javax.swing.JPanel jPanel1;
