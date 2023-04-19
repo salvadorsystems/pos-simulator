@@ -1,0 +1,23 @@
+{
+   "detail":"Verificacion de Cuenta",
+   "generators":[
+      {	
+         "detail":"Verificacion de Cuenta",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqVerificacionCuenta",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

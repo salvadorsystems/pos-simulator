@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SimuladorProcesosMC">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/SimuladorProcesosMC.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

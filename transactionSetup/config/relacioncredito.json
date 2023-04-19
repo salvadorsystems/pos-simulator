@@ -1,0 +1,41 @@
+{
+   "detail":"Relacion de Cuotas de Credito",
+   "generators":[
+      {	
+         "detail":"Relacion Cuota Credito Tarjeta",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqRelacionCredito",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Relacion Cuota Credito DNI",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqRelacionCreditoDNI",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

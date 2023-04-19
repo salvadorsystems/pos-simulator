@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<translatorSet>
+	<inputs>
+		<input alias="input">
+			<buffer>1</buffer>
+			<bufferOffset>0</bufferOffset>
+			<template>isoProcesoMC</template>
+		</input>
+	</inputs>
+	<outputs>
+		<output alias="output">
+			<buffer>2</buffer>
+			<bufferOffset>0</bufferOffset>
+			<template>isoProcesoMC</template>
+		</output>
+	</outputs>
+	<translates>
+		<translate alias="respuesta">
+			<defaultInput>input</defaultInput>
+			<defaultOutput>output</defaultOutput>
+			<rules>
+				<rule>
+					<inputField>msgType</inputField>
+					<outputField>msgType</outputField>
+				</rule>
+			</rules>
+		</translate>
+	</translates>
+</translatorSet>

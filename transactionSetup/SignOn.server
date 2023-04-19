@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<authorizer>
+	<workPath>config</workPath>
+	<templatesFile>templatesserver.config</templatesFile>
+	<processorsFile>processors.config</processorsFile>
+	<translatorsFile>translators.config</translatorsFile>
+	<parametersFile>parameters.inf</parametersFile>
+	<logLevel>D</logLevel>
+	<nStreams>8</nStreams>
+	<delayResponse>0</delayResponse>
+	<reportFlag>N</reportFlag>
+	<rawFileFlag>N</rawFileFlag>
+</authorizer>

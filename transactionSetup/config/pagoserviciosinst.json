@@ -1,0 +1,85 @@
+{
+   "detail":"Pago de Servicios - Instituciones",
+   "generators":[
+      {	
+         "detail":"Pago Servicios",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqPagoServInst",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Pago Instituciones",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqPagoInstituciones",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Extorno Pago Servicios",
+         "streams":[
+            {
+               "alias":"ReqExtorno",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"B90OriginalData",
+               "template":"reqB90OriginalData"
+            },
+            {
+               "alias":"ReqExtornoPagoServInst",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Extorno Pago Instituciones",
+         "streams":[
+            {
+               "alias":"ReqExtorno",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"B90OriginalData",
+               "template":"reqB90OriginalData"
+            },
+            {
+               "alias":"ReqExtornoPagoInstituciones",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

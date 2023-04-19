@@ -1,0 +1,23 @@
+{
+   "detail":"Consulta de Saldos",
+   "generators":[
+      {	
+         "detail":"Consulta Saldos",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqConsultaSaldos",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }
+   ]
+}

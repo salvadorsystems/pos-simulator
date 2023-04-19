@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/CoreServices.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/spring-core-5.3.22.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/netty-all-4.1.46.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/SocketServices.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-beanutils-1.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-digester-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-lang-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-lang3-3.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jasperreports-6.17.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/guava-27.1-android.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-cli-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/slf4j-api-1.7.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/StreamFormat.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-collections-3.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/gson-2.8.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

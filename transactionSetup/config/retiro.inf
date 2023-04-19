@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<request token="Macros">
+		<!-- Parametros de Trabajo para los Req* -->		
+		<MSGTYPE>0200</MSGTYPE>			
+		<PRI_BITMAP>F23E4401A8E09602</PRI_BITMAP>		
+		<SEC_BITMAP>0000000004000100</SEC_BITMAP>
+		<!-- Parametros de Trabajo generales en Req* & ReqExt* -->
+		<NRO_TARJETA>4593340002073059</NRO_TARJETA>
+		<RETIRO_EFEC>010000</RETIRO_EFEC>
+		<RETIRO_AHORR>011000</RETIRO_AHORR>
+		<RETIRO_ORDEN_PAGO>012000</RETIRO_ORDEN_PAGO>
+		<RETIRO_PLAZO>014000</RETIRO_PLAZO>
+		<RETIRO_CTS>015000</RETIRO_CTS>
+		<POS_ENTRY_MODE>051</POS_ENTRY_MODE>
+		<ACQ_ID>00000007963</ACQ_ID>
+		<FWD_ID>00000040404</FWD_ID>
+		<MONTO>000000000001000</MONTO>
+		<TERMINAL>22340880</TERMINAL>
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<EXP_DATE>2104</EXP_DATE>
+		<MERCH_TYPE>5942</MERCH_TYPE>
+		
+		<CTA_DEBITO>10818232100003958606 REMSOL00000000041</CTA_DEBITO>
+		<!-- Parametros de Trabajo segun se necesite -->
+		<ACCEPTORID>299999490000</ACCEPTORID>
+		<ACCEPTORNAME>PROCESOS MC PRUEBAS SA</ACCEPTORNAME>
+		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
+		<PIN>01A5A470178C2C4F</PIN>
+		
+		<CUST_INFO_RESP>530150299999429900401</CUST_INFO_RESP>
+		<ICC_DATA>01715F280206045F34010182025C00950500000480009A031909259F02060000000000009F0702FF809F0D05D8688CA8009F0E0524102000409F0F05D868DCF8009F100706010A03A0B8009F2608A6E2F1F2F82018DC9F2701809F3303E0F0C89F34030203009F3501229F360204819F3704951957139C01005F2A0200009F1A0206049F5301528407A00000000310105A0842615390337602434F07A00000000310109F0607A0000000031010</ICC_DATA>
+		<!-- Parametros de Trabajo para los ReqExt* -->
+		<EXTORNO_MSGTYPE>0420</EXTORNO_MSGTYPE>
+		<PRI_BITMAP_EXTORNO>F23E4401A8E09602</PRI_BITMAP_EXTORNO>
+		<SEC_BITMAP_EXTORNO>0000004004000100</SEC_BITMAP_EXTORNO>
+		
+	</request>
+	<request token="ReqFinanciero">
+		<pan>{NRO_TARJETA}</pan>	
+		<amount>{MONTO}</amount>
+		<txnDate>dateMMDD()</txnDate>
+		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
+		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.time;A;4)</localTime>
+		<localDate>dateMMDD()</localDate>
+		<expirationDate>{EXP_DATE}</expirationDate>
+		<dateSettlement>dateMMDD()</dateSettlement>	
+		<merchantType>{MERCH_TYPE}</merchantType>			
+		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
+		<acqId>{ACQ_ID}</acqId>
+		<fwdId>{FWD_ID}</fwdId>
+		<terminal>{TERMINAL}</terminal>
+		<currencyCode>{SOLES}</currencyCode>
+		<additionalAmounts>7070604R000000000000</additionalAmounts>
+		<iccData>{ICC_DATA}</iccData>
+		<networkData>CC2000354805</networkData>
+		<accountIde1>{CTA_DEBITO}</accountIde1>
+		<custInfoResponse>{CUST_INFO_RESP}</custInfoResponse>
+	</request>
+	<request token="ReqExtorno">
+		<pan>{NRO_TARJETA}</pan>
+		<amount>{MONTO}</amount>	
+		<txnDate>dateMMDD()</txnDate>
+		<txnTime>timeHHMMSS(tmp/mastercard.time.ext)</txnTime>
+		<trace>sequence(tmp/mastercard.trace.ext;6;1)</trace>
+		<localTime>read(tmp/mastercard.time.ext;A;4)</localTime>
+		<localDate>dateMMDD()</localDate>	
+		<expirationDate>{EXP_DATE}</expirationDate>
+		<dateSettlement>dateMMDD()</dateSettlement>	
+		<merchantType>{MERCH_TYPE}</merchantType>			
+		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
+		<acqId>{ACQ_ID}</acqId>
+		<fwdId>{FWD_ID}</fwdId>		
+		<terminal>{TERMINAL}</terminal>	
+		<currencyCode>{SOLES}</currencyCode>
+		<custInfoResponse>{CUST_INFO_RESP}</custInfoResponse>
+		<authCode>12651</authCode>
+		<respCode>00</respCode>
+		<networkData>CC2000354805</networkData>
+		<accountIde1>{CTA_DEBITO}</accountIde1>
+		<additionalAmounts>7070604R000000000000</additionalAmounts>
+		<iccData>{ICC_DATA}</iccData>
+	</request>
+	<request token="B120DataConsultaDeudaDNI">
+
+	</request>
+	<request token="ReqRetiroEfectivo">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RETIRO_EFEC}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		
+	</request>
+	<request token="ReqRetiroAhorros">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RETIRO_AHORR}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		
+	</request>
+	<request token="ReqRetiroOrdenPago">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RETIRO_ORDEN_PAGO}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		
+	</request>
+	<request token="ReqRetiroPlazoFijo">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RETIRO_PLAZO}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		
+	</request>
+	<request token="ReqRetiroCTS">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{RETIRO_CTS}</processingCode>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<pin>{PIN}</pin>
+		
+	</request>	
+	<request token="B90OriginalData">
+		<msgType>{MSGTYPE}</msgType>
+		<trace>read(tmp/mastercard.trace;N;6)</trace>
+		<localDate>dateMMDD()</localDate>
+		<localTime>read(tmp/mastercard.time;N;4)</localTime>
+		<!--Original -> Revision para definir el orden
+		<acqId>{ACQ_ID}</acqId>
+		<fwdId>{FWD_ID}</fwdId>
+		-->
+		<acqId>{FWD_ID}</acqId>
+		<fwdId>{ACQ_ID}</fwdId>
+	</request>
+
+	<request token="ReqExtornoRetiroEfec">
+		<msgType>{EXTORNO_MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP_EXTORNO}</priBitmap>
+		<secBitmap>{SEC_BITMAP_EXTORNO}</secBitmap>
+		<processingCode>{RETIRO_EFEC}</processingCode>		
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<originalData>[B90OriginalData]</originalData>		
+		<track2>{TRACK_TJTA}</track2>
+		<pin>{PIN}</pin>
+	</request>
+	<request token="ReqExtornoRetiroAhorr">
+		<msgType>{EXTORNO_MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP_EXTORNO}</priBitmap>
+		<secBitmap>{SEC_BITMAP_EXTORNO}</secBitmap>
+		<processingCode>{RETIRO_AHORR}</processingCode>		
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<originalData>[B90OriginalData]</originalData>		
+		
+	</request>
+	<request token="ReqExtornoRetiroOrdenPago">
+		<msgType>{EXTORNO_MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP_EXTORNO}</priBitmap>
+		<secBitmap>{SEC_BITMAP_EXTORNO}</secBitmap>
+		<processingCode>{RETIRO_ORDEN_PAGO}</processingCode>		
+		<respCode>{RESP_CODE}</respCode>
+		<originalData>[B90OriginalData]</originalData>		
+		
+	</request>
+	<request token="ReqExtornoRetiroPlazoFijo">
+		<msgType>{EXTORNO_MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP_EXTORNO}</priBitmap>
+		<secBitmap>{SEC_BITMAP_EXTORNO}</secBitmap>
+		<processingCode>{RETIRO_PLAZO}</processingCode>		
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<originalData>[B90OriginalData]</originalData>			
+			
+	</request>
+	<request token="ReqExtornoRetiroCTS">
+		<msgType>{EXTORNO_MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP_EXTORNO}</priBitmap>
+		<secBitmap>{SEC_BITMAP_EXTORNO}</secBitmap>
+		<processingCode>{RETIRO_CTS}</processingCode>		
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<originalData>[B90OriginalData]</originalData>		
+	
+	</request>
+</data>

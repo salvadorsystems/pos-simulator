@@ -1,1 +1,1 @@
-{"workPath":"D:\\ARCHIVOS UNS\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote\\host.js","workParent":"D:\\ARCHIVOS UNS\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote"}
+{"workPath":"C:\\Files\\SISO\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote\\host.js","workParent":"C:\\Files\\SISO\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote"}
