@@ -495,10 +495,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
             try {
                 ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path).toString(), ArchivoHost.class);
                 if (processorHost != null) {
-                    apiHost = processorHost.getRemoteHost();
+                    apiHost = processorHost.getIpHost();
                     apiPort = String.valueOf(processorHost.getPort());
-                    windowTCPIP.txtIpLocal.setText(processorHost.getLocalHost());
-                    windowTCPIP.txtIpRemoto.setText(processorHost.getRemoteHost());
+                    windowTCPIP.txtIpHost.setText(processorHost.getIpHost());
                     windowTCPIP.txtPort.setText(String.valueOf(processorHost.getPort()));
                     windowTCPIP.txtTimeout.setText(String.valueOf(processorHost.getTimeout()));
                 } else {
@@ -514,9 +513,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void clearFields() {
         apiHost = "";
-        apiPort = "";
-        windowTCPIP.txtIpLocal.setText("");
-        windowTCPIP.txtIpRemoto.setText("");
+        apiPort = "";        
+        windowTCPIP.txtIpHost.setText("");
         windowTCPIP.txtPort.setText("");
         windowTCPIP.txtTimeout.setText("");
     }

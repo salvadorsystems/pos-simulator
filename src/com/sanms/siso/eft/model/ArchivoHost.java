@@ -6,8 +6,7 @@ package com.sanms.siso.eft.model;
  */
 public class ArchivoHost {
     
-    private String localHost;
-    private String remoteHost;
+    private String ipHost;
     private int port;
     private int timeout;
 
@@ -16,27 +15,18 @@ public class ArchivoHost {
 
     
     
-    public ArchivoHost(String localHost, String remoteHost, int port, int timeout) {
-        this.localHost = localHost;
-        this.remoteHost = remoteHost;
+    public ArchivoHost(String ipHost, int port, int timeout) {
+        this.ipHost = ipHost;
         this.port = port;
         this.timeout = timeout;
     }
 
-    public String getLocalHost() {
-        return localHost;
+    public String getIpHost() {
+        return ipHost;
     }
 
-    public void setLocalHost(String localHost) {
-        this.localHost = localHost;
-    }
-
-    public String getRemoteHost() {
-        return remoteHost;
-    }
-
-    public void setRemoteHost(String remoteHost) {
-        this.remoteHost = remoteHost;
+    public void setIpHost(String ipHost) {
+        this.ipHost = ipHost;
     }
 
     public int getPort() {
@@ -57,8 +47,7 @@ public class ArchivoHost {
 
     @Override
     public String toString() {
-        return "ProcessorHost{" + "localHost=" + localHost + ", remoteHost=" + remoteHost + ", port=" + port + ", timeout=" + timeout + '}';
+        return "ArchivoHost{" + "ipHost=" + ipHost + ", port=" + port + ", timeout=" + timeout + '}';
     }
-    
     
 }
