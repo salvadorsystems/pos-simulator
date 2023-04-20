@@ -213,6 +213,15 @@ public class InstanceManager extends Thread {
             /**
              * Display Data in Request table
              */
+             for (Field field : listFieldResponse) {
+                if (field.getValue().equalsIgnoreCase("00")) {
+                    field.setValue("00 (succes)");
+                }
+                if (field.getValue().equalsIgnoreCase("83")) {
+
+                    field.setValue(field.getValue() + " (unsupported host)");
+                }
+            }            
             setTable(tableModelRequest, columnModelRequest, listFieldRequest);
             /**
              * Display Data in Response table
@@ -240,7 +249,7 @@ public class InstanceManager extends Thread {
         for (Stream stream : getListStream()) {
             plantilla = stream.getTemplate();
         }
-        ProcesosMC.txtRequerimiento.setText(request);
+        ProcesosMC.txtRequerimiento.setText( request); 
         Template reqFormat = TemplateTool.createTemplate(templateMapList, plantilla);
         reqFormat.saveFromBuffer(request);
 
