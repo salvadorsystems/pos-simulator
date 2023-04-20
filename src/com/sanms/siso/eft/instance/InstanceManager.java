@@ -202,7 +202,7 @@ public class InstanceManager extends Thread {
                     diferencia += (timeEnd - timeInit);
                     tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 6);
                     tableModelStatus.setValueAt(count + 1, i, 7);
-                    log.info("Instancia " + getInstance() + " se envio el mensaje : " + count);
+                    log.info("Instancia " + getInstance() + " mensaje enviado : " + count);
                 } catch (ParseException ex) {
                     log.error(ex);
                 }
