@@ -1,116 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data>
 	<request token="Macros">
-		<!-- Parametros de Trabajo para los Req* -->		
-		<MSGTYPE>0200</MSGTYPE>			
-		<PRI_BITMAP>E23E4401A8E09202</PRI_BITMAP>		
-		<SEC_BITMAP>0000000004000100</SEC_BITMAP>
-		<!-- Parametros de Trabajo generales en Req* & ReqExt* -->
-		<NRO_TARJETA>4593340002073059</NRO_TARJETA>
-		<EXP_DATE>2104</EXP_DATE>
-		<CONSULTA_MOV_EFECT>390000</CONSULTA_MOV_EFECT>
-		<CONSULTA_MOV_AHORR>391000</CONSULTA_MOV_AHORR>
-		<CONSULTA_MOV_ORDEN>392000</CONSULTA_MOV_ORDEN>
-		<CONSULTA_MOV_PLAZO>394000</CONSULTA_MOV_PLAZO>
-		<CONSULTA_MOV_CTS>395000</CONSULTA_MOV_CTS>
-		<POS_ENTRY_MODE>051</POS_ENTRY_MODE>
-		<ACQ_ID>00000007963</ACQ_ID>
-		<FWD_ID>00000040404</FWD_ID>
-		<SOLES>604</SOLES>
-		<TERMINAL>22340880</TERMINAL>
-		<MERCH_TYPE>5942</MERCH_TYPE>
-		
-		<CTA_DEBITO>10801232100034963106 REMSOL00000000000</CTA_DEBITO>
-		<!-- Parametros de Trabajo segun se necesite -->
-		<ACCEPTORID>299999490000</ACCEPTORID>
-		<ACCEPTORNAME>PROCESOS MC PRUEBAS SA </ACCEPTORNAME>
+		<!--Parametros Trabajo-->
+		<CONSULTA_MOVIMIENTO_AHORRO>941100</CONSULTA_MOVIMIENTO_AHORRO>
+        <CONSULTA_MOVIMIENTO_CTS>941200</CONSULTA_MOVIMIENTO_CTS>
+		<TARJETA>4593340002073059</TARJETA>
 		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
-		<PIN>01A5A470178C2C4F</PIN>
-		
-		<ICC_DATA>5F280206045F34010182025C00950500000480009A031909259F02060000000000009F0702FF809F0D05D8688CA8009F0E0524102000409F0F05D868DCF8009F100706010A03A0B8009F26081000DAF9A89A08199F2701809F3303E0F0C89F34030203009F3501229F3602047E9F37043B9729BB9C01005F2A0200009F1A0206049F5301528407A00000000310105A0842615390337602434F07A00000000310109F0607A0000000031010</ICC_DATA>
+		<TRACK_TJTA_CTS>4593340002073059=21042261059813600000</TRACK_TJTA_CTS>
+		<PBF_TJTA>01A5A470178C2C4F</PBF_TJTA>
+		<PBF_TJTA_CTS>01A5A470178C2C4F</PBF_TJTA_CTS>
+		<BINADQ>960429530</BINADQ>
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<PUNTO_SERVICIO>511201213144</PUNTO_SERVICIO>
+		<COMERCIO>000000000000200</COMERCIO>
+		<TERMINAL>I3223866</TERMINAL>
+		<TERMINAL_CTS>I4404062</TERMINAL_CTS>
+        <ACCEPTORID>INTB           </ACCEPTORID>
+		<ACCEPTORNAME>TIENDA JULIACA II     PUNO         W10PE</ACCEPTORNAME>
+		<ACCEPTORNAME_CTS>CMAC HYO AG HUANTA    AYACUCHO     W10PE</ACCEPTORNAME_CTS>
+		<TERMINALDATA>INTBPRO1+000</TERMINALDATA>
+		<CARDAUTHDATA>CICAPRO11100P</CARDAUTHDATA>
+		<CARDAUTHDATA_CTS>CICAPRO11200P</CARDAUTHDATA_CTS>
+ 
+		<TIPO_CAJERO>6011</TIPO_CAJERO>
+		<DATOS_SEGURIDAD>2202100002000000</DATOS_SEGURIDAD>
+		<CTA_DEBITO>108472321000000485</CTA_DEBITO>
+		<CTA_DEBITO_CTS>108442341000009555</CTA_DEBITO_CTS>
+		<CTA_2>108532321000008567</CTA_2>
+
 	</request>
 	<request token="ReqFinanciero">
-		<pan>{NRO_TARJETA}</pan>		
-		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<cabecera>ISO016000010</cabecera>
+		<msgType>0200</msgType>
+		<priBitmap>B238800128E09018</priBitmap>
+		<secBitmap>0000000016000004</secBitmap>
+		<pan>{TARJETA}</pan>
+		<amount>000000000000</amount>
 		<txnDate>dateMMDD()</txnDate>
-		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
-		<localTime>read(tmp/mastercard.time;A;4)</localTime>
 		<localDate>dateMMDD()</localDate>
-		<expirationDate>{EXP_DATE}</expirationDate>
-		<dateSettlement>dateMMDD()</dateSettlement>	
-		<merchantType>{MERCH_TYPE}</merchantType>			
-		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
-		<acqId>{ACQ_ID}</acqId>
-		<fwdId>{FWD_ID}</fwdId>
+		<captureDate>dateMMDD()</captureDate>
+		<acqId>{BINADQ}</acqId>
+		<track2>{TRACK_TJTA}</track2>
 		<terminal>{TERMINAL}</terminal>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+
 		<currencyCode>{SOLES}</currencyCode>
-		<networkData>CC2000354781</networkData>
-		<custInfoResponse>530150299999429900401</custInfoResponse>
+		<terminalData>{TERMINALDATA}</terminalData>
+		<cardAuthData>{CARDAUTHDATA}</cardAuthData>
+
+		<securityInfo></securityInfo>
+        <primMAC></primMAC>
+        <netManagCode></netManagCode>
+        <receivingInstCode>81080000000</receivingInstCode>
+		<atmAddress></atmAddress>
+        <posData></posData>
+
+		<appData1>&amp; 0000500282! Q300058 000604604000000000000 000000000000000000000000000000000000! 0600052 30000000000000000116195A9B04039D28A30000000000000000! B400020 05151001000400    4 ! QM00100 06011604     00960429530BCO PCHI AG SAN  Y               INTBPRO1+000                               </appData1>
+		<secMAC></secMAC>
+
 	</request>
-	<request token="ReqConsultaMovEfectivo">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<pan>{NRO_TARJETA}</pan>
-		<processingCode>{CONSULTA_MOV_EFECT}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
-		<acceptorId>{ACCEPTORID}</acceptorId>
-		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
+
+	<request token="ReqConsultaMovimientoAhorro">
+
+		<processingCode>{CONSULTA_MOVIMIENTO_AHORRO}</processingCode>
+		<txnTime>timeHHMMSS(tmp/globalnet.time)</txnTime>
+		<trace>sequence(tmp/globalnet.trace;6;1)</trace>
+		<localTime>read(tmp/globalnet.time;A;4)</localTime>
+		<referenceNumber>sequence(tmp/globalnet.ref;12;1)</referenceNumber>
+        <addData>A                       40000060400000000000</addData>
+
+		<pin>{PBF_TJTA}</pin>
 		<accountIde1>{CTA_DEBITO}</accountIde1>
-		<iccData>{ICC_DATA}</iccData>
-	</request>	
-	<request token="ReqConsultaMovAhorro">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<processingCode>{CONSULTA_MOV_AHORR}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
-		<acceptorId>{ACCEPTORID}</acceptorId>
-		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
-		<accountIde1>{CTA_DEBITO}</accountIde1>
-		<iccData>{ICC_DATA}</iccData>
+		<accountIde2></accountIde2>
 	</request>
-	<request token="ReqConsultaMovOrden">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<processingCode>{CONSULTA_MOV_ORDEN}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
-		<acceptorId>{ACCEPTORID}</acceptorId>
-		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
-		<accountIde1>{CTA_DEBITO}</accountIde1>
-		<iccData>{ICC_DATA}</iccData>
+	
+	<request token="ReqConsultaMovimientoCTS">
+
+		<processingCode>{CONSULTA_MOVIMIENTO_CTS}</processingCode>
+		<txnTime>timeHHMMSS(tmp/globalnet.time)</txnTime>
+		<trace>sequence(tmp/globalnet.trace;6;1)</trace>
+		<localTime>read(tmp/globalnet.time;A;4)</localTime>
+		<track2>{TRACK_TJTA_CTS}</track2>
+		<referenceNumber>sequence(tmp/globalnet.ref;12;1)</referenceNumber>
+		<terminal>{TERMINAL_CTS}</terminal>
+		<acceptorName>{ACCEPTORNAME_CTS}</acceptorName>
+		<pin>{PBF_TJTA_CTS}</pin>
+		<cardAuthData>{CARDAUTHDATA_CTS}</cardAuthData>
+		<accountIde1>{CTA_DEBITO_CTS}</accountIde1>
+		<accountIde2></accountIde2>
+		<appData1>&amp; 0000400220! Q300058 604604000000000000000 000000000000000000000000000000000000! B400020 05151001000C00    4 ! QM00100 06011604     00960429530CMAC HYO AG HUA  Y               INTBPRO1+000                               </appData1>
 	</request>
-	<request token="ReqConsultaMovPlazo">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<processingCode>{CONSULTA_MOV_PLAZO}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
-		<acceptorId>{ACCEPTORID}</acceptorId>
-		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
-		<accountIde1>{CTA_DEBITO}</accountIde1>
-		<iccData>{ICC_DATA}</iccData>
-	</request>
-	<request token="ReqConsultaMovCTS">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<processingCode>{CONSULTA_MOV_CTS}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
-		<acceptorId>{ACCEPTORID}</acceptorId>
-		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
-		<accountIde1>{CTA_DEBITO}</accountIde1>
-		<iccData>{ICC_DATA}</iccData>
-	</request>
+
 </data>

@@ -1,66 +1,94 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data>
 	<request token="Macros">
-		<!-- Parametros de Trabajo para los Req* -->		
-		<MSGTYPE>0200</MSGTYPE>			
-		<PRI_BITMAP>F23E4401A8E09402</PRI_BITMAP>		
-		<SEC_BITMAP>0000000000000100</SEC_BITMAP>
-
-		<!-- Parametros de Trabajo generales en Req* & ReqExt* -->
-		<NRO_TARJETA>4593340002073059</NRO_TARJETA>
-		<EXP_DATE>2104</EXP_DATE>
-		<CONSULTA_SALDOS>930000</CONSULTA_SALDOS>
-		<POS_ENTRY_MODE>051</POS_ENTRY_MODE>
-		<ACQ_ID>00000007963</ACQ_ID>
-		<FWD_ID>00000040404</FWD_ID>
-		<MONTO>000000000000000</MONTO>
-		<TERMINAL>22340880</TERMINAL>
-		<MERCH_TYPE>5942</MERCH_TYPE>
-		
+		<!--Parametros Trabajo-->
+		<CONSULTA_SALDO_AHORRO>311100</CONSULTA_SALDO_AHORRO>
+        <CONSULTA_SALDO_CTS>311200</CONSULTA_SALDO_CTS>
+		<TARJETA>4593340002073059</TARJETA>
+		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
+		<TRACK_TJTA_CTS>4593340002073059=21042261059813600000</TRACK_TJTA_CTS>
+		<PBF_TJTA>01A5A470178C2C4F</PBF_TJTA>
+		<PBF_TJTA_CTS>01A5A470178C2C4F</PBF_TJTA_CTS>
+		<BINADQ>960429530</BINADQ>
 		<SOLES>604</SOLES>
 		<DOLARES>840</DOLARES>
-		<!-- Parametros de Trabajo segun se necesite -->
-		<ACCEPTORID>299999490000</ACCEPTORID>
-		<ACCEPTORNAME>PROCESOS MC PRUEBAS SA</ACCEPTORNAME>
-		
-		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
-		<PIN>01A5A470178C2C4F</PIN>
-	</request>
-	<request token="ReqFinanciero">
-		<pan>{NRO_TARJETA}</pan>
-		<amount>{MONTO}</amount>		
-		<txnDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.date;MMdd)</txnDate>
-		<txnTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.time;HHmmss)</txnTime>
-		<trace>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.trace;6;1)</trace>
-		<localTime>time(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localtime;HHmmss)</localTime>
-		<localDate>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.localdate;MMdd)</localDate>
-		<expirationDate>{EXP_DATE}</expirationDate>
-        <dateSettlement>date(../simulador-procesosmc/MastercCard/config/tmp/mastercard.stlmdate;MMdd)</dateSettlement>		
-		<merchantType>{MERCH_TYPE}</merchantType>
-		<posEntryMode>{POS_ENTRY_MODE}</posEntryMode>
-		<acqId>{ACQ_ID}</acqId>
-		<fwdId>{FWD_ID}</fwdId>
-		<terminal>{TERMINAL}</terminal>
-		<currencyCode>{SOLES}</currencyCode>
-	</request>
-	<request token="B120DataConsultaDeudaDNI">
+		<PUNTO_SERVICIO>511201213144</PUNTO_SERVICIO>
+		<COMERCIO>000000000000200</COMERCIO>
+		<TERMINAL>I4004103</TERMINAL>
+		<TERMINAL_CTS>I4001788</TERMINAL_CTS>
+        <ACCEPTORID>INTB           </ACCEPTORID>
+		<ACCEPTORNAME>TDA EL QUINDE ICA II  ICA          W00PE</ACCEPTORNAME>
+		<ACCEPTORNAME_CTS>CMAC ICA AG PRINCIPAL ICA          W10PE</ACCEPTORNAME_CTS>
+		<TERMINALDATA>INTBPRO1+000</TERMINALDATA>
+		<CARDAUTHDATA>CICAPRO11100P</CARDAUTHDATA>
+		<CARDAUTHDATA_CTS>CICAPRO11200P</CARDAUTHDATA_CTS>
+ 		<TIPO_CAJERO>6011</TIPO_CAJERO>
+		<DATOS_SEGURIDAD>2202100002000000</DATOS_SEGURIDAD>
+		<CTA_DEBITO>108472321000000485</CTA_DEBITO>
+		<CTA_DEBITO_CTS>108442341000009555</CTA_DEBITO_CTS>
 
 	</request>
-	<request token="ReqConsultaSaldos">
-		<msgType>{MSGTYPE}</msgType>
-		<priBitmap>{PRI_BITMAP}</priBitmap>
-		<secBitmap>{SEC_BITMAP}</secBitmap>	
-		<processingCode>{CONSULTA_SALDOS}</processingCode>
-		<track2>{TRACK_TJTA}</track2>
-		<referenceNumber>sequence(../simulador-procesosmc/MastercCard/config/tmp/mastercard.ref;12;1)</referenceNumber>		
+	<request token="ReqFinanciero">
+		<cabecera>ISO016000010</cabecera>
+		<msgType>0200</msgType>
+		<priBitmap>B238800128E09018</priBitmap>
+		<secBitmap>0000000016000004</secBitmap>
+		<amount>000000000000</amount>
+		<txnDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</txnDate>
+		<localDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localdate;MMdd)</localDate>
+		<captureDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.capDate;MMdd)</captureDate>
+		<acqId>{BINADQ}</acqId> 
+		<terminal>{TERMINAL}</terminal>
 		<acceptorId>{ACCEPTORID}</acceptorId>
 		<acceptorName>{ACCEPTORNAME}</acceptorName>
-		<pin>{PIN}</pin>
-		<additionalAmounts>7070604R000000000000</additionalAmounts>
-		<iccData>5F280206045F34010182025C00950500000480009A031909259F02060000000000009F0702FF809F0D05D8688CA8009F0E0524102000409F0F05D868DCF8009F100706010A03A0B8009F2608BD376E0EC76888949F2701809F3303E0F0C89F34030203009F3501229F3602047D9F370481F5F30B9C01005F2A0200009F1A0206049F5301528407A00000000310105A0842615390337602434F07A00000000310109F0607A0000000031010</iccData>
-		<!--<networkData>CC2000354776</networkData>-->
-		<networkData>CC200035477</networkData>
-		<!--<custInfoResponse>530150299999429900401</custInfoResponse>-->
-		<custInfoResponse>5301502999994299004	1</custInfoResponse>
-	</request>	
+		<currencyCode>{SOLES}</currencyCode>
+		<terminalData>{TERMINALDATA}</terminalData>
+		<cardAuthData>{CARDAUTHDATA}</cardAuthData>
+
+		<securityInfo></securityInfo>
+        <primMAC></primMAC>
+        <netManagCode></netManagCode>
+				
+        <receivingInstCode>81080000000</receivingInstCode>
+        <accountIde2></accountIde2>
+
+		<atmAddress></atmAddress>
+        <posData></posData>
+
+        <secMAC></secMAC>
+
+	</request>
+
+	<request token="ReqConsultaCuentaAhorro">
+
+		<processingCode>{CONSULTA_SALDO_AHORRO}</processingCode>
+		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
+        <addData>A                       40000060400000000000</addData>
+		<pin>{PBF_TJTA}</pin>
+		<accountIde1>{CTA_DEBITO}</accountIde1>
+		<appData1>&amp; 0000400220! Q300058 604604000000000000000P000000000000000000000000000000000000! B400020 05151001000400    4 ! QM00100 06011604     00960429530TDA EL QUINDE I  Y               INTBPRO1+000</appData1>
+
+	</request>
+	
+	<request token="ReqConsultaCuentaCTS">
+
+		<processingCode>{CONSULTA_SALDO_CTS}</processingCode>
+		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<track2>{TRACK_TJTA_CTS}</track2>
+		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
+        <terminal>{TERMINAL_CTS}</terminal>
+		<acceptorName>{ACCEPTORNAME_CTS}</acceptorName>
+		<pin>{PBF_TJTA_CTS}</pin>
+		<cardAuthData>{CARDAUTHDATA_CTS}</cardAuthData>
+		<accountIde1>{CTA_DEBITO_CTS}</accountIde1>
+		<appData1>&amp; 0000400220! Q300058 604604000000000000000 000000000000000000000000000000000000! B400020 05151001000C00    4 ! QM00100 06011604     00960429530CMAC ICA AG PRI  Y               INTBPRO1+000                               </appData1>
+	</request>
+
+
 </data>

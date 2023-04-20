@@ -1,1 +1,1 @@
-{"workPath":"C:\\Files\\SISO\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote\\host.js","workParent":"C:\\Files\\SISO\\configuraciones\\TXNClientC\\v3\\CMACICA\\GlobalNet-IcaRemote"}
+{"workPath":"C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\transactionSetup\\host.js","workParent":"C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\transactionSetup"}

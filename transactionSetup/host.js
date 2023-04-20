@@ -1,1 +1,1 @@
-{"localHost":"192.168.19.53","remoteHost":"192.168.19.53","port":4000,"timeout":20}
+{"ipHost":"192.168.18.24","port":8001,"timeout":20}
