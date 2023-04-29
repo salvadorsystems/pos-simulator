@@ -37,9 +37,9 @@
 		<secBitmap>0000000016000004</secBitmap>
 		<pan>{TARJETA}</pan>
 		<amount>000000000000</amount>
-		<txnDate>dateMMDD()</txnDate>
-		<localDate>dateMMDD()</localDate>
-		<captureDate>dateMMDD()</captureDate>
+		<txnDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</txnDate>
+		<localDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</localDate>
+		<captureDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</captureDate>
 		<acqId>{BINADQ}</acqId>
 		<track2>{TRACK_TJTA}</track2>
 		<terminal>{TERMINAL}</terminal>
@@ -62,13 +62,13 @@
 
 	</request>
 
-	<request token="ReqConsultaMovimientoAhorro">
+	<request token="ReqConsultaMovAhorro">
 
 		<processingCode>{CONSULTA_MOVIMIENTO_AHORRO}</processingCode>
-		<txnTime>timeHHMMSS(tmp/globalnet.time)</txnTime>
-		<trace>sequence(tmp/globalnet.trace;6;1)</trace>
-		<localTime>read(tmp/globalnet.time;A;4)</localTime>
-		<referenceNumber>sequence(tmp/globalnet.ref;12;1)</referenceNumber>
+		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
         <addData>A                       40000060400000000000</addData>
 
 		<pin>{PBF_TJTA}</pin>
@@ -76,14 +76,14 @@
 		<accountIde2></accountIde2>
 	</request>
 	
-	<request token="ReqConsultaMovimientoCTS">
+	<request token="ReqConsultaMovCTS">
 
 		<processingCode>{CONSULTA_MOVIMIENTO_CTS}</processingCode>
-		<txnTime>timeHHMMSS(tmp/globalnet.time)</txnTime>
-		<trace>sequence(tmp/globalnet.trace;6;1)</trace>
-		<localTime>read(tmp/globalnet.time;A;4)</localTime>
+		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
 		<track2>{TRACK_TJTA_CTS}</track2>
-		<referenceNumber>sequence(tmp/globalnet.ref;12;1)</referenceNumber>
+		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
 		<terminal>{TERMINAL_CTS}</terminal>
 		<acceptorName>{ACCEPTORNAME_CTS}</acceptorName>
 		<pin>{PBF_TJTA_CTS}</pin>

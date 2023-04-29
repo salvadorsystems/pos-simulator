@@ -1,0 +1,87 @@
+{
+   "detail":"Compra por POS",
+   "generators":[
+      {	
+         "detail":"Compra POS Nacional",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqCompraPOSNacional",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Compra POS Internacional",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqCompraPOSInternacional",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Extorno Compra POSNacional",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqDE090OriginalData",
+               "baseStream":1,
+               "template":"reqDE090OriginalData"
+            },
+            {
+               "alias":"ReqExtornoCompraPOSNacional",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      },
+	  {	
+         "detail":"Extorno Compra POSInternacional",
+         "streams":[
+            {
+               "alias":"ReqFinanciero",
+               "template":"isoProcesoMC"
+            },
+            {
+               "alias":"ReqDE090OriginalData",
+               "baseStream":1,
+               "template":"reqDE090OriginalData"
+            },
+            {
+               "alias":"ReqExtornoCompraPOSInternacional",
+               "baseStream":1,
+               "template":"isoProcesoMC"
+            }
+         ],
+         "streamRsp":{
+            "alias":"RspFinanciero",
+            "template":"isoProcesoMC"
+         }
+      }	  
+   ]
+}

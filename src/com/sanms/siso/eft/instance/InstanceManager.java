@@ -215,7 +215,7 @@ public class InstanceManager extends Thread {
              */
              for (Field field : listFieldResponse) {
                 if (field.getValue().equalsIgnoreCase("00")) {
-                    field.setValue("00 (succes)");
+                    field.setValue("00 (success)");
                 }
                 if (field.getValue().equalsIgnoreCase("83")) {
 

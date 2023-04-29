@@ -8,9 +8,11 @@ import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -18,6 +20,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +58,32 @@ public class ParametrosOperacion {
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    @SuppressWarnings("null")
+    private ArrayList<String> getTokens() throws ParserConfigurationException {
+        ArrayList<String> listToken = new ArrayList<>();
+
+        File file = new File(rutaParametros);
+        DocumentBuilder dcb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc = null;
+        NodeList nodeParent;
+        try {
+            doc = dcb.parse(file);
+            doc.getDocumentElement().normalize();
+        } catch (SAXException | IOException ex) {
+            log.error(ParametrosOperacion.class.getName() + "->" + ex);
+        }
+        nodeParent = doc.getElementsByTagName("request");
+
+        for (int i = 0; i < nodeParent.getLength(); i++) {
+            Element eElementParent = (Element) nodeParent.item(i);
+            //System.out.println("--->> " + eElementParent.getAttribute("token").trim());
+            //String value = eElementParent.getAttribute("token").trim();
+            listToken.add(eElementParent.getAttribute("token").trim());
+        }
+
+        return listToken;
     }
 
     @SuppressWarnings("null")
@@ -108,6 +137,9 @@ public class ParametrosOperacion {
                             String trace = secuence(listParameters[0], listParameters[1], listParameters[2]);
                             map.put(nodeChildLevel.item(j).getNodeName(), trace);
                             break;
+                        case "read":
+                            String read = read(listParameters[0], listParameters[1]);
+                            break;
                         case "":
                             break;
                         default:
@@ -137,11 +169,25 @@ public class ParametrosOperacion {
         params = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = null;
+        Template reqOrig = null;
+        String origData = "";
         for (Stream stream : listStream) {
             req = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
+
             HashMap<String, String> hmReq = null;
             try {
-                hmReq = obtenerParametros(stream.getAlias());
+                if (stream.getAlias().contains("OriginalData")) {
+                    reqOrig = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
+                    origData = "";
+                    hmReq = obtenerParametros(stream.getAlias());
+                    for (Map.Entry<String, String> entry : hmReq.entrySet()) {
+                        reqOrig.saveValue(entry.getKey(), entry.getValue());
+                        origData = reqOrig.generateStream();
+                    }
+
+                } else {
+                    hmReq = obtenerParametros(stream.getAlias());
+                }
 
             } catch (ParserConfigurationException ex) {
                 log.error(ParametrosOperacion.class
@@ -156,10 +202,10 @@ public class ParametrosOperacion {
                         params.put(entry.getKey(), entry1.getValue());
                     }
                 }
-                String key = entry.getKey();
-                if(key.equalsIgnoreCase("localTime")){
-                    log.info("localTime : "+entry.getValue());
+                if ("originalData".equalsIgnoreCase(entry.getKey())) {
+                    params.put(entry.getKey(), origData);
                 }
+                String key = entry.getKey();
                 String value = entry.getValue();
                 req.saveValue(key, value);
             }
@@ -177,6 +223,40 @@ public class ParametrosOperacion {
         String sysTime = new SimpleDateFormat(format).format(new Date());
         writeOnFile(filename, sysTime);
         return sysTime;
+    }
+
+    public String read(String file, String lengh) {
+        String value = "";
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            // Apertura del fichero y creacion de BufferedReader para poder
+            // hacer una lectura comoda (disponer del metodo readLine()).
+            archivo = new File(file);
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+
+            // Lectura del fichero
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+                value = linea;
+            }
+        } catch (IOException e) {
+        } finally {
+            // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta 
+            // una excepcion.
+            try {
+                if (null != fr) {
+                    fr.close();
+                }
+            } catch (IOException e2) {
+            }
+        }
+
+        return value;
     }
 
     public String secuence(String filename, String length, String step) {

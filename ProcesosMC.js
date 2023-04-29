@@ -1,1 +1,1 @@
-{"workPath":"C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\transactionSetup\\host.js","workParent":"C:\\Repositorios\\Java\\UNS\\simulador-procesosmc\\transactionSetup"}
+{"workPath":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\transactionSetup\\host.js","workParent":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\transactionSetup"}
