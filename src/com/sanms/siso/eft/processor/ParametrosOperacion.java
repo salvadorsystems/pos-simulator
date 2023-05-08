@@ -123,14 +123,15 @@ public class ParametrosOperacion {
             if (value.contains("(")) {
                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
                 listParameters = parameters.split(";");
-                if (listParameters.length < 5) {
+                //if (listParameters.length < 5) {
+                if (listParameters.length > 1) {
                     switch (value.substring(value.indexOf(""), value.indexOf("("))) {
                         case "date":
-                            String txnDate = sysdate(listParameters[0], listParameters[1]);
+                            String txnDate = sysTime(listParameters[0], listParameters[1]);
                             map.put(nodeChildLevel.item(j).getNodeName(), txnDate);
                             break;
                         case "time":
-                            String txnTime = systime(listParameters[0], listParameters[1]);
+                            String txnTime = sysTime(listParameters[0], listParameters[1]);
                             map.put(nodeChildLevel.item(j).getNodeName(), txnTime);
                             break;
                         case "sequence":
@@ -139,13 +140,23 @@ public class ParametrosOperacion {
                             break;
                         case "read":
                             String read = read(listParameters[0], listParameters[1]);
+                            map.put(nodeChildLevel.item(j).getNodeName(), read);
                             break;
                         case "":
                             break;
                         default:
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1007.getMensaje() + nodeChildLevel.item(j).getNodeName());
+                } else {                    
+                    switch (value.substring(value.indexOf(""), value.indexOf("("))) {
+                        case "date":
+                            String txnDate = new SimpleDateFormat(listParameters[0]).format(new Date());
+                            map.put(nodeChildLevel.item(j).getNodeName(), txnDate);
+                            break;
+                        case "time":
+                            String txnTime = new SimpleDateFormat(listParameters[0]).format(new Date());
+                            map.put(nodeChildLevel.item(j).getNodeName(), txnTime);
+                            break;
+                    }
                 }
             } else {
                 map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
@@ -219,6 +230,12 @@ public class ParametrosOperacion {
         return sysDate;
     }
 
+    public String sysTime(String filename, String format) throws IOException, InterruptedException {
+        String sysTime = new SimpleDateFormat(format).format(new Date());
+        writeOnFile(filename, sysTime);
+        return sysTime;
+    }
+
     public String systime(String filename, String format) throws IOException, InterruptedException {
         String sysTime = new SimpleDateFormat(format).format(new Date());
         writeOnFile(filename, sysTime);
@@ -241,7 +258,7 @@ public class ParametrosOperacion {
             String linea;
             while ((linea = br.readLine()) != null) {
                 System.out.println(linea);
-                value = linea;
+                value = linea.substring(0, Integer.parseInt(lengh));
             }
         } catch (IOException e) {
         } finally {

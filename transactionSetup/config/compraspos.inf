@@ -35,9 +35,9 @@
 		<priBitmap>B23E842128E1901A</priBitmap>
 		<secBitmap>00000000100000BC</secBitmap>
 		<amount>000000002500</amount>
-		<txnDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</txnDate>
-		<localDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localdate;MMdd)</localDate>
-		<settlementDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</settlementDate>
+		<txnDate>date(MMdd)</txnDate>
+		<localDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</localDate>
+		<settlementDate>date(MMdd)</settlementDate>
 		<captureDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.capDate;MMdd)</captureDate>
 		<expirationDate>{EXP_DATE}</expirationDate>
 		<acqId>{BINADQ}</acqId>
@@ -61,8 +61,7 @@
 		<processingCode>{COMPRA_AHORRO}</processingCode>
 		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
 		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
-		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;4)</localTime>
-		<!--<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>-->
+		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;6)</localTime>
 		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
 		<addData>388829468          00000000</addData>
 		<pin>{PBF_TJTA}</pin>
@@ -76,7 +75,7 @@
 		<amount>000000002190</amount>
 		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
 		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
-		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;6)</localTime>
 		<expirationDate>{EXP_DATE_INT}</expirationDate>
 		<acqId>{BINADQ_INT}</acqId>
 		<track2>{TRACK_TJTA_INT}</track2>
@@ -94,10 +93,10 @@
 
 	<request token="ReqDE090OriginalData">
 		<msgType>0200</msgType>
-		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
-		<localDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localdate;MMdd)</localDate>
-		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
-		<captureDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.capDate;MMdd)</captureDate>
+		<referenceNumber>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12)</referenceNumber>
+		<localDate>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;4)</localDate>
+		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;6)</localTime>
+		<captureDate>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.capDate;4)</captureDate>
 		<localTimeExtra>00</localTimeExtra>
 		<filler>0000000000</filler>
 	</request>
@@ -110,10 +109,10 @@
 		<processingCode>{COMPRA_AHORRO}</processingCode>
 		<amount>000000002500</amount>
 		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ext.time;HHmmss)</txnTime>
-		<trace>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
-		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ext.localtime;HHmmss)</localTime>
+		<trace>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ext.time;4)</localTime>
 		<expirationDate>{EXP_DATE}</expirationDate>
-		<settlementDate>date(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.date;MMdd)</settlementDate>
+		<settlementDate>date(MMdd)</settlementDate>
 		<acqId>{BINADQ}</acqId>
 		<track2>{TRACK_TJTA}</track2>
 		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
@@ -131,22 +130,24 @@
 		<appData1>00083091412639800000000000000000000000</appData1>
 	</request>
 	
-	<request token="ReqExtornoCompraPOSInternacional">
+<request token="ReqExtornoCompraPOSInternacional">
 		<cabecera>ISO026000075</cabecera>
 		<priBitmap>B23E84012EE1801A</priBitmap>
 		<secBitmap>00000040100000BC</secBitmap>
 		<msgType>0420</msgType>
 		<processingCode>{COMPRA_AHORRO}</processingCode>
 		<amount>000000002190</amount>
-		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.time;HHmmss)</txnTime>
-		<trace>read(tmp/globalnet.trace;6;1)</trace>
-		<localTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.localtime;HHmmss)</localTime>
+		<txnTime>time(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ext.time;HHmmss)</txnTime>
+		<trace>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ext.time;4)</localTime>
 		<expirationDate>{EXP_DATE_INT}</expirationDate>
 		<acqId>{BINADQ_INT}</acqId>
 		<track2>{TRACK_TJTA_INT}</track2>
 		<referenceNumber>sequence(../simulador-procesosmc/transactionSetup/config/tmp/mastercard.ref;12;1)</referenceNumber>
+		<authCode>003295</authCode>
+		<respCode>68</respCode>
 		<addData>015908965          00000000</addData>
-		<posAditionalData>&amp; 0000900638! Q300058 840840840000000000000 000000002190000000000000000000000000! B000230 226 VISA230002                          0510                     0100 001000              203529830609203529                                                  840                                                                  0  ! C400012 001000000050! CH00040   000000000000               0          ! BY00060 2035298306092035290002                                      ! 2000022  468306709284063      ! 1700024 04683067092840630000 000! QM00100 1581217005100000000450724015908965        Y               05                                        </posAditionalData>
+		<posAditionalData>&amp; 0000700478! Q300058 604604604000000000000 000000000000000000000000000000000000! B000230 226 VISA230002                          0510                     0100 000000              126398830914126398                                    2502          604                                                                  4  ! C400012 001000000050! BY00060 1263988309141263980002                                      ! 2000022  388309533114191      ! 1700024 03883095331141910000 000</posAditionalData>
 		<pin>{PBF_TJTA_INT}</pin>
 		<acceptorId>{ACCEPTORID_INT}</acceptorId>
 		<acceptorName>{ACCEPTORNAME_INT}</acceptorName>
