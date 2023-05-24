@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -78,8 +77,6 @@ public class ParametrosOperacion {
 
         for (int i = 0; i < nodeParent.getLength(); i++) {
             Element eElementParent = (Element) nodeParent.item(i);
-            //System.out.println("--->> " + eElementParent.getAttribute("token").trim());
-            //String value = eElementParent.getAttribute("token").trim();
             listToken.add(eElementParent.getAttribute("token").trim());
         }
 
