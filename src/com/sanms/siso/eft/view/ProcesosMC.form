@@ -373,8 +373,8 @@
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="txtNumIns" pref="84" max="32767" attributes="0"/>
-                      <Component id="txtNumTxn" max="32767" attributes="0"/>
+                      <Component id="num_instances" pref="84" max="32767" attributes="0"/>
+                      <Component id="num_send_per_instance" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="CboxNumI" min="-2" pref="25" max="-2" attributes="0"/>
@@ -392,14 +392,14 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtNumIns" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="num_instances" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="CboxNumI" min="-2" pref="27" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtNumTxn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="num_send_per_instance" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -419,14 +419,14 @@
             <Property name="text" type="java.lang.String" value="Nro Instancias: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNumIns">
+        <Component class="javax.swing.JTextField" name="num_instances">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nro de Envios:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNumTxn">
+        <Component class="javax.swing.JTextField" name="num_send_per_instance">
         </Component>
         <Component class="javax.swing.JCheckBox" name="CboxNumI">
           <Events>

@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -202,6 +204,13 @@ public class InstanceManager extends Thread {
             ProcesarArchivos.setTable("txn",tableModelResponse, columnModelResponse, listFieldResponse,null,null);
         }
         tableModelStatus.setValueAt(diferencia, i, 8);
+    }
+    
+    public void  executeService(){
+        
+        ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(getInstance()));
+        
+        
     }
 
     public int execute(int count) {

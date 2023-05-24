@@ -27,8 +27,8 @@ public class ProxySocket {
     private String tnxName;
     private int connectSocket = -1;
     private Proxy proxy[];
-    private int numIns;
-    private int numTxn;
+    private int num_instances;
+    private int num_send_per_instance;
     private String apiHost;
     private String apiPort;
     private String parametersPath;
@@ -60,20 +60,20 @@ public class ProxySocket {
         this.tnxName = tnxName;
     }
 
-    public int getNumIns() {
-        return numIns;
+    public int getNum_instances() {
+        return num_instances;
     }
 
-    public void setNumIns(int numIns) {
-        this.numIns = numIns;
+    public void setNum_instances(int num_instances) {
+        this.num_instances = num_instances;
     }
 
-    public int getNumTxn() {
-        return numTxn;
+    public int getNum_send_per_instance() {
+        return num_send_per_instance;
     }
 
-    public void setNumTxn(int numTxn) {
-        this.numTxn = numTxn;
+    public void setNum_send_per_instance(int num_send_per_instance) {
+        this.num_send_per_instance = num_send_per_instance;
     }
 
     public String getApiHost() {
@@ -117,8 +117,8 @@ public class ProxySocket {
     }
 
     public int openSocketAny() {
-        proxy = new Proxy[getNumIns()];
-        for (int i = 0; i < getNumIns(); i++) {
+        proxy = new Proxy[getNum_instances()];
+        for (int i = 0; i < getNum_instances(); i++) {
             proxy[i] = new Proxy();
             connectSocket = proxy[i].setup(getApiHost(), getApiPort(), false, 30);
             if (connectSocket == 0) {
@@ -141,7 +141,7 @@ public class ProxySocket {
         ProcesosMC.btnConnect.setText("Conectar");
         ProcesosMC.lblTCPIP.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
-        for (int i = 0; i < getNumIns(); i++) {            
+        for (int i = 0; i < getNum_instances(); i++) {            
             proxy[i].release();
         }
         for (int i = 0; i < tableModelStatus.getRowCount(); i++) {
@@ -153,8 +153,8 @@ public class ProxySocket {
         tarea = new Worker(proxy, getParametersPath(), getTemplatesPath(), getListStream(), tableModelRequest, tableModelResponse, tableModelStatus,
                 columnModelRequest, columnModelResponse, columnModelStatus);
         tarea.setTxnName(getTnxName());
-        tarea.setNumIns(getNumIns());
-        tarea.setNumTxn(getNumTxn());
+        tarea.setNumIns(getNum_instances());
+        tarea.setNumTxn(getNum_send_per_instance());
         tarea.execute();
     }
 
