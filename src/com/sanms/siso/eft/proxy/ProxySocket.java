@@ -168,7 +168,7 @@ public class ProxySocket {
         tarea.generarReporteXLS();
     }
 
-    public void generateFullReport() throws FileNotFoundException, JRException {
+    public void generateFullReport() throws JRException, IOException {
         tarea.generateFullReport();
     }
 }
