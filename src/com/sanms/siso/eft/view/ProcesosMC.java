@@ -34,10 +34,10 @@ import org.apache.log4j.PropertyConfigurator;
 public final class ProcesosMC extends javax.swing.JFrame {
 
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ProcesosMC.class);
-    static String apiHost;
-    static String apiPort;
+    static String ipAdress;
+    static String PortHost;
     private int connectClient = -1;
-    private String ruta;
+    private String enviromentPath;
 
     private String txnName;
     ProxySocket socketProxy;
@@ -84,7 +84,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         imgConn = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        lblTCPIP = new javax.swing.JLabel();
+        ip_adress = new javax.swing.JLabel();
         lblPort = new javax.swing.JLabel();
         btnConnect = new javax.swing.JButton();
         btnSendMessage = new javax.swing.JButton();
@@ -262,7 +262,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
         jLabel8.setText("PUERTO :");
 
-        lblTCPIP.setText("0.0.0.0");
+        ip_adress.setText("0.0.0.0");
 
         lblPort.setText("00");
 
@@ -298,7 +298,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelConfiguration1Layout.createSequentialGroup()
-                                .addComponent(lblTCPIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(ip_adress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(20, 20, 20))
                             .addGroup(panelConfiguration1Layout.createSequentialGroup()
                                 .addComponent(lblPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -313,7 +313,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(lblTCPIP))
+                    .addComponent(ip_adress))
                 .addGap(18, 18, 18)
                 .addGroup(panelConfiguration1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -495,11 +495,11 @@ public final class ProcesosMC extends javax.swing.JFrame {
             try {
                 ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path).toString(), ArchivoHost.class);
                 if (processorHost != null) {
-                    apiHost = processorHost.getIpHost();
-                    apiPort = String.valueOf(processorHost.getPort());
-                    windowTCPIP.txtIpHost.setText(processorHost.getIpHost());
-                    windowTCPIP.txtPort.setText(String.valueOf(processorHost.getPort()));
-                    windowTCPIP.txtTimeout.setText(String.valueOf(processorHost.getTimeout()));
+                    ipAdress = processorHost.getIpHost();
+                    PortHost = String.valueOf(processorHost.getPort());
+                    windowTCPIP.ip_adress.setText(processorHost.getIpHost());
+                    windowTCPIP.port_host.setText(String.valueOf(processorHost.getPort()));
+                    windowTCPIP.time_out.setText(String.valueOf(processorHost.getTimeout()));
                 } else {
                     clearFields();
                 }
@@ -512,41 +512,42 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     private void clearFields() {
-        apiHost = "";
-        apiPort = "";        
-        windowTCPIP.txtIpHost.setText("");
-        windowTCPIP.txtPort.setText("");
-        windowTCPIP.txtTimeout.setText("");
+        ipAdress = "";
+        PortHost = "";
+        windowTCPIP.ip_adress.setText("");
+        windowTCPIP.port_host.setText("");
+        windowTCPIP.time_out.setText("");
     }
 
     private void initWorkSpace() {
         configuracionComponentes();
-        Gson gson = new Gson();
-        ArchivoRuta processorWorkPath;
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString())) {
-            processorWorkPath = gson.fromJson(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString(), ArchivoRuta.class);
-            File f = new File(processorWorkPath.getWorkPath());
-            if (f.exists()) {
-                windowTCPIP.path = processorWorkPath.getWorkPath();
-                txtPath.setText(processorWorkPath.getWorkPath());
-            }
-            f = new File(processorWorkPath.getWorkParent());
-            if (f.exists()) {
-                ruta = processorWorkPath.getWorkParent();
-                getconfigHost(processorWorkPath.getWorkPath());
-                ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
-                jListConfig.setSelectedIndex(0);
-                setListTxn();
-                jListTxn.setSelectedIndex(0);
-            } else {
-                txtPath.setText("Seleccionar Configuracion del cliente");
-            }
+            Gson gson = new Gson();
+            ArchivoRuta processorWorkPath;
+            if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString())) {
+                processorWorkPath = gson.fromJson(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString(), ArchivoRuta.class);
+                File f = new File(processorWorkPath.getWorkPath());
+                if (f.exists()) {
+                    windowTCPIP.path = processorWorkPath.getWorkPath();
+                    txtPath.setText(processorWorkPath.getWorkPath());
+                }
+                f = new File(processorWorkPath.getWorkParent());
+                if (f.exists()) {
+                    enviromentPath = processorWorkPath.getWorkParent();
+                    getconfigHost(processorWorkPath.getWorkPath());
+                    ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
+                    jListConfig.setSelectedIndex(0);
+                    setListTxn();
+                    jListTxn.setSelectedIndex(0);
+                } else {
+                    btnConnect.setEnabled(false);
+                    txtPath.setText("Seleccionar Configuracion del cliente");
+                }
 
-        } else {
-            clearFields();
-            log.info("Json tiene un formato invalido");
+            } else {
+                clearFields();
+                log.info("Json tiene un formato invalido");
+            }
         }
-    }
 
     private void configuracionComponentes() {
         imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
@@ -557,55 +558,10 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jMenuXLS.setEnabled(false);
         num_instances.setText("1");
         num_send_per_instance.setText("1");
-    }
-
-    private void BtnOpenCloseSocketActionPerformed(java.awt.event.ActionEvent evt) {
-        if (!apiHost.isEmpty()) {
-            if (validateField(num_instances.getText()) && validateField(num_send_per_instance.getText())) {
-                if (validateNumber(num_instances.getText()) && validateNumber(num_send_per_instance.getText())) {
-                    try {
-                        connectClient++;
-                        if (connectClient == 0) {
-                            socketProxy.setApiHost(apiHost);
-                            socketProxy.setApiPort(apiPort);
-                            socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
-                            socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
-                            btnSendMessage.setEnabled(true);
-                            if (socketProxy.openSocketAny() != 0) {
-                                connectClient = -1;
-                            }
-                        } else {
-                            socketProxy.closeSocket();
-                            btnSendMessage.setEnabled(false);
-                            connectClient = -1;
-                            ProcesosMC.jMenuPDF.setEnabled(false);
-                            ProcesosMC.jMenuXLS.setEnabled(false);
-                        }
-                    } catch (NumberFormatException e) {
-                        log.info("error: " + e);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1002.getMensaje());
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
         }
-    }
 
     private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {
         windowTCPIP.setVisible(true);
-    }
-
-    private void BtnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        socketProxy.setTnxName(txnName);
-        socketProxy.setListStream(listStreams);
-        socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
-        socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
-        socketProxy.enviarMensajeSocket();
     }
 
     private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {
@@ -638,7 +594,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             jf.showOpenDialog(this);
             File seleccion_ruta = jf.getSelectedFile();
             if (seleccion_ruta != null) {
-                ruta = seleccion_ruta.getParent();
+                enviromentPath = seleccion_ruta.getParent();
                 ProcesarArchivos.listarArchivosConfiguracion(seleccion_ruta.getParent());
                 jListConfig.setSelectedIndex(0);
                 setListTxn();
@@ -701,14 +657,14 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         // TODO add your handling code here:
-        if (!apiHost.isEmpty()) {
+        if (!ipAdress.isEmpty()) {
             if (validateField(num_instances.getText()) && validateField(num_send_per_instance.getText())) {
                 if (validateNumber(num_instances.getText()) && validateNumber(num_send_per_instance.getText())) {
                     try {
                         connectClient++;
                         if (connectClient == 0) {
-                            socketProxy.setApiHost(apiHost);
-                            socketProxy.setApiPort(apiPort);
+                            socketProxy.setApiHost(ipAdress);
+                            socketProxy.setApiPort(PortHost);
                             socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
                             socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
                             btnSendMessage.setEnabled(true);
@@ -738,10 +694,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void btnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMessageActionPerformed
         // TODO add your handling code here:
+        socketProxy.setup(enviromentPath,archivoConfiguracion.getWorkPath(),archivoConfiguracion.getParametersFile(),archivoConfiguracion.getTemplatesFile());
         socketProxy.setTnxName(txnName);
-        socketProxy.setListStream(listStreams);
-        socketProxy.setParametersPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getParametersFile());
-        socketProxy.setTemplatesPath(ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getTemplatesFile());
+        socketProxy.setListStream(listStreams);        
         socketProxy.enviarMensajeSocket();
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
@@ -770,12 +725,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }
 
     public void setListTxn() {
-        String rutaFileConfig = ruta + "\\" + jListConfig.getSelectedValue();
+        String rutaFileConfig = enviromentPath + "\\" + jListConfig.getSelectedValue();
         Gson gson = new Gson();
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString())) {
             archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString(), ArchivoConfiguracion.class);
             if (archivoConfiguracion != null) {
-                String rutaFileOpe = ruta + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
+                String rutaFileOpe = enviromentPath + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
                 if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString())) {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
@@ -849,6 +804,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JButton btnSendMessage;
     private javax.swing.JButton btnTCPIP;
     public static javax.swing.JLabel imgConn;
+    public static javax.swing.JLabel ip_adress;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -878,7 +834,6 @@ public final class ProcesosMC extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     public static javax.swing.JLabel lblPort;
-    public static javax.swing.JLabel lblTCPIP;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JTextField num_instances;
     private javax.swing.JTextField num_send_per_instance;

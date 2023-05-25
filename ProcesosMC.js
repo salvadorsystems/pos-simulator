@@ -1,1 +1,1 @@
-{"workPath":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\transactionSetup\\host.js","workParent":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\transactionSetup"}
+{"workPath":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\mastercard-setup\\host.js","workParent":"D:\\ARCHIVOS UNS\\Fuentes\\simulador-procesosmc\\mastercard-setup"}

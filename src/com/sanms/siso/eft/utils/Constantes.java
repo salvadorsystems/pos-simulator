@@ -12,9 +12,7 @@ public class Constantes {
 
     public Constantes() {
     }
-    
-    public static final String BASE_URL_CFG = "../simulador-procesosmc/MastercCard/config/";
-    public static final String BASE_URL_TMP = "../simulador-procesosmc/MastercCard/config/tmp/";
+        
     public static final String RUTA_HOST_CONFIG = "../simulador-procesosmc/MastercCard/host.js";
     public static final String RUTA_HOST = "../simulador-procesosmc/ProcesosMC.js";
     public static final String RUTA_IMG_OFF = "../img/img1.png";

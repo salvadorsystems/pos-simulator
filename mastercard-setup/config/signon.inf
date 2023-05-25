@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<request token="Macros">
+		<!--Parametros Trabajo-->
+		<tarjeta>4551039021526960</tarjeta>
+		<TRACK>4551039021526960=13051261878796801000</TRACK>
+		<CTA_CARGO>1234567890</CTA_CARGO>
+		<BINADQ>492112</BINADQ>
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<PUNTO_SERVICIO>211201213144</PUNTO_SERVICIO>
+		<COMERCIO>000000000000020</COMERCIO>
+		<TIPO_CAJERO>6011</TIPO_CAJERO>
+		<DATOS_SEGURIDAD>2202100002000000</DATOS_SEGURIDAD>
+		<!-- Seguridad-->
+		<ZONA>101100</ZONA>
+		<PBF_TJTA>7FE214985D66F1DB</PBF_TJTA>
+		<PBF_TJTA_NUEVO>C79C1EFF949F2566</PBF_TJTA_NUEVO>
+		<PBF_TJTA_NULO>2D56C8C69900A4EF</PBF_TJTA_NULO>
+	</request>
+	<request token="ReqAdministrativo">
+		<msgType>9100</msgType>
+	</request>
+	<request token="ReqSignOn">
+		<msgType>9100</msgType>
+	</request>
+	
+</data>

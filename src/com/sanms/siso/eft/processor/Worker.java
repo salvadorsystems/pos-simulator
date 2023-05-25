@@ -32,6 +32,7 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     private Proxy[] listProxy;
     private String parametrosPath;
     private String templatePath;
+    private String configPath;
     private List<Stream> listStream;
     private List<String> listThreadId;
     private List<Integer> listSocketId;
@@ -118,16 +119,25 @@ public class Worker extends SwingWorker<Integer, Object[]> {
         this.listStream = listStream;
     }
 
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }        
+
     @Override
     protected Integer doInBackground() throws Exception {
         listThreadId = new ArrayList<>();
         listSocketId = new ArrayList<>();
         execute = new InstanceManager[getNumIns()];
         publish();
-        for (int i = 0; i < getNumIns(); i++) {
+         for (int i = 0; i < getNumIns(); i++) {
             execute[i] = new InstanceManager(i, "[Hilo " + i + "]", getParametrosPath(), getTemplatePath(),
                     getListStream(), tableModelRequest, tableModelResponse, tableModelStatus,
                     columnModelRequest, columnModelResponse, columnModelStatus);
+            execute[i].setConfigPath(getConfigPath());
             execute[i].setTxnName(getTxnName());
             execute[i].setNumTxn(getNumTxn());
             execute[i].setProxy(listProxy[i]);
@@ -136,8 +146,8 @@ public class Worker extends SwingWorker<Integer, Object[]> {
             execute[i].start();
             listThreadId.add("" + execute[i].getId());
             listSocketId.add(listProxy[i].hashCode());
-            posIns = i;
-        }
+            posIns = i; 
+         }
 
         for (int i = 0; i < getNumIns(); i++) {
             do {

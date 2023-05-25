@@ -1,0 +1,13 @@
+{
+    "workPath": "config",
+    "templatesFile": "templates.config",
+    "generatorsFile": "compraspos.json",
+    "parametersFile": "compraspos.inf",
+    "logLevel": "D",
+    "prefix": "DYN_",
+    "tcpFile": "host.cfg",
+    "securityFile": "seguridad.cfg",
+    "statisticFile": "estadistica.cfg",
+    "reportFlag": "Y",
+    "reportPath": "C:\\SISO\\txnclient\\BBVA\\log\\TXNClient\\Report"
+}

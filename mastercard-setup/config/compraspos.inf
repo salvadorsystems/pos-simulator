@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<request token="Macros">
+		<!--Parametros Trabajo-->
+		<COMPRA_AHORRO>011000</COMPRA_AHORRO> 
+		<TRACK_TJTA>4593340002073059=21042261059813600000</TRACK_TJTA>
+		<TRACK_TJTA_INT>4593340002073059=21042261059813600000</TRACK_TJTA_INT>
+		<EXP_DATE>2104</EXP_DATE>
+		<EXP_DATE_INT>2104</EXP_DATE_INT>
+		<PBF_TJTA>01A5A470178C2C4F</PBF_TJTA>
+		<PBF_TJTA_INT>01A5A470178C2C4F</PBF_TJTA_INT>
+		<BINADQ>491955</BINADQ>
+		<BINADQ_INT>450724</BINADQ_INT>
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<PUNTO_SERVICIO>511201213144</PUNTO_SERVICIO>
+		<COMERCIO>000000000000200</COMERCIO>
+		<TERMINAL>25334785</TERMINAL>
+		<ACCEPTORID>388829468      </ACCEPTORID>
+		<ACCEPTORID_INT>388829468      </ACCEPTORID_INT>
+		<ACCEPTORNAME>STARBUCMS 63 RP CCIVICLIMA            PE</ACCEPTORNAME>
+		<ACCEPTORNAME_INT>MERA EL DORADO COLOMB011001BOGOTA     CO</ACCEPTORNAME_INT>
+		<POSDATA>49305600000000000000</POSDATA>
+		<POSDATA_INT>20352900000000000000</POSDATA_INT>
+		<TERMINALDATA>VISAVISA+0000000</TERMINALDATA>
+		<CARDAUTHDATA>CICA000000000000000</CARDAUTHDATA>
+		<TIPO_CAJERO>6011</TIPO_CAJERO>
+		<DATOS_SEGURIDAD>2202100002000000</DATOS_SEGURIDAD>
+		<CTA_DEBITO>108472321000000485</CTA_DEBITO>
+		<CTA_2/>
+	</request>
+	<request token="ReqFinanciero">
+		<cabecera>ISO026000070</cabecera>
+		<msgType>0200</msgType>
+		<priBitmap>B23E842128E1901A</priBitmap>
+		<secBitmap>00000000100000BC</secBitmap>
+		<amount>000000002500</amount>
+		<txnDate>date(MMdd)</txnDate>
+		<localDate>date(tmp/mastercard.date;MMdd)</localDate>
+		<settlementDate>date(MMdd)</settlementDate>
+		<captureDate>date(tmp/mastercard.capDate;MMdd)</captureDate>
+		<expirationDate>{EXP_DATE}</expirationDate>
+		<acqId>{BINADQ}</acqId>
+		<track2>{TRACK_TJTA}</track2>
+		<terminal>{TERMINAL}</terminal>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<currencyCode>{SOLES}</currencyCode>
+		<terminalData>{TERMINALDATA}</terminalData>
+		<cardAuthData>{CARDAUTHDATA}</cardAuthData>
+		<posCaptureCode>051</posCaptureCode>
+		<authIdRespLength>6</authIdRespLength>
+		<receivingInstCode>81080000000</receivingInstCode>
+		<posData>{POSDATA}</posData>
+		<depositoryTape>000000000</depositoryTape>
+		<statePrintData>VDVISA000000</statePrintData>
+		<appData1>00083062149305600000000000000000000000</appData1>
+	</request>
+
+	<request token="ReqCompraPOSNacional">
+		<processingCode>{COMPRA_AHORRO}</processingCode>
+		<txnTime>time(tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.time;6)</localTime>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<addData>388829468          00000000</addData>
+		<pin>{PBF_TJTA}</pin>
+		<posAditionalData>&amp; 0000900638! Q300058 604604604000000000000 000000000000000000000000000000000000! B000230 226 VISA230002                          0510                     0100 000000              493056830621493056                                                  604                                                                  4  ! C400012 001000000050! CH00040   000000000000               0          ! BY00060 4930568306214930560002                                      ! 2000022  388306791568124      ! 1700024 03883067915681240000 000! QM00100 1581460405100000000491955388829468        Y               45                                        </posAditionalData>
+		<posAddress>000000000000000000  </posAddress>
+		<accountIde1>{CTA_DEBITO}</accountIde1>
+		<accountIde2/>
+	</request>
+	<request token="ReqCompraPOSInternacional">
+		<processingCode>{COMPRA_AHORRO}</processingCode>
+		<amount>000000002190</amount>
+		<txnTime>time(tmp/mastercard.time;HHmmss)</txnTime>
+		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.time;6)</localTime>
+		<expirationDate>{EXP_DATE_INT}</expirationDate>
+		<acqId>{BINADQ_INT}</acqId>
+		<track2>{TRACK_TJTA_INT}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID_INT}</acceptorId>
+		<acceptorName>{ACCEPTORNAME_INT}</acceptorName>
+		<addData>015908965          00000000</addData>
+		<posAddress>000000000000000000</posAddress>
+		<posAditionalData>&amp; 0000900638! Q300058 840840840000000000000 000000002190000000000000000000000000! B000230 226 VISA230002                          0510                     0100 001000              203529830609203529                                                  840                                                                  0  ! C400012 001000000050! CH00040   000000000000               0          ! BY00060 2035298306092035290002                                      ! 2000022  468306709284063      ! 1700024 04683067092840630000 000! QM00100 1581217005100000000450724015908965        Y               05                                        </posAditionalData>
+		<posData>{POSDATA_INT}</posData>
+		<appData1>00083060920352900000000000000000000000</appData1>
+		<pin>{PBF_TJTA_INT}</pin>
+		<currencyCode>{DOLARES}</currencyCode>
+	</request>
+
+	<request token="ReqDE090OriginalData">
+		<msgType>0200</msgType>
+		<referenceNumber>read(tmp/mastercard.ref;12)</referenceNumber>
+		<localDate>read(tmp/mastercard.date;4)</localDate>
+		<localTime>read(tmp/mastercard.time;6)</localTime>
+		<captureDate>read(tmp/mastercard.capDate;4)</captureDate>
+		<localTimeExtra>00</localTimeExtra>
+		<filler>0000000000</filler>
+	</request>
+
+	<request token="ReqExtornoCompraPOSNacional">
+		<cabecera>ISO026000075</cabecera>
+		<priBitmap>B23E84012EE1801A</priBitmap>
+		<secBitmap>00000040100000BC</secBitmap>
+		<msgType>0420</msgType>
+		<processingCode>{COMPRA_AHORRO}</processingCode>
+		<amount>000000002500</amount>
+		<txnTime>time(tmp/mastercard.ext.time;HHmmss)</txnTime>
+		<trace>read(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.ext.time;4)</localTime>
+		<expirationDate>{EXP_DATE}</expirationDate>
+		<settlementDate>date(MMdd)</settlementDate>
+		<acqId>{BINADQ}</acqId>
+		<track2>{TRACK_TJTA}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<authCode>003295</authCode>
+		<respCode>68</respCode>
+		<addData>534525004          00000000</addData>
+		<terminalData>{TERMINALDATA}</terminalData>
+		<posAditionalData>&amp; 0000700478! Q300058 604604604000000000000 000000000000000000000000000000000000! B000230 226 VISA230002                          0510                     0100 000000              126398830914126398                                    2502          604                                                                  4  ! C400012 001000000050! BY00060 1263988309141263980002                                      ! 2000022  388309533114191      ! 1700024 03883095331141910000 000</posAditionalData>
+		<pin>{PBF_TJTA}</pin>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<originalData>[ReqDE090OriginalData]</originalData>
+		<posAddress>000000000000000000  </posAddress>
+		<posData>{POSDATA}</posData>
+		<appData1>00083091412639800000000000000000000000</appData1>
+	</request>
+	
+<request token="ReqExtornoCompraPOSInternacional">
+		<cabecera>ISO026000075</cabecera>
+		<priBitmap>B23E84012EE1801A</priBitmap>
+		<secBitmap>00000040100000BC</secBitmap>
+		<msgType>0420</msgType>
+		<processingCode>{COMPRA_AHORRO}</processingCode>
+		<amount>000000002190</amount>
+		<txnTime>time(tmp/mastercard.ext.time;HHmmss)</txnTime>
+		<trace>read(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.ext.time;4)</localTime>
+		<expirationDate>{EXP_DATE_INT}</expirationDate>
+		<acqId>{BINADQ_INT}</acqId>
+		<track2>{TRACK_TJTA_INT}</track2>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<authCode>003295</authCode>
+		<respCode>68</respCode>
+		<addData>015908965          00000000</addData>
+		<posAditionalData>&amp; 0000700478! Q300058 604604604000000000000 000000000000000000000000000000000000! B000230 226 VISA230002                          0510                     0100 000000              126398830914126398                                    2502          604                                                                  4  ! C400012 001000000050! BY00060 1263988309141263980002                                      ! 2000022  388309533114191      ! 1700024 03883095331141910000 000</posAditionalData>
+		<pin>{PBF_TJTA_INT}</pin>
+		<acceptorId>{ACCEPTORID_INT}</acceptorId>
+		<acceptorName>{ACCEPTORNAME_INT}</acceptorName>
+		<originalData>[ReqDE090OriginalData]</originalData>
+		<posAddress>000000000000000000  </posAddress>
+		<posData>{POSDATA_INT}</posData>
+		<appData1>00083060920352900000000000000000000000</appData1>
+		<currencyCode>{DOLARES}</currencyCode>
+	</request>
+
+</data>

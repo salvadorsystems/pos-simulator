@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<request token="Macros">
+		<!-- Parametros de Trabajo para los Req* -->		
+		<MSGTYPE>0200</MSGTYPE>			
+		<PRI_BITMAP>E23A440188E08002</PRI_BITMAP>		
+		<SEC_BITMAP>0000000004000100</SEC_BITMAP>
+		<!-- Parametros de Trabajo generales en Req* & ReqExt* -->
+		<NRO_TARJETA>4593340002073059</NRO_TARJETA>
+		<VERIFICACION_CUENTA>430000</VERIFICACION_CUENTA>
+		<POS_ENTRY_CODE>051</POS_ENTRY_CODE>
+		<ACQ_ID>00000007963</ACQ_ID>
+		<FWD_ID>00000040404</FWD_ID>
+		<SOLES>604</SOLES>
+		<DOLARES>840</DOLARES>
+		<TERMINAL>22340880</TERMINAL>
+		<MERCH_TYPE>5942</MERCH_TYPE>
+		<!-- Parametros de Trabajo segun se necesite -->
+		<ACCEPTORID>299999490000</ACCEPTORID>
+		<ACCEPTORNAME>PROCESOS MC PRUEBAS SA</ACCEPTORNAME>
+		<!-- Parametros de Trabajo para los ReqExt* -->
+		<EXTORNO_MSGTYPE></EXTORNO_MSGTYPE>
+		<PRI_BITMAP_EXTORNO></PRI_BITMAP_EXTORNO>
+		<SEC_BITMAP_EXTORNO></SEC_BITMAP_EXTORNO>
+		<RESP_CODE>00</RESP_CODE>
+		<CTA_DEBITO>108012321000349631  </CTA_DEBITO>
+	</request>
+	<request token="ReqFinanciero">
+		<pan>{NRO_TARJETA}</pan>	
+		<txnDate>dateMMDD()</txnDate>
+		<txnTime>timeHHMMSS(tmp/mastercard.time)</txnTime>
+		<trace>sequence(tmp/mastercard.trace;6;1)</trace>
+		<localTime>read(tmp/mastercard.time;A;4)</localTime>
+		<localDate>dateMMDD()</localDate>
+		<merchantType>{MERCH_TYPE}</merchantType>			
+		<posEntryMode>{POS_ENTRY_CODE}</posEntryMode>
+		<acqId>{ACQ_ID}</acqId>
+		<fwdId>{FWD_ID}</fwdId>
+		<terminal>{TERMINAL}</terminal>
+		<currencyCode>{SOLES}</currencyCode>
+		<accountIde1>{CTA_DEBITO}</accountIde1>
+		<addData></addData>
+		<custInfoResponse>530150299999429900401</custInfoResponse>
+		<dateSettlement>dateMMDD()</dateSettlement>
+	</request>
+	<request token="B120DataConsultaDeudaDNI">
+
+	</request>
+	<request token="ReqVerificacionCuenta">
+		<msgType>{MSGTYPE}</msgType>
+		<priBitmap>{PRI_BITMAP}</priBitmap>
+		<secBitmap>{SEC_BITMAP}</secBitmap>	
+		<processingCode>{VERIFICACION_CUENTA}</processingCode>
+		<referenceNumber>sequence(tmp/mastercard.ref;12;1)</referenceNumber>
+		<acceptorId>{ACCEPTORID}</acceptorId>
+		<acceptorName>{ACCEPTORNAME}</acceptorName>
+		<networkData>CC2000354776</networkData>
+	</request>	
+</data>

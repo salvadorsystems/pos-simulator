@@ -84,7 +84,7 @@ public class ParametrosOperacion {
     }
 
     @SuppressWarnings("null")
-    private HashMap<String, String> obtenerParametros(String txnName) throws ParserConfigurationException {
+    private HashMap<String, String> obtenerParametros(String txnName, String configPath) throws ParserConfigurationException {
         HashMap<String, String> map = new HashMap<>();
         File file = new File(rutaParametros);
         DocumentBuilder dcb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -104,14 +104,14 @@ public class ParametrosOperacion {
                     if (nodeChildLevel.item(j).getNodeName().equals("#comment") || nodeChildLevel.item(j).getNodeName().equals("#text")) {
                         continue;
                     }
-                    map.putAll(registroDatosTransaccion(nodeChildLevel, j));
+                    map.putAll(registroDatosTransaccion(nodeChildLevel, j, configPath));
                 }
             }
         }
         return map;
     }
 
-    private HashMap<String, String> registroDatosTransaccion(NodeList nodeChildLevel, int j) {
+    private HashMap<String, String> registroDatosTransaccion(NodeList nodeChildLevel, int j, String configPath) {
         HashMap<String, String> map = new HashMap<>();
         String value = nodeChildLevel.item(j).getTextContent();
         String parameters;
@@ -119,24 +119,23 @@ public class ParametrosOperacion {
         try {
             if (value.contains("(")) {
                 parameters = value.substring(value.indexOf("(") + 1, value.indexOf(")"));
-                listParameters = parameters.split(";");
-                //if (listParameters.length < 5) {
+                listParameters = parameters.split(";");                
                 if (listParameters.length > 1) {
                     switch (value.substring(value.indexOf(""), value.indexOf("("))) {
                         case "date":
-                            String txnDate = sysTime(listParameters[0], listParameters[1]);
+                            String txnDate = sysTime(configPath+"/"+listParameters[0], listParameters[1]);
                             map.put(nodeChildLevel.item(j).getNodeName(), txnDate);
                             break;
                         case "time":
-                            String txnTime = sysTime(listParameters[0], listParameters[1]);
+                            String txnTime = sysTime(configPath+"/"+listParameters[0], listParameters[1]);
                             map.put(nodeChildLevel.item(j).getNodeName(), txnTime);
                             break;
                         case "sequence":
-                            String trace = secuence(listParameters[0], listParameters[1], listParameters[2]);
+                            String trace = secuence(configPath+"/"+listParameters[0], listParameters[1], listParameters[2]);
                             map.put(nodeChildLevel.item(j).getNodeName(), trace);
                             break;
                         case "read":
-                            String read = read(listParameters[0], listParameters[1]);
+                            String read = read(configPath+"/"+listParameters[0], listParameters[1]);
                             map.put(nodeChildLevel.item(j).getNodeName(), read);
                             break;
                         case "":
@@ -166,10 +165,10 @@ public class ParametrosOperacion {
     }
 
     @SuppressWarnings("null")
-    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate) throws FileNotFoundException {
+    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate, String configPath) throws FileNotFoundException {
         HashMap<String, String> hMac = null;
         try {
-            hMac = obtenerParametros("Macros");
+            hMac = obtenerParametros("Macros",configPath);
         } catch (ParserConfigurationException ex) {
             log.error(ParametrosOperacion.class
                     .getName() + "->" + ex);
@@ -187,14 +186,14 @@ public class ParametrosOperacion {
                 if (stream.getAlias().contains("OriginalData")) {
                     reqOrig = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
                     origData = "";
-                    hmReq = obtenerParametros(stream.getAlias());
+                    hmReq = obtenerParametros(stream.getAlias(), configPath);
                     for (Map.Entry<String, String> entry : hmReq.entrySet()) {
                         reqOrig.saveValue(entry.getKey(), entry.getValue());
                         origData = reqOrig.generateStream();
                     }
 
                 } else {
-                    hmReq = obtenerParametros(stream.getAlias());
+                    hmReq = obtenerParametros(stream.getAlias(), configPath);
                 }
 
             } catch (ParserConfigurationException ex) {

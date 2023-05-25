@@ -51,6 +51,7 @@ public class InstanceManager extends Thread {
     private int i;
     private String template;
     private String rutaTemplate;
+    private String configPath;
 
     private Proxy proxy;
     private List<String> listThreadId;
@@ -167,10 +168,18 @@ public class InstanceManager extends Thread {
         this.listSocketId = listSocketId;
     }
 
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }
+       
     @Override
     public void run() {
         for (int count = 0; count < getNumTxn(); count++) {
-            if (execute(count) == 0) {
+            if (execute(count, getConfigPath()) == 0) {
                 try {
                     ProcesosMC.jMenuPDF.setEnabled(true);
                     ProcesosMC.jMenuXLS.setEnabled(true);
@@ -213,16 +222,18 @@ public class InstanceManager extends Thread {
         
     }
 
-    public int execute(int count) {
+    public int execute(int count, String configPath) {
         String plantilla = null;
         String request = null;
         ParametrosOperacion parametrosOperacion = new ParametrosOperacion(getRutaParametros());
         Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(getRutaTemplate());
         Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(getRutaTemplate());
-        Template template;
+        Template templates;
         try {
-            template = parametrosOperacion.obtenerParametrosCmpl(getListStream(), getRutaTemplate());
-            request = template.generateStream();
+            /**Prepara la trama**/
+            templates = parametrosOperacion.obtenerParametrosCmpl(getListStream(), getRutaTemplate(), configPath);
+            /**Generar Requerimiento*/
+            request = templates.generateStream();
             log.info("SRQ : " + "[" + request + "]");
         } catch (FileNotFoundException ex) {
             log.error(ex);
@@ -232,10 +243,10 @@ public class InstanceManager extends Thread {
             plantilla = stream.getTemplate();
         }
         ProcesosMC.txtRequerimiento.setText(request);
-        template = TemplateTool.createTemplate(templateMapList, plantilla);
-        template.saveFromBuffer(request);
+        templates = TemplateTool.createTemplate(templateMapList, plantilla);
+        templates.saveFromBuffer(request);
 
-        listFieldRequest = template.getFieldList();
+        listFieldRequest = templates.getFieldList();
         try {
             timeInit = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").parse(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS").format(LocalDateTime.now())).getTime();
         } catch (ParseException ex) {
@@ -244,12 +255,13 @@ public class InstanceManager extends Thread {
         tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 4);
         tableModelStatus.setValueAt(count + 1, i, 5);
         ProxyResult apiResult = new ProxyResult();
+        /**Generar Respuesta**/
         ProxyCommResult resultProxy = getProxy().process(request, apiResult);
         log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
 
-        template = TemplateTool.createTemplate(templateMapListResponse, plantilla);
-        template.saveFromBuffer(resultProxy.getStringResponse());
-        listFieldResponse = template.getFieldList();
+        templates = TemplateTool.createTemplate(templateMapListResponse, plantilla);
+        templates.saveFromBuffer(resultProxy.getStringResponse());
+        listFieldResponse = templates.getFieldList();
 
         ProcesosMC.txtRespuesta.setText(resultProxy.getStringResponse());
         return resultProxy.getResult();

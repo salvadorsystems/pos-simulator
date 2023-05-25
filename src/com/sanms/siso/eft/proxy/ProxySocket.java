@@ -1,12 +1,10 @@
 package com.sanms.siso.eft.proxy;
 
-import com.sanms.siso.eft.instance.InstanceManager;
 import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.eft.view.ProcesosMC;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -33,6 +31,7 @@ public class ProxySocket {
     private String apiPort;
     private String parametersPath;
     private String templatesPath;
+    private String configPath;
     private List<Stream> listStream;
     private final DefaultTableModel tableModelRequest;
     private final DefaultTableModel tableModelResponse;
@@ -50,6 +49,12 @@ public class ProxySocket {
         this.columnModelRequest = columnModelRequest;
         this.columnModelResponse = columnModelResponse;
         this.columnModelStatus = columnModelStatus;
+    }
+
+    public void setup(String enviromentPath, String workPath, String parametersPath, String templatesPath) {
+        this.configPath = enviromentPath + "\\" + workPath;
+        this.parametersPath = configPath + "\\" + parametersPath;
+        this.templatesPath = configPath + "\\" + templatesPath;
     }
 
     public String getTnxName() {
@@ -116,6 +121,14 @@ public class ProxySocket {
         this.templatesPath = templatesPath;
     }
 
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }
+
     public int openSocketAny() {
         proxy = new Proxy[getNum_instances()];
         for (int i = 0; i < getNum_instances(); i++) {
@@ -123,13 +136,13 @@ public class ProxySocket {
             connectSocket = proxy[i].setup(getApiHost(), getApiPort(), false, 30);
             if (connectSocket == 0) {
                 ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
-                ProcesosMC.btnConnect.setText("Desconectar");                
-                ProcesosMC.lblTCPIP.setText(getApiHost());
+                ProcesosMC.btnConnect.setText("Desconectar");
+                ProcesosMC.ip_adress.setText(getApiHost());
                 ProcesosMC.lblPort.setText(getApiPort());
             } else {
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
-                        "Error de conexión", JOptionPane.ERROR_MESSAGE);               
+                        "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 break;
             }
         }
@@ -139,9 +152,9 @@ public class ProxySocket {
     public void closeSocket() {
         ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
         ProcesosMC.btnConnect.setText("Conectar");
-        ProcesosMC.lblTCPIP.setText("0.0.0.0");
+        ProcesosMC.ip_adress.setText("0.0.0.0");
         ProcesosMC.lblPort.setText("00");
-        for (int i = 0; i < getNum_instances(); i++) {            
+        for (int i = 0; i < getNum_instances(); i++) {
             proxy[i].release();
         }
         for (int i = 0; i < tableModelStatus.getRowCount(); i++) {
@@ -152,6 +165,7 @@ public class ProxySocket {
     public void enviarMensajeSocket() {
         tarea = new Worker(proxy, getParametersPath(), getTemplatesPath(), getListStream(), tableModelRequest, tableModelResponse, tableModelStatus,
                 columnModelRequest, columnModelResponse, columnModelStatus);
+        tarea.setConfigPath(getConfigPath());
         tarea.setTxnName(getTnxName());
         tarea.setNumIns(getNum_instances());
         tarea.setNumTxn(getNum_send_per_instance());
