@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -46,6 +47,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     Operacion operacion;
     List<Stream> listStreams;
     List<Generator> listGenerator;
+    DefaultListModel model = (DefaultListModel) jListTxn.getModel();
 
     public ProcesosMC() {
         initComponents();
@@ -536,7 +538,8 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     getconfigHost(processorWorkPath.getWorkPath());
                     ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
                     jListConfig.setSelectedIndex(0);
-                    setListTxn();
+                    
+                    setListTxn();                    
                     jListTxn.setSelectedIndex(0);
                 } else {
                     btnConnect.setEnabled(false);
@@ -734,18 +737,20 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString())) {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
-                } else {
+                    jListTxn.setSelectedIndex(0);
+                    setListtxn2();
+                    btnConnect.setEnabled(true);
+                } else {                    
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
             } else {
                 clearFields();
+                btnConnect.setEnabled(false);
             }
         } else {
             JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
             clearFields();
         }
-        jListTxn.setSelectedIndex(0);
-        setListtxn2();
     }
 
     public boolean validateField(String number) {
