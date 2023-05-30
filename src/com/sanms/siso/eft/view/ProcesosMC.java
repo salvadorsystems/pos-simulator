@@ -47,7 +47,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     Operacion operacion;
     List<Stream> listStreams;
     List<Generator> listGenerator;
-    DefaultListModel model = (DefaultListModel) jListTxn.getModel();
+    //DefaultListModel model = (DefaultListModel) jListTxn.getModel();
 
     public ProcesosMC() {
         initComponents();
