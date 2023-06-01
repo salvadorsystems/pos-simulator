@@ -32,13 +32,13 @@ import org.apache.log4j.PropertyConfigurator;
  * @author salvador
  */
 public final class ProcesosMC extends javax.swing.JFrame {
-    
+
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ProcesosMC.class);
     static String ipAdress;
     static String PortHost;
     private int connectClient = -1;
     private String enviromentPath;
-    
+
     private String txnName;
     ProxySocket socketProxy;
     ViewHost windowTCPIP = new ViewHost(this, true);
@@ -47,15 +47,15 @@ public final class ProcesosMC extends javax.swing.JFrame {
     List<Stream> listStreams;
     List<Generator> listGenerator;
     ArchivoRuta processorWorkPath;
-    
+
     public ProcesosMC() {
         initComponents();
         this.socketProxy = new ProxySocket((DefaultTableModel) jTable1.getModel(), (DefaultTableModel) jTable2.getModel(),
                 (DefaultTableModel) jTable3.getModel(), jTable1.getColumnModel(), jTable2.getColumnModel(),
                 jTable3.getColumnModel());
-        initWorkSpace();
+        initConfig();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -489,7 +489,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         ImageIcon icono = new ImageIcon(icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));
         return icono;
     }
-    
+
     private void getconfigHost(String path) {
         Gson gson = new Gson();
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(path).toString())) {
@@ -502,36 +502,24 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     windowTCPIP.port_host.setText(String.valueOf(processorHost.getPort()));
                     windowTCPIP.time_out.setText(String.valueOf(processorHost.getTimeout()));
                 } else {
-                    clearFields();                    
+                    initComponent();
                     txtPath.setText(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1008.getMensaje());
                 }
             } catch (com.google.gson.JsonSyntaxException ex) {
                 log.info("error :" + ex);
             }
         } else {
-            clearFields();            
+            initComponent();
             txtPath.setText(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1008.getMensaje());
         }
     }
-    
-    private void clearFields() {        
-        ipAdress = "";
-        PortHost = "";
-        windowTCPIP.ip_adress.setText("");
-        windowTCPIP.port_host.setText("");
-        windowTCPIP.time_out.setText("");
-        btnConnect.setEnabled(false);
-        btnSendMessage.setEnabled(false);
-        ProcesarArchivos.listarOperaciones(null);
-        ProcesarArchivos.listarArchivosConfiguracion("");
-    }
-    
-    private void initWorkSpace() {
-        configuracionComponentes();
+
+    private void initConfig() {
+        initComponent();
         Gson gson = new Gson();
         if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString())) {
             processorWorkPath = gson.fromJson(ProcesarArchivos.convertJsonToString(Constantes.RUTA_HOST).toString(), ArchivoRuta.class);
-            File f = new File(processorWorkPath.getWorkPath());            
+            File f = new File(processorWorkPath.getWorkPath());
             if (f.exists()) {
                 windowTCPIP.path = processorWorkPath.getWorkPath();
                 txtPath.setText(processorWorkPath.getWorkParent());
@@ -545,14 +533,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 btnConnect.setEnabled(false);
                 txtPath.setText(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1009.getMensaje());
             }
-            
         } else {
-            clearFields();
             log.info(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
         }
     }
-    
-    private void configuracionComponentes() {
+
+    private void initComponent() {
         imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
         btnTCPIP.setIcon(setIcono(Constantes.RUTA_IMG_IPADRESS, btnTCPIP));
         num_instances.setEnabled(false);
@@ -560,13 +546,22 @@ public final class ProcesosMC extends javax.swing.JFrame {
         jMenuPDF.setEnabled(false);
         jMenuXLS.setEnabled(false);
         num_instances.setText("1");
-        num_send_per_instance.setText("1");
+        num_send_per_instance.setText("1");        
+        ipAdress = "";
+        PortHost = "";
+        windowTCPIP.ip_adress.setText("");
+        windowTCPIP.port_host.setText("");
+        windowTCPIP.time_out.setText("");
+        btnConnect.setEnabled(false);
+        btnSendMessage.setEnabled(false);
+        ProcesarArchivos.listarOperaciones(null);
+        ProcesarArchivos.listarArchivosConfiguracion("");
     }
-    
+
     private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {
         windowTCPIP.setVisible(true);
     }
-    
+
     private void CboxNumIActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (CboxNumI.isSelected() == true) {
@@ -576,7 +571,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             num_instances.setText("1");
             num_instances.setEnabled(false);
         }
-        
+
     }
 
     private void CboxNumIMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CboxNumIMouseClicked
@@ -586,12 +581,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
     //@SuppressWarnings("null")
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         // TODO add your handling code here:
-        chooserHost();
+        ChooseCustomer();
     }//GEN-LAST:event_btnCargarActionPerformed
-    
-    private void chooserHost() {
+
+    private void ChooseCustomer() {
         try {
-            JFileChooser jf = new JFileChooser(txtPath.getText());
+            JFileChooser jf = new JFileChooser(processorWorkPath.getWorkParent());
             jf.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jf.setMultiSelectionEnabled(false);
             jf.showOpenDialog(this);
@@ -608,10 +603,12 @@ public final class ProcesosMC extends javax.swing.JFrame {
                 getconfigHost(hostPath);
                 windowTCPIP.path = hostPath;
                 txtPath.setText(enviromentPath);
+                processorWorkPath.setWorkParent(seleccion_ruta.getAbsolutePath());
             } else {
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1008.getMensaje());
                 txtPath.setText(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1009.getMensaje());
-                clearFields();
+                processorWorkPath.setWorkParent(seleccion_ruta.getAbsolutePath());
+                initComponent();
             }
         } catch (HeadlessException e) {
             log.debug("->" + e);
@@ -624,7 +621,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
     }//GEN-LAST:event_jListConfigMouseClicked
 
     private void jListConfigKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListConfigKeyPressed
-        
+
         setListTxn();
     }//GEN-LAST:event_jListConfigKeyPressed
 
@@ -635,9 +632,9 @@ public final class ProcesosMC extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        chooserHost();
+        ChooseCustomer();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-    
+
     private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             // TODO add your handling code here:
@@ -721,7 +718,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
             Logger.getLogger(ProcesosMC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
-    
+
     public void setListtxn2() {
         txnName = jListTxn.getSelectedValue();
         listGenerator = operacion.getGenerators();
@@ -732,7 +729,7 @@ public final class ProcesosMC extends javax.swing.JFrame {
         }
         log.info("Seleccion: " + txnName);
     }
-    
+
     public void setListTxn() {
         String rutaFileConfig = enviromentPath + "\\" + jListConfig.getSelectedValue();
         Gson gson = new Gson();
@@ -750,19 +747,19 @@ public final class ProcesosMC extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
             } else {
-                clearFields();
+                initComponent();
                 btnConnect.setEnabled(false);
             }
         } else {
             JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
-            clearFields();
+            initComponent();
         }
     }
-    
+
     public boolean validateField(String number) {
         return !number.isEmpty();
     }
-    
+
     public boolean validateNumber(String number) {
         return number.matches("[0-9]*");
     }
