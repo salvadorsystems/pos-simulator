@@ -53,14 +53,16 @@ public class ProcesarArchivos {
     public static String[] listarArchivosConfiguracion(String path) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
         ProcesosMC.jListConfig.setModel(modelo);
-        String[] pathnames;
-        File f = new File(path);
-
-        FilenameFilter filter = (File f1, String name) -> name.endsWith(".json");
-
-        pathnames = f.list(filter);
-        for (String pathname : pathnames) {
-            modelo.addElement(pathname);
+        String[] pathnames = null;
+        if (!path.isEmpty() || !path.equalsIgnoreCase("")) {
+            File f = new File(path);
+            FilenameFilter filter = (File f1, String name) -> name.endsWith(".json");
+            pathnames = f.list(filter);
+            for (String pathname : pathnames) {
+                modelo.addElement(pathname);
+            }
+        } else {
+            modelo.clear();
         }
         return pathnames;
     }
@@ -68,10 +70,16 @@ public class ProcesarArchivos {
     public static void listarOperaciones(Operacion operacion) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
         ProcesosMC.jListTxn.setModel(modelo);
-        List<Generator> listGenerator = operacion.getGenerators();
-        for (Generator generator : listGenerator) {
-            modelo.addElement(generator.getDetail());
+
+        if (operacion == null) {
+            modelo.clear();
+        } else {
+            List<Generator> listGenerator = operacion.getGenerators();
+            for (Generator generator : listGenerator) {
+                modelo.addElement(generator.getDetail());
+            }
         }
+
     }
 
     public static StringBuilder convertJsonToString(String path) {

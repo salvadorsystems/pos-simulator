@@ -15,7 +15,9 @@ public enum Errores {
     ERROR_VALIDACION_OBLIGATORIEDAD_1004("1004", "IP o PUEURTO Incorrecto"),
     ERROR_VALIDACION_OBLIGATORIEDAD_1005("1005", "Debe especificar la ruta del archivo de parametros."),
     ERROR_VALIDACION_OBLIGATORIEDAD_1006("1006", "Formato de Archivo Json no es valido."),
-    ERROR_VALIDACION_OBLIGATORIEDAD_1007("1007", "Parametros con formato erroneo del campo: ");
+    ERROR_VALIDACION_OBLIGATORIEDAD_1007("1007", "Parametros con formato erroneo del campo: "),
+    ERROR_VALIDACION_OBLIGATORIEDAD_1008("1008", "host.js file not found in selected folder"),
+    ERROR_VALIDACION_OBLIGATORIEDAD_1009("1009", "select the folder containing  the host.js file");
 
     private Errores(String cod, String msg) {
         this.cod = cod;

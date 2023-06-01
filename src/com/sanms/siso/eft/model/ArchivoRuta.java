@@ -18,12 +18,14 @@ import org.apache.log4j.Logger;
  */
 public class ArchivoRuta {
     private static final Logger log = Logger.getLogger(ArchivoRuta.class);
+    private String workHost;
     private String workPath;
     private String workParent;
 
-    public ArchivoRuta(String workPath, String workParent) {
+    public ArchivoRuta(String workHost, String workPath, String workParent) {     
+        this.workHost = workHost;
         this.workPath = workPath;
-        this.workParent = workParent;
+        this.workParent = workParent;        
     }
 
     public ArchivoRuta() {
@@ -46,14 +48,19 @@ public class ArchivoRuta {
         this.workParent = workParent;
     }
 
+    public String getWorkHost() {
+        return workHost;
+    }
+
     @Override
     public String toString() {
-        return "ProcessorWorkPath{" + "workPath=" + workPath + ", workParent=" + workParent + '}';
-    }    
+        return "ArchivoRuta{" + "workhost=" + workHost + ", workPath=" + workPath + ", workParent=" + workParent + '}';
+    }
 
-    public static void setConfigWorkPath(String path, String parent) {
+    public static void setConfigWorkPath(String host, String path, String parent) {
         Gson gson = new Gson();
-        ArchivoRuta processorWorkPath = new ArchivoRuta(path, parent);
+         
+        ArchivoRuta processorWorkPath = new ArchivoRuta(host, path, parent);
         String json = gson.toJson(processorWorkPath);
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter(Constantes.RUTA_HOST))) {
             bw.write(json);
