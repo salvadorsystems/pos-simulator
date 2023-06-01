@@ -13,7 +13,7 @@ public class Constantes {
     public Constantes() {
     }
             
-    public static final String RUTA_HOST = "../simulador-pos/pos.config";
+    public static final String RUTA_HOST = "../simulador-pos/pos.json";
     public static final String RUTA_IMG_OFF = "../img/img1.png";
     public static final String RUTA_IMG_ON = "../img/img2.png";
     public static final String RUTA_IMG_IPADRESS = "../img/ipAdress9.png";
