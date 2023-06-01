@@ -175,6 +175,6 @@ public class Worker extends SwingWorker<Integer, Object[]> {
     }
 
     public void generateFullReport() throws JRException, IOException  {        
-        ProcesarArchivos.generateReport("FUL","RESULT",null,tableModelStatus);
+        ProcesarArchivos.generateReport("FULL","RESULT",null,tableModelStatus);
     }
 }

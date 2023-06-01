@@ -167,7 +167,7 @@ public class ProcesarArchivos {
                     log.error("Error al generar Excel: " + err);
                 }
                 break;
-            case "FUL":
+            case "FULL":
                 ArrayList<FullReport> listFullReport;
                 file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_FULL);
                 report = (JasperReport) JRLoader.loadObject(file);
