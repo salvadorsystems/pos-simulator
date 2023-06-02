@@ -5,7 +5,7 @@ import com.sanms.siso.eft.model.FullReport;
 import com.sanms.siso.eft.model.Generator;
 import com.sanms.siso.eft.model.Operacion;
 import com.sanms.siso.eft.utils.Constantes;
-import com.sanms.siso.eft.view.ProcesosMC;
+import com.sanms.siso.eft.view.PosSimulator;
 import com.sanms.siso.formatter.Field;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +52,7 @@ public class ProcesarArchivos {
 
     public static String[] listarArchivosConfiguracion(String path) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
-        ProcesosMC.jListConfig.setModel(modelo);
+        PosSimulator.jListConfig.setModel(modelo);
         String[] pathnames = null;
         if (!path.isEmpty() || !path.equalsIgnoreCase("")) {
             File f = new File(path);
@@ -69,7 +69,7 @@ public class ProcesarArchivos {
 
     public static void listarOperaciones(Operacion operacion) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
-        ProcesosMC.jListTxn.setModel(modelo);
+        PosSimulator.jListTxn.setModel(modelo);
 
         if (operacion == null) {
             modelo.clear();
@@ -110,7 +110,7 @@ public class ProcesarArchivos {
 
     public static void generateReport(String flag, String getTxnName, ArrayList<Field> listFieldResponse, DefaultTableModel tableModelStatus) throws JRException, IOException {
         log.info("Se solicito generar " + flag);
-        File file;
+
         final JasperReport report;
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("txnName", getTxnName);
@@ -118,8 +118,7 @@ public class ProcesarArchivos {
         ByteArrayOutputStream baos;
         JasperPrint jasperPrint;
         String encodedString;
-        File filePDF;
-        File fileXLS;
+        File fileInput, fileOutput;
         JRXlsExporter exporter;
         SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
         configuration.setOnePagePerSheet(true);
@@ -128,25 +127,25 @@ public class ProcesarArchivos {
         byte[] decoder;
         switch (flag) {
             case "PDF":
-                file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_PDF);
-                report = (JasperReport) JRLoader.loadObject(file);
+                fileInput = ResourceUtils.getFile(Constantes.PATH_PLANTILLA_PDF);
+                report = (JasperReport) JRLoader.loadObject(fileInput);
                 jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
                 byte[] reporte = JasperExportManager.exportReportToPdf(jasperPrint);
                 encodedString = Base64.getEncoder().encodeToString(reporte);
-                filePDF = new File("../simulador-procesosmc/reportes/reporte.pdf");
-                try ( FileOutputStream fos = new FileOutputStream(filePDF)) {
+                fileOutput = new File(Constantes.PATH_OUTPUT_REPORT_PDF);
+                try ( FileOutputStream fos = new FileOutputStream(fileOutput)) {
                     decoder = Base64.getDecoder().decode(encodedString);
                     fos.write(decoder);
-                    JOptionPane.showMessageDialog(null, "PDF Se Genero Correctamente en la siguiente Ruta: \n" + filePDF.getCanonicalPath());
-                    log.info("PDF Se Genero Correctamente en la siguiente Ruta: " + filePDF.getCanonicalPath());
+                    JOptionPane.showMessageDialog(null, "PDF Se Genero Correctamente en la siguiente Ruta: \n" + fileOutput.getCanonicalPath());
+                    log.info("PDF Se Genero Correctamente en la siguiente Ruta: " + fileOutput.getCanonicalPath());
                 } catch (IOException err) {
                     JOptionPane.showMessageDialog(null, "Error al generar PDF: " + err);
                     log.error("Error al generar PDF: " + err);
                 }
                 break;
             case "XLS":
-                file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_XLS);
-                report = (JasperReport) JRLoader.loadObject(file);
+                fileInput = ResourceUtils.getFile(Constantes.PATH_PLANTILLA_XLS);
+                report = (JasperReport) JRLoader.loadObject(fileInput);
                 jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
                 exporter = new JRXlsExporter();
                 exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -156,12 +155,12 @@ public class ProcesarArchivos {
                 exporter.exportReport();
                 reporte = baos.toByteArray();
                 encodedString = Base64.getEncoder().encodeToString(reporte);
-                fileXLS = new File("../simulador-procesosmc/reportes/reporte.xls");
-                try ( FileOutputStream fos = new FileOutputStream(fileXLS);) {
+                fileOutput = new File(Constantes.PATH_OUTPUT_REPORT_XLS);
+                try ( FileOutputStream fos = new FileOutputStream(fileOutput);) {
                     decoder = Base64.getDecoder().decode(encodedString);
                     fos.write(decoder);
-                    JOptionPane.showMessageDialog(null, "Excel generado correctamente en la siguiente Ruta: \n" + fileXLS.getCanonicalPath());
-                    log.info("Excel generado correctamente en la siguiente Ruta: " + fileXLS.getCanonicalPath());
+                    JOptionPane.showMessageDialog(null, "Excel generado correctamente en la siguiente Ruta: \n" + fileOutput.getCanonicalPath());
+                    log.info("Excel generado correctamente en la siguiente Ruta: " + fileOutput.getCanonicalPath());
                 } catch (IOException err) {
                     JOptionPane.showMessageDialog(null, "Error al generar Excel: " + err);
                     log.error("Error al generar Excel: " + err);
@@ -169,8 +168,8 @@ public class ProcesarArchivos {
                 break;
             case "FULL":
                 ArrayList<FullReport> listFullReport;
-                file = ResourceUtils.getFile(Constantes.RUTA_PLANTILLA_FULL);
-                report = (JasperReport) JRLoader.loadObject(file);
+                fileInput = ResourceUtils.getFile(Constantes.PATH_PLANTILLA_FULL);
+                report = (JasperReport) JRLoader.loadObject(fileInput);
                 listFullReport = new ArrayList<>();
                 for (int i = 0; i < tableModelStatus.getRowCount(); i++) {
                     FullReport fullReport = new FullReport(tableModelStatus.getValueAt(i, 0).toString(), tableModelStatus.getValueAt(i, 1).toString(), tableModelStatus.getValueAt(i, 2).toString(),
@@ -190,12 +189,12 @@ public class ProcesarArchivos {
 
                 reporte = baos.toByteArray();
                 encodedString = Base64.getEncoder().encodeToString(reporte);
-                fileXLS = new File("../simulador-procesosmc/reportes/fullReport.xls");
-                try ( FileOutputStream fos = new FileOutputStream(fileXLS);) {
+                fileOutput = new File(Constantes.PATH_OUTPUT_REPORT_FULL_XLS);
+                try ( FileOutputStream fos = new FileOutputStream(fileOutput);) {
                     decoder = Base64.getDecoder().decode(encodedString);
                     fos.write(decoder);
-                    JOptionPane.showMessageDialog(null, "Excel generado correctamente en la siguiente Ruta: \n" + fileXLS.getCanonicalPath());
-                    log.info("Excel generado correctamente en la siguiente Ruta: " + fileXLS.getCanonicalPath());
+                    JOptionPane.showMessageDialog(null, "Excel generado correctamente en la siguiente Ruta: \n" + fileOutput.getCanonicalPath());
+                    log.info("Excel generado correctamente en la siguiente Ruta: " + fileOutput.getCanonicalPath());
                 } catch (IOException err) {
                     JOptionPane.showMessageDialog(null, "Error al generar Excel: " + err);
                     log.error("Error al generar Excel: " + err);

@@ -4,7 +4,7 @@ import com.sanms.siso.eft.model.Stream;
 import com.sanms.siso.eft.processor.Worker;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.utils.Errores;
-import com.sanms.siso.eft.view.ProcesosMC;
+import com.sanms.siso.eft.view.PosSimulator;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -135,10 +135,11 @@ public class ProxySocket {
             proxy[i] = new Proxy();
             connectSocket = proxy[i].setup(getApiHost(), getApiPort(), false, 30);
             if (connectSocket == 0) {
-                ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_ON)));
-                ProcesosMC.btnConnect.setText("Desconectar");
-                ProcesosMC.ip_adress.setText(getApiHost());
-                ProcesosMC.lblPort.setText(getApiPort());
+                PosSimulator.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.PATH_IMG_ON)));
+                PosSimulator.btnConnect.setText("Desconectar");
+                PosSimulator.jm_connect.setText("Desconectar");
+                PosSimulator.ip_adress.setText(getApiHost());
+                PosSimulator.lblPort.setText(getApiPort());
             } else {
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
@@ -150,10 +151,11 @@ public class ProxySocket {
     }
 
     public void closeSocket() {
-        ProcesosMC.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.RUTA_IMG_OFF)));
-        ProcesosMC.btnConnect.setText("Conectar");
-        ProcesosMC.ip_adress.setText("0.0.0.0");
-        ProcesosMC.lblPort.setText("00");
+        PosSimulator.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.PATH_IMG_OFF)));
+        PosSimulator.btnConnect.setText("Conectar");
+        PosSimulator.jm_connect.setText("Conectar");
+        PosSimulator.ip_adress.setText("0.0.0.0");
+        PosSimulator.lblPort.setText("00");
         for (int i = 0; i < getNum_instances(); i++) {
             proxy[i].release();
         }

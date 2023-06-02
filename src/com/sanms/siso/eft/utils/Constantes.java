@@ -12,13 +12,17 @@ public class Constantes {
 
     public Constantes() {
     }
-    public static final String PATH_BASE = "../POS-simulator";
-    public static final String RUTA_HOST = "../simulador-pos/pos.json";
-    public static final String RUTA_IMG_OFF = "../img/img1.png";
-    public static final String RUTA_IMG_ON = "../img/img2.png";
-    public static final String RUTA_IMG_IPADRESS = "../img/ipAdress9.png";
-    public static final String RUTA_PLANTILLA_PDF = "../simulador-pos/src/resources/reportes/Reporte_PDF.jasper";
-    public static final String RUTA_PLANTILLA_XLS = "../simulador-pos/src/resources/reportes/Reporte_XLS.jasper";
-    public static final String RUTA_PLANTILLA_FULL = "../simulador-pos/src/resources/reportes/Reporte_XLS_Full.jasper";
-    public static final String RUTA_LOG4J_PROPERTIES = "../simulador-pos/src/resources/log4j.properties";
+    public static final String BACK = "../";
+    public static final String ENVIROMENT_BASE = "pos-simulator/";
+    public static final String PATH_CFG_POS = BACK.concat(ENVIROMENT_BASE).concat("/pos.json");
+    public static final String PATH_IMG_OFF = BACK.concat("img/img1.png");
+    public static final String PATH_IMG_ON = BACK.concat("img/img2.png");
+    public static final String PATH_IMG_IPADRESS = BACK.concat("img/ipAdress9.png");
+    public static final String PATH_PLANTILLA_PDF = BACK.concat(ENVIROMENT_BASE).concat("src/resources/reports/report_PDF.jasper");
+    public static final String PATH_PLANTILLA_XLS = BACK.concat(ENVIROMENT_BASE).concat("src/resources/reports/report_XLS.jasper");
+    public static final String PATH_PLANTILLA_FULL = BACK.concat(ENVIROMENT_BASE).concat("src/resources/reports/report_XLS_Full.jasper");
+    public static final String PATH_LOG4J_PROPERTIES = BACK.concat(ENVIROMENT_BASE).concat("src/resources/log4j.properties");
+    public static final String PATH_OUTPUT_REPORT_PDF = BACK.concat(ENVIROMENT_BASE).concat("report/report.pdf");
+    public static final String PATH_OUTPUT_REPORT_XLS = BACK.concat(ENVIROMENT_BASE).concat("report/report.xls");
+    public static final String PATH_OUTPUT_REPORT_FULL_XLS = BACK.concat(ENVIROMENT_BASE).concat("report/full_report.xls");
 }

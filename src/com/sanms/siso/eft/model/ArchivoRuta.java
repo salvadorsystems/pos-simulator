@@ -62,7 +62,7 @@ public class ArchivoRuta {
          
         ArchivoRuta processorWorkPath = new ArchivoRuta(host, path, parent);
         String json = gson.toJson(processorWorkPath);
-        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(Constantes.RUTA_HOST))) {
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(Constantes.PATH_CFG_POS))) {
             bw.write(json);
             log.info("Fichero Modificado");            
         } catch (IOException ex) {

@@ -6,7 +6,7 @@ import com.sanms.siso.eft.processor.ProcesarArchivos;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
-import com.sanms.siso.eft.view.ProcesosMC;
+import com.sanms.siso.eft.view.PosSimulator;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import com.sanms.siso.formatter.Field;
@@ -181,8 +181,8 @@ public class InstanceManager extends Thread {
         for (int count = 0; count < getNumTxn(); count++) {
             if (execute(count, getConfigPath()) == 0) {
                 try {
-                    ProcesosMC.jMenuPDF.setEnabled(true);
-                    ProcesosMC.jMenuXLS.setEnabled(true);
+                    PosSimulator.jMenuPDF.setEnabled(true);
+                    PosSimulator.jMenuXLS.setEnabled(true);
                     timeEnd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").parse(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS").format(LocalDateTime.now())).getTime();
                     diferencia += (timeEnd - timeInit);
                     tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 6);
@@ -242,7 +242,7 @@ public class InstanceManager extends Thread {
         for (Stream stream : getListStream()) {
             plantilla = stream.getTemplate();
         }
-        ProcesosMC.txtRequerimiento.setText(request);
+        PosSimulator.txtRequerimiento.setText(request);
         templates = TemplateTool.createTemplate(templateMapList, plantilla);
         templates.saveFromBuffer(request);
 
@@ -263,7 +263,7 @@ public class InstanceManager extends Thread {
         templates.saveFromBuffer(resultProxy.getStringResponse());
         listFieldResponse = templates.getFieldList();
 
-        ProcesosMC.txtRespuesta.setText(resultProxy.getStringResponse());
+        PosSimulator.txtRespuesta.setText(resultProxy.getStringResponse());
         return resultProxy.getResult();
     }
 
