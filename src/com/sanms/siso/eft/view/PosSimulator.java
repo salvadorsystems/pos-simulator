@@ -102,7 +102,7 @@ public final class PosSimulator extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jm_connect = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jm_sendMessage = new javax.swing.JMenuItem();
         Reportes = new javax.swing.JMenu();
         jMenuPDF = new javax.swing.JMenuItem();
         jMenuXLS = new javax.swing.JMenuItem();
@@ -420,8 +420,8 @@ public final class PosSimulator extends javax.swing.JFrame {
         });
         jMenu1.add(jm_connect);
 
-        jMenuItem4.setText("Send Message");
-        jMenu1.add(jMenuItem4);
+        jm_sendMessage.setText("Send Message");
+        jMenu1.add(jm_sendMessage);
 
         jMenuBar1.add(jMenu1);
 
@@ -548,6 +548,8 @@ public final class PosSimulator extends javax.swing.JFrame {
         btnTCPIP.setIcon(setIcono(Constantes.PATH_IMG_IPADRESS, btnTCPIP));
         num_instances.setEnabled(false);
         btnSendMessage.setEnabled(false);
+        jm_sendMessage.setEnabled(false);
+        jm_connect.setEnabled(false);
         jMenuPDF.setEnabled(false);
         jMenuXLS.setEnabled(false);
         num_instances.setText("1");
@@ -632,12 +634,14 @@ public final class PosSimulator extends javax.swing.JFrame {
                             socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
                             socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
                             btnSendMessage.setEnabled(true);
+                            jm_sendMessage.setEnabled(true);
                             if (socketProxy.openSocketAny() != 0) {
                                 connectClient = -1;
                             }
                         } else {
                             socketProxy.closeSocket();
                             btnSendMessage.setEnabled(false);
+                            jm_sendMessage.setEnabled(false);
                             connectClient = -1;
                             PosSimulator.jMenuPDF.setEnabled(false);
                             PosSimulator.jMenuXLS.setEnabled(false);
@@ -754,20 +758,24 @@ public final class PosSimulator extends javax.swing.JFrame {
                 if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString())) {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
-                    jListTxn.setSelectedIndex(0);
-                    setListtxn2();
-                    btnConnect.setEnabled(true);
+                    activeComponents();
+                    setListtxn2();                    
                 } else {
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
             } else {
                 initComponent();
-                btnConnect.setEnabled(false);
             }
         } else {
             JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje());
             initComponent();
         }
+    }
+
+    private void activeComponents() {
+        btnConnect.setEnabled(true);
+        jm_connect.setEnabled(true);
+        jListTxn.setSelectedIndex(0);
     }
 
     public boolean validateField(String number) {
@@ -843,7 +851,6 @@ public final class PosSimulator extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     public static javax.swing.JMenuItem jMenuPDF;
     public static javax.swing.JMenuItem jMenuXLS;
@@ -859,6 +866,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     public static javax.swing.JMenuItem jm_connect;
+    private javax.swing.JMenuItem jm_sendMessage;
     public static javax.swing.JLabel lblPort;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JTextField num_instances;
