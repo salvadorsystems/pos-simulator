@@ -129,7 +129,7 @@ public class ProxySocket {
         this.configPath = configPath;
     }
 
-    public int openSocketAny() {
+    public void openSocketAny() {
         proxy = new Proxy[getNum_instances()];
         for (int i = 0; i < getNum_instances(); i++) {
             proxy[i] = new Proxy();
@@ -140,14 +140,17 @@ public class ProxySocket {
                 PosSimulator.jm_connect.setText("Desconectar");
                 PosSimulator.ip_adress.setText(getApiHost());
                 PosSimulator.lblPort.setText(getApiPort());
+                PosSimulator.jm_sendMessage.setEnabled(true);
+                PosSimulator.btnSendMessage.setEnabled(true);
             } else {
+                PosSimulator.jm_sendMessage.setEnabled(false);
+                PosSimulator.btnSendMessage.setEnabled(false);
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
                         "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 break;
             }
-        }
-        return connectSocket;
+        }        
     }
 
     public void closeSocket() {

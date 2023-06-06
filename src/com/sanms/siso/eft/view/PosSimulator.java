@@ -37,6 +37,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     static String ipAdress;
     static String PortHost;
     private int connectClient = -1;
+    boolean valor = false;
     private String enviromentPath;
 
     private String txnName;
@@ -124,9 +125,9 @@ public final class PosSimulator extends javax.swing.JFrame {
         txtRespuesta.setRows(5);
         jScrollPane6.setViewportView(txtRespuesta);
 
-        jLabel1.setText("Requerimiento");
+        jLabel1.setText("Request");
 
-        jLabel2.setText("Respuesta");
+        jLabel2.setText("Response");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -158,7 +159,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                 .addGap(12, 12, 12))
         );
 
-        RESPUESTA.addTab("TRAMA ISO", jPanel1);
+        RESPUESTA.addTab("ISO Message", jPanel1);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -170,7 +171,7 @@ public final class PosSimulator extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(jTable1);
 
-        RESPUESTA.addTab("REQUERIMIENTO", jScrollPane4);
+        RESPUESTA.addTab("Request", jScrollPane4);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -182,19 +183,19 @@ public final class PosSimulator extends javax.swing.JFrame {
         ));
         jScrollPane7.setViewportView(jTable2);
 
-        RESPUESTA.addTab("RESPUESTA", jScrollPane7);
+        RESPUESTA.addTab("Response", jScrollPane7);
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "N°", "Thread", "socket", "estado", "Hora Req", "Req", "Hora Resp", "Res", "Total(ms) "
+                "N°", "Thread", "Socket", "Status", "Request time", "Req", "Response time", "Res", "Total(ms) "
             }
         ));
         jScrollPane8.setViewportView(jTable3);
 
-        RESPUESTA.addTab("ESTADO", jScrollPane8);
+        RESPUESTA.addTab("Status", jScrollPane8);
 
         panelConfiguration.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Configure TCP/IP"));
 
@@ -204,9 +205,9 @@ public final class PosSimulator extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Nro Instancias: ");
+        jLabel5.setText("Num Instances");
 
-        jLabel6.setText("Nro de Envios:");
+        jLabel6.setText("Num shipments");
 
         CboxNumI.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -259,9 +260,9 @@ public final class PosSimulator extends javax.swing.JFrame {
 
         panelConfiguration1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Connection"));
 
-        jLabel7.setText("SERVER IP :");
+        jLabel7.setText("IP Server :");
 
-        jLabel8.setText("PUERTO :");
+        jLabel8.setText("Port Server :");
 
         ip_adress.setText("0.0.0.0");
 
@@ -622,41 +623,20 @@ public final class PosSimulator extends javax.swing.JFrame {
         }
     }
 
-    private void connectHost() {
-        if (!ipAdress.isEmpty()) {
-            if (validateField(num_instances.getText()) && validateField(num_send_per_instance.getText())) {
-                if (validateNumber(num_instances.getText()) && validateNumber(num_send_per_instance.getText())) {
-                    try {
-                        connectClient++;
-                        if (connectClient == 0) {
-                            socketProxy.setApiHost(ipAdress);
-                            socketProxy.setApiPort(PortHost);
-                            socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
-                            socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
-                            btnSendMessage.setEnabled(true);
-                            jm_sendMessage.setEnabled(true);
-                            if (socketProxy.openSocketAny() != 0) {
-                                connectClient = -1;
-                            }
-                        } else {
-                            socketProxy.closeSocket();
-                            btnSendMessage.setEnabled(false);
-                            jm_sendMessage.setEnabled(false);
-                            connectClient = -1;
-                            PosSimulator.jMenuPDF.setEnabled(false);
-                            PosSimulator.jMenuXLS.setEnabled(false);
-                        }
-                    } catch (NumberFormatException e) {
-                        log.info("error: " + e);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1000.getMensaje());
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1002.getMensaje());
-            }
+    private void connectToHost() {
+        valor = !valor;
+        if (valor) {
+            socketProxy.setApiHost(ipAdress);
+            socketProxy.setApiPort(PortHost);
+            socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
+            socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
+            socketProxy.openSocketAny();
         } else {
-            JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1003.getMensaje());
+            socketProxy.closeSocket();
+            btnSendMessage.setEnabled(false);
+            jm_sendMessage.setEnabled(false);
+            PosSimulator.jMenuPDF.setEnabled(false);
+            PosSimulator.jMenuXLS.setEnabled(false);
         }
     }
 
@@ -709,7 +689,7 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         // TODO add your handling code here:
-        connectHost();
+        connectToHost();
     }//GEN-LAST:event_btnConnectActionPerformed
 
     private void btnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMessageActionPerformed
@@ -734,7 +714,7 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void jm_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_connectActionPerformed
         // TODO add your handling code here:
-        connectHost();
+        connectToHost();
     }//GEN-LAST:event_jm_connectActionPerformed
 
     public void setListtxn2() {
@@ -759,7 +739,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                     operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
                     ProcesarArchivos.listarOperaciones(operacion);
                     activeComponents();
-                    setListtxn2();                    
+                    setListtxn2();
                 } else {
                     JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1006.getMensaje() + "\nRuta: " + rutaFileOpe);
                 }
@@ -835,7 +815,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private javax.swing.JMenu Reportes;
     private javax.swing.JButton btnCargar;
     public static javax.swing.JButton btnConnect;
-    private javax.swing.JButton btnSendMessage;
+    public static javax.swing.JButton btnSendMessage;
     private javax.swing.JButton btnTCPIP;
     public static javax.swing.JLabel imgConn;
     public static javax.swing.JLabel ip_adress;
@@ -866,7 +846,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     public static javax.swing.JMenuItem jm_connect;
-    private javax.swing.JMenuItem jm_sendMessage;
+    public static javax.swing.JMenuItem jm_sendMessage;
     public static javax.swing.JLabel lblPort;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JTextField num_instances;
