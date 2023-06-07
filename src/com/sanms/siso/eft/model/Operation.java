@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author salvador
  */
-public class Operacion {
+public class Operation {
     private String detail;
     private List<Generator> generators; 
 

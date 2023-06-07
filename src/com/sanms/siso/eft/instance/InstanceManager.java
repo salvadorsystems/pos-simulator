@@ -1,8 +1,8 @@
 package com.sanms.siso.eft.instance;
 
 import com.sanms.siso.eft.model.Stream;
-import com.sanms.siso.eft.processor.ParametrosOperacion;
-import com.sanms.siso.eft.processor.ProcesarArchivos;
+import com.sanms.siso.eft.processor.ProcessOperacion;
+import com.sanms.siso.eft.processor.ProcessFile;
 import com.sanms.siso.eft.proxy.Proxy;
 import com.sanms.siso.eft.proxy.ProxyCommResult;
 import com.sanms.siso.eft.proxy.ProxyResult;
@@ -41,7 +41,7 @@ public class InstanceManager extends Thread {
     private List<Object[]> listObject;
     private ArrayList<Field> listFieldRequest;
     private ArrayList<Field> listFieldResponse;
-    private SimpleDateFormat time;    
+    private SimpleDateFormat time;
     private long timeInit;
     private long timeEnd;
     private long diferencia = 0;
@@ -175,7 +175,7 @@ public class InstanceManager extends Thread {
     public void setConfigPath(String configPath) {
         this.configPath = configPath;
     }
-       
+
     @Override
     public void run() {
         for (int count = 0; count < getNumTxn(); count++) {
@@ -187,6 +187,9 @@ public class InstanceManager extends Thread {
                     diferencia += (timeEnd - timeInit);
                     tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 6);
                     tableModelStatus.setValueAt(count + 1, i, 7);
+                    PosSimulator.jMenuPDF.setEnabled(true);
+                    PosSimulator.jMenuXLS.setEnabled(true);
+                    PosSimulator.jMenuAll.setEnabled(true);
                     log.info("Instancia " + getInstance() + " mensaje enviado : " + count);
                 } catch (ParseException ex) {
                     log.error(ex);
@@ -205,34 +208,37 @@ public class InstanceManager extends Thread {
                 if (field.getValue().equalsIgnoreCase("83")) {
                     field.setValue(field.getValue() + " (unsupported host)");
                 }
-            }            
-            ProcesarArchivos.setTable("txn",tableModelRequest, columnModelRequest, listFieldRequest,null,null);
+            }
+            ProcessFile.setTable("txn", tableModelRequest, columnModelRequest, listFieldRequest, null, null);
             /**
              * Display Data in Response table
-             */            
-            ProcesarArchivos.setTable("txn",tableModelResponse, columnModelResponse, listFieldResponse,null,null);
+             */
+            ProcessFile.setTable("txn", tableModelResponse, columnModelResponse, listFieldResponse, null, null);
         }
         tableModelStatus.setValueAt(diferencia, i, 8);
     }
-    
-    public void  executeService(){
-        
+
+    public void executeService() {
+
         ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(getInstance()));
-        
-        
+
     }
 
     public int execute(int count, String configPath) {
         String plantilla = null;
         String request = null;
-        ParametrosOperacion parametrosOperacion = new ParametrosOperacion(getRutaParametros());
+        ProcessOperacion parametrosOperacion = new ProcessOperacion(getRutaParametros());
         Map<String, Map<String, Map<String, String>>> templateMapList = TemplateTool.setup(getRutaTemplate());
         Map<String, Map<String, Map<String, String>>> templateMapListResponse = TemplateTool.setup(getRutaTemplate());
         Template templates;
         try {
-            /**Prepara la trama**/
-            templates = parametrosOperacion.obtenerParametrosCmpl(getListStream(), getRutaTemplate(), configPath);
-            /**Generar Requerimiento*/
+            /**
+             * Prepara la trama*
+             */
+            templates = parametrosOperacion.getParameterPlug(getListStream(), getRutaTemplate(), configPath);
+            /**
+             * Generar Requerimiento
+             */
             request = templates.generateStream();
             log.info("SRQ : " + "[" + request + "]");
         } catch (FileNotFoundException ex) {
@@ -255,7 +261,9 @@ public class InstanceManager extends Thread {
         tableModelStatus.setValueAt(DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(LocalDateTime.now()), i, 4);
         tableModelStatus.setValueAt(count + 1, i, 5);
         ProxyResult apiResult = new ProxyResult();
-        /**Generar Respuesta**/
+        /**
+         * Generar Respuesta*
+         */
         ProxyCommResult resultProxy = getProxy().process(request, apiResult);
         log.info("SRS : " + "[" + resultProxy.getStringResponse() + "]");
 
@@ -268,10 +276,10 @@ public class InstanceManager extends Thread {
     }
 
     public void generarReportePDF() throws JRException, IOException {
-        ProcesarArchivos.generateReport("PDF",getTxnName(), listFieldResponse, null);
+        ProcessFile.generateReport("PDF", getTxnName(), listFieldResponse, null);
     }
 
     public void generarReporteXLS() throws JRException, IOException {
-        ProcesarArchivos.generateReport("XLS",getTxnName(), listFieldResponse, null);
+        ProcessFile.generateReport("XLS", getTxnName(), listFieldResponse, null);
     }
 }

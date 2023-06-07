@@ -4,7 +4,7 @@ package com.sanms.siso.eft.model;
  *
  * @author salvador
  */
-public class ArchivoConfiguracion {
+public class FileConfig {
 
     private String workPath;
     private String templatesFile;

@@ -3,7 +3,7 @@ package com.sanms.siso.eft.processor;
 import com.google.gson.Gson;
 import com.sanms.siso.eft.model.FullReport;
 import com.sanms.siso.eft.model.Generator;
-import com.sanms.siso.eft.model.Operacion;
+import com.sanms.siso.eft.model.Operation;
 import com.sanms.siso.eft.utils.Constantes;
 import com.sanms.siso.eft.view.PosSimulator;
 import com.sanms.siso.formatter.Field;
@@ -42,11 +42,11 @@ import org.springframework.util.ResourceUtils;
  *
  * @author salvador
  */
-public class ProcesarArchivos {
+public class ProcessFile {
 
-    private static final Logger log = Logger.getLogger(ProcesarArchivos.class);
+    private static final Logger log = Logger.getLogger(ProcessFile.class);
 
-    private ProcesarArchivos() {
+    private ProcessFile() {
         // Do nothing because of X and Y.
     }
 
@@ -67,7 +67,7 @@ public class ProcesarArchivos {
         return pathnames;
     }
 
-    public static void listarOperaciones(Operacion operacion) {
+    public static void listarOperaciones(Operation operacion) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
         PosSimulator.jListTxn.setModel(modelo);
 

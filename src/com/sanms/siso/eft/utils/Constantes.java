@@ -4,6 +4,9 @@
  */
 package com.sanms.siso.eft.utils;
 
+
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author CANVIA

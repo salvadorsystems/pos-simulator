@@ -16,19 +16,19 @@ import org.apache.log4j.Logger;
  *
  * @author salvador
  */
-public class ArchivoRuta {
-    private static final Logger log = Logger.getLogger(ArchivoRuta.class);
+public class FilePOS {
+    private static final Logger log = Logger.getLogger(FilePOS.class);
     private String workHost;
     private String workPath;
     private String workParent;
 
-    public ArchivoRuta(String workHost, String workPath, String workParent) {     
+    public FilePOS(String workHost, String workPath, String workParent) {     
         this.workHost = workHost;
         this.workPath = workPath;
         this.workParent = workParent;        
     }
 
-    public ArchivoRuta() {
+    public FilePOS() {
         
     }
 
@@ -60,7 +60,7 @@ public class ArchivoRuta {
     public static void setConfigWorkPath(String host, String path, String parent) {
         Gson gson = new Gson();
          
-        ArchivoRuta processorWorkPath = new ArchivoRuta(host, path, parent);
+        FilePOS processorWorkPath = new FilePOS(host, path, parent);
         String json = gson.toJson(processorWorkPath);
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter(Constantes.PATH_CFG_POS))) {
             bw.write(json);

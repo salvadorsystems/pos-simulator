@@ -163,18 +163,18 @@ public class Worker extends SwingWorker<Integer, Object[]> {
 
     @Override
     protected void process(final List<Object[]> rows) {
-        ProcesarArchivos.setTable("status",tableModelStatus, columnModelStatus, null,listThreadId,listSocketId);
+        ProcessFile.setTable("status",tableModelStatus, columnModelStatus, null,listThreadId,listSocketId);
     }
 
-    public void generarReportePDF() throws JRException, IOException {
+    public void reportPDF() throws JRException, IOException {
         execute[posIns].generarReportePDF();
     }
 
-    public void generarReporteXLS() throws JRException, IOException {
+    public void reportXLS() throws JRException, IOException {
         execute[posIns].generarReporteXLS();
     }
 
-    public void generateFullReport() throws JRException, IOException  {        
-        ProcesarArchivos.generateReport("FULL","RESULT",null,tableModelStatus);
+    public void reportFull() throws JRException, IOException  {        
+        ProcessFile.generateReport("FULL","RESULT",null,tableModelStatus);
     }
 }

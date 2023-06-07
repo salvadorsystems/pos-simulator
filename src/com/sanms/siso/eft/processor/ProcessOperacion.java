@@ -5,7 +5,6 @@
 package com.sanms.siso.eft.processor;
 
 import com.sanms.siso.eft.model.Stream;
-import com.sanms.siso.eft.utils.Errores;
 import com.sanms.siso.formatter.Template;
 import com.sanms.siso.tools.TemplateTool;
 import java.io.BufferedReader;
@@ -20,7 +19,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,60 +38,28 @@ import org.apache.log4j.Logger;
  *
  * @author Salvador
  */
-public class ParametrosOperacion {
+public class ProcessOperacion {
 
-    private static final Logger log = Logger.getLogger(ParametrosOperacion.class);
-    private String rutaParametros = "";
-    Map<String, Map<String, Map<String, String>>> templateMapList;
-    Map<String, String> params;
+    private static final Logger log = Logger.getLogger(ProcessOperacion.class);
+    private String parametersPath = "";
+    private Map<String, Map<String, Map<String, String>>> templateMapList;
+    private Map<String, String> parametersMapList;
 
-    public ParametrosOperacion(String rutaParametros) {
-        this.rutaParametros = rutaParametros;
+    public ProcessOperacion(String parametersPath) {
+        this.parametersPath = parametersPath;
     }
-
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
-
+    
     @SuppressWarnings("null")
-    private ArrayList<String> getTokens() throws ParserConfigurationException {
-        ArrayList<String> listToken = new ArrayList<>();
-
-        File file = new File(rutaParametros);
-        DocumentBuilder dcb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = null;
-        NodeList nodeParent;
-        try {
-            doc = dcb.parse(file);
-            doc.getDocumentElement().normalize();
-        } catch (SAXException | IOException ex) {
-            log.error(ParametrosOperacion.class.getName() + "->" + ex);
-        }
-        nodeParent = doc.getElementsByTagName("request");
-
-        for (int i = 0; i < nodeParent.getLength(); i++) {
-            Element eElementParent = (Element) nodeParent.item(i);
-            listToken.add(eElementParent.getAttribute("token").trim());
-        }
-
-        return listToken;
-    }
-
-    @SuppressWarnings("null")
-    private HashMap<String, String> obtenerParametros(String txnName, String configPath) throws ParserConfigurationException {
+    private HashMap<String, String> getParameters(String txnName, String configPath) throws ParserConfigurationException {
         HashMap<String, String> map = new HashMap<>();
-        File file = new File(rutaParametros);
+        File file = new File(parametersPath);
         DocumentBuilder dcb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = null;
         try {
             doc = dcb.parse(file);
             doc.getDocumentElement().normalize();
         } catch (SAXException | IOException ex) {
-            log.error(ParametrosOperacion.class.getName() + "->" + ex);
+            log.error(ProcessOperacion.class.getName() + "->" + ex);
         }
         NodeList nodeParent = doc.getElementsByTagName("request");
         for (int i = 0; i < nodeParent.getLength(); i++) {
@@ -104,14 +70,14 @@ public class ParametrosOperacion {
                     if (nodeChildLevel.item(j).getNodeName().equals("#comment") || nodeChildLevel.item(j).getNodeName().equals("#text")) {
                         continue;
                     }
-                    map.putAll(registroDatosTransaccion(nodeChildLevel, j, configPath));
+                    map.putAll(saveTransactionData(nodeChildLevel, j, configPath));
                 }
             }
         }
         return map;
     }
 
-    private HashMap<String, String> registroDatosTransaccion(NodeList nodeChildLevel, int j, String configPath) {
+    private HashMap<String, String> saveTransactionData(NodeList nodeChildLevel, int j, String configPath) {
         HashMap<String, String> map = new HashMap<>();
         String value = nodeChildLevel.item(j).getTextContent();
         String parameters;
@@ -158,22 +124,22 @@ public class ParametrosOperacion {
                 map.put(nodeChildLevel.item(j).getNodeName(), nodeChildLevel.item(j).getTextContent());
             }
         } catch (InterruptedException | IOException ex) {
-            log.error(ParametrosOperacion.class.getName() + "->" + ex);
+            log.error(ProcessOperacion.class.getName() + "->" + ex);
             Thread.currentThread().interrupt();
         }
         return map;
     }
 
     @SuppressWarnings("null")
-    public Template obtenerParametrosCmpl(List<Stream> listStream, String rutaTemplate, String configPath) throws FileNotFoundException {
+    public Template getParameterPlug(List<Stream> listStream, String rutaTemplate, String configPath) throws FileNotFoundException {
         HashMap<String, String> hMac = null;
         try {
-            hMac = obtenerParametros("Macros",configPath);
+            hMac = getParameters("Macros",configPath);
         } catch (ParserConfigurationException ex) {
-            log.error(ParametrosOperacion.class
+            log.error(ProcessOperacion.class
                     .getName() + "->" + ex);
         }
-        params = new HashMap<>();
+        parametersMapList = new HashMap<>();
         templateMapList = TemplateTool.setup(rutaTemplate);
         Template req = null;
         Template reqOrig = null;
@@ -186,31 +152,31 @@ public class ParametrosOperacion {
                 if (stream.getAlias().contains("OriginalData")) {
                     reqOrig = TemplateTool.createTemplate(templateMapList, stream.getTemplate());
                     origData = "";
-                    hmReq = obtenerParametros(stream.getAlias(), configPath);
+                    hmReq = getParameters(stream.getAlias(), configPath);
                     for (Map.Entry<String, String> entry : hmReq.entrySet()) {
                         reqOrig.saveValue(entry.getKey(), entry.getValue());
                         origData = reqOrig.generateStream();
                     }
 
                 } else {
-                    hmReq = obtenerParametros(stream.getAlias(), configPath);
+                    hmReq = getParameters(stream.getAlias(), configPath);
                 }
 
             } catch (ParserConfigurationException ex) {
-                log.error(ParametrosOperacion.class
+                log.error(ProcessOperacion.class
                         .getName() + "->" + ex);
             }
-            params.putAll(hmReq);
-            for (Map.Entry<String, String> entry : params.entrySet()) {
+            parametersMapList.putAll(hmReq);
+            for (Map.Entry<String, String> entry : parametersMapList.entrySet()) {
                 Object val = entry.getValue();
                 for (Map.Entry<String, String> entry1 : hMac.entrySet()) {
                     Object key1 = entry1.getKey();
                     if (val.equals("{" + key1 + "}")) {
-                        params.put(entry.getKey(), entry1.getValue());
+                        parametersMapList.put(entry.getKey(), entry1.getValue());
                     }
                 }
                 if ("originalData".equalsIgnoreCase(entry.getKey())) {
-                    params.put(entry.getKey(), origData);
+                    parametersMapList.put(entry.getKey(), origData);
                 }
                 String key = entry.getKey();
                 String value = entry.getValue();
@@ -283,7 +249,7 @@ public class ParametrosOperacion {
                 log.debug("Archivo de Secuencia creado correctamente");
             }
             //Se accede al archivo creado,
-            formatValue = generaSecuencia(filename, length, step);
+            formatValue = generateSequence(filename, length, step);
         } catch (IOException | NumberFormatException ex) {
             log.error(ex);
         }
@@ -291,7 +257,7 @@ public class ParametrosOperacion {
         return formatValue;
     }
 
-    private String generaSecuencia(String filename, String length, String step) {
+    private String generateSequence(String filename, String length, String step) {
         int currentValue;
         String formatValue = "";
 
@@ -317,9 +283,9 @@ public class ParametrosOperacion {
             fileChannel.close();
 
         } catch (FileNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ParametrosOperacion.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessOperacion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | InterruptedException ex) {
-            java.util.logging.Logger.getLogger(ParametrosOperacion.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessOperacion.class.getName()).log(Level.SEVERE, null, ex);
             Thread.currentThread().interrupt();
         }
 

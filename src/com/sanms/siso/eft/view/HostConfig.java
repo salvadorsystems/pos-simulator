@@ -1,7 +1,7 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.model.ArchivoHost;
+import com.sanms.siso.eft.model.FileHost;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -131,15 +131,17 @@ public class HostConfig extends javax.swing.JDialog {
 
     private void setConfigHost() {
         Gson gson = new Gson();
-        ArchivoHost processorHost = new ArchivoHost(ip_adress.getText(), Integer.parseInt(port_host.getText()), Integer.parseInt(time_out.getText()));
+        FileHost processorHost = new FileHost(ip_adress.getText(), Integer.parseInt(port_host.getText()), Integer.parseInt(time_out.getText()));
         String json = gson.toJson(processorHost);
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            bw.write(json);
+            bw.write(json);            
+            PosSimulator.btnConnect.setEnabled(true);
+            PosSimulator.jm_connect.setEnabled(true);
             System.out.println("Fichero creado");
         } catch (IOException ex) {
         }
         PosSimulator.ipAdress = ip_adress.getText();
-        PosSimulator.PortHost = port_host.getText();
+        PosSimulator.portHost = port_host.getText();       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -11,6 +11,15 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/utils/Constantes.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/proxy/Proxy.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/processor/ProcesarArchivos.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/instance/InstanceManager.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/model/ArchivoRuta.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/processor/ParametrosOperacion.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/proxy/ProxySocket.java</file>
+            <file>file:/D:/ARCHIVOS%20UNS/Fuentes/pos-simulator/src/com/sanms/siso/eft/view/PosSimulator.java</file>
+        </group>
     </open-files>
 </project-private>

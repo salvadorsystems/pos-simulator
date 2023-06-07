@@ -4,18 +4,18 @@ package com.sanms.siso.eft.model;
  *
  * @author salvador
  */
-public class ArchivoHost {
+public class FileHost {
     
     private String ipHost;
     private int port;
     private int timeout;
 
-    public ArchivoHost() {
+    public FileHost() {
     }
 
     
     
-    public ArchivoHost(String ipHost, int port, int timeout) {
+    public FileHost(String ipHost, int port, int timeout) {
         this.ipHost = ipHost;
         this.port = port;
         this.timeout = timeout;

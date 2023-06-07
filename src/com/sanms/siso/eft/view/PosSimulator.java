@@ -1,12 +1,12 @@
 package com.sanms.siso.eft.view;
 
 import com.google.gson.Gson;
-import com.sanms.siso.eft.model.ArchivoConfiguracion;
-import com.sanms.siso.eft.processor.ProcesarArchivos;
-import com.sanms.siso.eft.model.ArchivoHost;
-import com.sanms.siso.eft.model.ArchivoRuta;
+import com.sanms.siso.eft.model.FileConfig;
+import com.sanms.siso.eft.processor.ProcessFile;
+import com.sanms.siso.eft.model.FileHost;
+import com.sanms.siso.eft.model.FilePOS;
 import com.sanms.siso.eft.model.Generator;
-import com.sanms.siso.eft.model.Operacion;
+import com.sanms.siso.eft.model.Operation;
 import com.sanms.siso.eft.model.Stream;
 import java.awt.Image;
 import java.io.File;
@@ -35,19 +35,19 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(PosSimulator.class);
     static String ipAdress;
-    static String PortHost;
-    private int connectClient = -1;
-    boolean valor = false;
+    static String portHost;
+    private boolean valor = false;
     private String enviromentPath;
+    Gson gson = new Gson();
 
     private String txnName;
     ProxySocket socketProxy;
     HostConfig windowTCPIP = new HostConfig(this, true);
-    ArchivoConfiguracion archivoConfiguracion;
-    Operacion operacion;
+    FileConfig archivoConfiguracion;
+    Operation operacion;
     List<Stream> listStreams;
     List<Generator> listGenerator;
-    ArchivoRuta processorWorkPath;
+    FilePOS processorWorkPath;
 
     public PosSimulator() {
         initComponents();
@@ -107,7 +107,7 @@ public final class PosSimulator extends javax.swing.JFrame {
         Reportes = new javax.swing.JMenu();
         jMenuPDF = new javax.swing.JMenuItem();
         jMenuXLS = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuAll = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -444,13 +444,13 @@ public final class PosSimulator extends javax.swing.JFrame {
         });
         Reportes.add(jMenuXLS);
 
-        jMenuItem5.setText("Generate Full Report - EXCEL");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMenuAll.setText("Generate Full Report - EXCEL");
+        jMenuAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMenuAllActionPerformed(evt);
             }
         });
-        Reportes.add(jMenuItem5);
+        Reportes.add(jMenuAll);
 
         jMenuBar1.add(Reportes);
 
@@ -498,12 +498,12 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void getconfigHost(String path) {
         Gson gson = new Gson();
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(path).toString())) {
+        if (ProcessFile.isJSONValid(ProcessFile.convertJsonToString(path).toString())) {
             try {
-                ArchivoHost processorHost = gson.fromJson(ProcesarArchivos.convertJsonToString(path).toString(), ArchivoHost.class);
+                FileHost processorHost = gson.fromJson(ProcessFile.convertJsonToString(path).toString(), FileHost.class);
                 if (processorHost != null && processorHost.getIpHost() != null) {
                     ipAdress = processorHost.getIpHost();
-                    PortHost = String.valueOf(processorHost.getPort());
+                    portHost = String.valueOf(processorHost.getPort());
                     windowTCPIP.ip_adress.setText(processorHost.getIpHost());
                     windowTCPIP.port_host.setText(String.valueOf(processorHost.getPort()));
                     windowTCPIP.time_out.setText(String.valueOf(processorHost.getTimeout()));
@@ -522,16 +522,18 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void initConfig() {
         initComponent();
-        Gson gson = new Gson();
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(Constantes.PATH_CFG_POS).toString())) {
-            processorWorkPath = gson.fromJson(ProcesarArchivos.convertJsonToString(Constantes.PATH_CFG_POS).toString(), ArchivoRuta.class);
+         processorWorkPath = gson.fromJson(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString(), FilePOS.class);
+         windowTCPIP.path = processorWorkPath.getWorkPath();
+//        Gson gson = new Gson();
+        if (ProcessFile.isJSONValid(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString())) {
+//            processorWorkPath = gson.fromJson(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString(), FilePOS.class);
             File f = new File(processorWorkPath.getWorkPath());
             if (f.exists()) {
-                windowTCPIP.path = processorWorkPath.getWorkPath();
+//                windowTCPIP.path = processorWorkPath.getWorkPath();
                 txtPath.setText(processorWorkPath.getWorkParent());
                 enviromentPath = processorWorkPath.getWorkParent();
                 getconfigHost(processorWorkPath.getWorkPath());
-                ProcesarArchivos.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
+                ProcessFile.listarArchivosConfiguracion(processorWorkPath.getWorkParent());
                 jListConfig.setSelectedIndex(0);
                 setListTxn();
                 jListTxn.setSelectedIndex(0);
@@ -553,17 +555,18 @@ public final class PosSimulator extends javax.swing.JFrame {
         jm_connect.setEnabled(false);
         jMenuPDF.setEnabled(false);
         jMenuXLS.setEnabled(false);
+        jMenuAll.setEnabled(false);
         num_instances.setText("1");
         num_send_per_instance.setText("1");
         ipAdress = "";
-        PortHost = "";
+        portHost = "";
         windowTCPIP.ip_adress.setText("");
         windowTCPIP.port_host.setText("");
         windowTCPIP.time_out.setText("");
         btnConnect.setEnabled(false);
         btnSendMessage.setEnabled(false);
-        ProcesarArchivos.listarOperaciones(null);
-        ProcesarArchivos.listarArchivosConfiguracion("");
+        ProcessFile.listarOperaciones(null);
+        ProcessFile.listarArchivosConfiguracion("");
     }
 
     private void btnTCPIPActionPerformed(java.awt.event.ActionEvent evt) {
@@ -601,10 +604,10 @@ public final class PosSimulator extends javax.swing.JFrame {
             File seleccion_ruta = jf.getSelectedFile();
             String hostPath = seleccion_ruta.getAbsolutePath() + "\\" + processorWorkPath.getWorkHost();
             enviromentPath = seleccion_ruta.getAbsolutePath();
-            ArchivoRuta.setConfigWorkPath(processorWorkPath.getWorkHost(), hostPath, enviromentPath);
+            FilePOS.setConfigWorkPath(processorWorkPath.getWorkHost(), hostPath, enviromentPath);
             File file = new File(hostPath);
             if (file.exists()) {
-                ProcesarArchivos.listarArchivosConfiguracion(enviromentPath);
+                ProcessFile.listarArchivosConfiguracion(enviromentPath);
                 jListConfig.setSelectedIndex(0);
                 setListTxn();
                 jListTxn.setSelectedIndex(0);
@@ -626,17 +629,10 @@ public final class PosSimulator extends javax.swing.JFrame {
     private void connectToHost() {
         valor = !valor;
         if (valor) {
-            socketProxy.setApiHost(ipAdress);
-            socketProxy.setApiPort(PortHost);
-            socketProxy.setNum_instances(Integer.parseInt(num_instances.getText()));
-            socketProxy.setNum_send_per_instance(Integer.parseInt(num_send_per_instance.getText()));
-            socketProxy.openSocketAny();
+            socketProxy.setup(enviromentPath, archivoConfiguracion.getWorkPath(), archivoConfiguracion.getParametersFile(), archivoConfiguracion.getTemplatesFile(),Integer.parseInt(num_instances.getText()),Integer.parseInt(num_send_per_instance.getText()));
+            socketProxy.openSocketAny(ipAdress, portHost);
         } else {
             socketProxy.closeSocket();
-            btnSendMessage.setEnabled(false);
-            jm_sendMessage.setEnabled(false);
-            PosSimulator.jMenuPDF.setEnabled(false);
-            PosSimulator.jMenuXLS.setEnabled(false);
         }
     }
 
@@ -663,7 +659,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             // TODO add your handling code here:
-            socketProxy.generarReportePDF();
+            socketProxy.reportPDF();
         } catch (JRException ex) {
             Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -674,7 +670,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private void jMenuXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuXLSActionPerformed
         try {
             // TODO add your handling code here:
-            socketProxy.generarReporteXLS();
+            socketProxy.reportXLS();
         } catch (JRException ex) {
             Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -694,23 +690,20 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void btnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMessageActionPerformed
         // TODO add your handling code here:
-        socketProxy.setup(enviromentPath, archivoConfiguracion.getWorkPath(), archivoConfiguracion.getParametersFile(), archivoConfiguracion.getTemplatesFile());
-        socketProxy.setTnxName(txnName);
-        socketProxy.setListStream(listStreams);
-        socketProxy.enviarMensajeSocket();
+        socketProxy.sendMessageSocket(txnName, listStreams);
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void jMenuAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAllActionPerformed
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            socketProxy.generateFullReport();
+            socketProxy.fullReport();
         } catch (JRException ex) {
             Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jMenuAllActionPerformed
 
     private void jm_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_connectActionPerformed
         // TODO add your handling code here:
@@ -725,19 +718,19 @@ public final class PosSimulator extends javax.swing.JFrame {
                 listStreams = generator.getStreams();
             }
         }
-        log.info("Seleccion: " + txnName);
+        log.info("Select: " + txnName);
     }
 
     public void setListTxn() {
         String rutaFileConfig = enviromentPath + "\\" + jListConfig.getSelectedValue();
         Gson gson = new Gson();
-        if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString())) {
-            archivoConfiguracion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileConfig).toString(), ArchivoConfiguracion.class);
+        if (ProcessFile.isJSONValid(ProcessFile.convertJsonToString(rutaFileConfig).toString())) {
+            archivoConfiguracion = gson.fromJson(ProcessFile.convertJsonToString(rutaFileConfig).toString(), FileConfig.class);
             if (archivoConfiguracion != null && archivoConfiguracion.getWorkPath() != null && archivoConfiguracion.getGeneratorsFile() != null) {
                 String rutaFileOpe = enviromentPath + "\\" + archivoConfiguracion.getWorkPath() + "\\" + archivoConfiguracion.getGeneratorsFile();
-                if (ProcesarArchivos.isJSONValid(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString())) {
-                    operacion = gson.fromJson(ProcesarArchivos.convertJsonToString(rutaFileOpe).toString(), Operacion.class);
-                    ProcesarArchivos.listarOperaciones(operacion);
+                if (ProcessFile.isJSONValid(ProcessFile.convertJsonToString(rutaFileOpe).toString())) {
+                    operacion = gson.fromJson(ProcessFile.convertJsonToString(rutaFileOpe).toString(), Operation.class);
+                    ProcessFile.listarOperaciones(operacion);
                     activeComponents();
                     setListtxn2();
                 } else {
@@ -828,10 +821,10 @@ public final class PosSimulator extends javax.swing.JFrame {
     public static javax.swing.JList<String> jListConfig;
     public static javax.swing.JList<String> jListTxn;
     private javax.swing.JMenu jMenu1;
+    public static javax.swing.JMenuItem jMenuAll;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem5;
     public static javax.swing.JMenuItem jMenuPDF;
     public static javax.swing.JMenuItem jMenuXLS;
     private javax.swing.JPanel jPanel1;
