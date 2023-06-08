@@ -629,7 +629,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private void connectToHost() {
         valor = !valor;
         if (valor) {
-//            socketProxy.setup(enviromentPath, archivoConfiguracion.getWorkPath(), archivoConfiguracion.getParametersFile(), archivoConfiguracion.getTemplatesFile(),Integer.parseInt(num_instances.getText()),Integer.parseInt(num_send_per_instance.getText()));
+            socketProxy.setupFront(Integer.parseInt(num_instances.getText()),Integer.parseInt(num_send_per_instance.getText()));
             socketProxy.openSocketAny(ipAdress, portHost);
         } else {
             socketProxy.closeSocket();
@@ -690,7 +690,7 @@ public final class PosSimulator extends javax.swing.JFrame {
 
     private void btnSendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMessageActionPerformed
         // TODO add your handling code here:
-        socketProxy.setup(enviromentPath, archivoConfiguracion.getWorkPath(), archivoConfiguracion.getParametersFile(), archivoConfiguracion.getTemplatesFile(),Integer.parseInt(num_instances.getText()),Integer.parseInt(num_send_per_instance.getText()));
+        socketProxy.setupBack(enviromentPath, archivoConfiguracion.getWorkPath(), archivoConfiguracion.getParametersFile(), archivoConfiguracion.getTemplatesFile());
         socketProxy.sendMessageSocket(txnName, listStreams);
     }//GEN-LAST:event_btnSendMessageActionPerformed
 

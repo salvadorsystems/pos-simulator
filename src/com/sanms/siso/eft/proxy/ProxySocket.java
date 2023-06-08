@@ -47,10 +47,13 @@ public class ProxySocket {
         this.columnModelStatus = columnModelStatus;
     }
 
-    public void setup(String enviromentPath, String workPath, String parametersPath, String templatesPath, int numI, int numS) {
+    public void setupBack(String enviromentPath, String workPath, String parametersPath, String templatesPath) {
         this.configPath = enviromentPath + "\\" + workPath;
         this.parametersPath = configPath + "\\" + parametersPath;
         this.templatesPath = configPath + "\\" + templatesPath;
+    }
+
+    public void setupFront(int numI, int numS) {
         this.num_instances = numI;
         this.num_send_per_instance = numS;
     }
