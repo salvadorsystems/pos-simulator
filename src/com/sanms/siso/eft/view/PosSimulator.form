@@ -140,7 +140,7 @@
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="panelConfiguration" max="32767" attributes="0"/>
-                  <Component id="panelConfiguration1" pref="138" max="32767" attributes="0"/>
+                  <Component id="panelConfiguration1" pref="140" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">

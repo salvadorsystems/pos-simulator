@@ -3,6 +3,7 @@ package com.sanms.siso.eft.view;
 import com.google.gson.Gson;
 import com.sanms.siso.eft.model.FileHost;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -133,6 +134,11 @@ public class HostConfig extends javax.swing.JDialog {
         Gson gson = new Gson();
         FileHost processorHost = new FileHost(ip_adress.getText(), Integer.parseInt(port_host.getText()), Integer.parseInt(time_out.getText()));
         String json = gson.toJson(processorHost);
+        File file = new File(path);
+        if(!file.exists()){
+            String tempDir = System.getProperty("java.io.tmpdir");
+            path = tempDir + File.separator + "host.js";
+        }
         try ( BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write(json);            
             PosSimulator.btnConnect.setEnabled(true);
