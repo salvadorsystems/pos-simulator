@@ -57,11 +57,17 @@ public class ProxySocket {
         this.num_instances = numI;
         this.num_send_per_instance = numS;
     }
-    
-    public void enableComponentes(boolean val){
-        
-        
-        
+
+    public void enableComponentes(boolean val) {
+        PosSimulator.jm_sendMessage.setEnabled(val);
+        PosSimulator.btnSendMessage.setEnabled(val);
+        PosSimulator.btnTCPIP.setEnabled(!val);
+        PosSimulator.num_ship.setEnabled(!val);
+        PosSimulator.jm_tcpip.setEnabled(!val);
+        PosSimulator.btnCargar.setEnabled(!val);
+        PosSimulator.jm_custom.setEnabled(!val);
+        PosSimulator.CboxNumI.setEnabled(!val);
+
     }
 
     public void openSocketAny(String ip, String port) {
@@ -75,14 +81,7 @@ public class ProxySocket {
                 PosSimulator.jm_connect.setText("Disconnect");
                 PosSimulator.ip_adress.setText(ip);
                 PosSimulator.lblPort.setText(port);
-                PosSimulator.jm_sendMessage.setEnabled(true);
-                PosSimulator.btnSendMessage.setEnabled(true);
-                PosSimulator.btnTCPIP.setEnabled(false);
-                PosSimulator.num_ship.setEnabled(false);
-                PosSimulator.jm_tcpip.setEnabled(false);
-                PosSimulator.jm_custom.setEnabled(false);
-                PosSimulator.btnCargar.setEnabled(false);
-                PosSimulator.CboxNumI.setEnabled(false);
+                enableComponentes(true);
                 if (PosSimulator.jListConfig.isSelectionEmpty()) {
                     PosSimulator.jm_sendMessage.setEnabled(false);
                     PosSimulator.btnSendMessage.setEnabled(false);
@@ -102,14 +101,7 @@ public class ProxySocket {
         PosSimulator.jm_connect.setText("Connect");
         PosSimulator.ip_adress.setText("0.0.0.0");
         PosSimulator.lblPort.setText("00");
-        PosSimulator.jm_sendMessage.setEnabled(false);
-        PosSimulator.btnSendMessage.setEnabled(false);
-        PosSimulator.btnTCPIP.setEnabled(true);
-        PosSimulator.num_ship.setEnabled(true);
-        PosSimulator.jm_tcpip.setEnabled(true);
-        PosSimulator.btnCargar.setEnabled(true);
-        PosSimulator.jm_custom.setEnabled(true);
-        PosSimulator.CboxNumI.setEnabled(true);
+        enableComponentes(false);
         PosSimulator.jMenuPDF.setEnabled(false);
         PosSimulator.jMenuXLS.setEnabled(false);
         PosSimulator.jm_reportStatus.setEnabled(false);
