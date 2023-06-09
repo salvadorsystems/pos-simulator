@@ -80,7 +80,7 @@ public final class PosSimulator extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         num_instances = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        num_send_per_instance = new javax.swing.JTextField();
+        num_ship = new javax.swing.JTextField();
         CboxNumI = new javax.swing.JCheckBox();
         panelConfiguration1 = new javax.swing.JPanel();
         imgConn = new javax.swing.JLabel();
@@ -99,15 +99,15 @@ public final class PosSimulator extends javax.swing.JFrame {
         jListTxn = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuConfig = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jm_tcpip = new javax.swing.JMenuItem();
+        jm_custom = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jm_connect = new javax.swing.JMenuItem();
         jm_sendMessage = new javax.swing.JMenuItem();
         Reportes = new javax.swing.JMenu();
         jMenuPDF = new javax.swing.JMenuItem();
         jMenuXLS = new javax.swing.JMenuItem();
-        jMenuAll = new javax.swing.JMenuItem();
+        jm_reportStatus = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -234,7 +234,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(num_instances, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                    .addComponent(num_send_per_instance))
+                    .addComponent(num_ship))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CboxNumI, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -254,7 +254,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                         .addGap(9, 9, 9)
                         .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(num_send_per_instance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(num_ship, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(20, 20, 20))
         );
 
@@ -328,7 +328,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                     .addComponent(imgConn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         panelConfiguration2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Customer"));
@@ -393,21 +393,21 @@ public final class PosSimulator extends javax.swing.JFrame {
 
         menuConfig.setText("Settings");
 
-        jMenuItem1.setText("Configure TCP/IP");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jm_tcpip.setText("Configure TCP/IP");
+        jm_tcpip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jm_tcpipActionPerformed(evt);
             }
         });
-        menuConfig.add(jMenuItem1);
+        menuConfig.add(jm_tcpip);
 
-        jMenuItem2.setText("Select Custom");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jm_custom.setText("Select Custom");
+        jm_custom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jm_customActionPerformed(evt);
             }
         });
-        menuConfig.add(jMenuItem2);
+        menuConfig.add(jm_custom);
 
         jMenuBar1.add(menuConfig);
 
@@ -428,7 +428,7 @@ public final class PosSimulator extends javax.swing.JFrame {
 
         Reportes.setText("Reports");
 
-        jMenuPDF.setText("Generate last Report - PDF");
+        jMenuPDF.setText("Generate Report - PDF");
         jMenuPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuPDFActionPerformed(evt);
@@ -436,7 +436,7 @@ public final class PosSimulator extends javax.swing.JFrame {
         });
         Reportes.add(jMenuPDF);
 
-        jMenuXLS.setText("Generate last Report - EXCEL");
+        jMenuXLS.setText("Generate Report - EXCEL");
         jMenuXLS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuXLSActionPerformed(evt);
@@ -444,13 +444,13 @@ public final class PosSimulator extends javax.swing.JFrame {
         });
         Reportes.add(jMenuXLS);
 
-        jMenuAll.setText("Generate Full Report - EXCEL");
-        jMenuAll.addActionListener(new java.awt.event.ActionListener() {
+        jm_reportStatus.setText("Generate Status Report - EXCEL");
+        jm_reportStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuAllActionPerformed(evt);
+                jm_reportStatusActionPerformed(evt);
             }
         });
-        Reportes.add(jMenuAll);
+        Reportes.add(jm_reportStatus);
 
         jMenuBar1.add(Reportes);
 
@@ -477,7 +477,7 @@ public final class PosSimulator extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelConfiguration1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, Short.MAX_VALUE))
+                    .addComponent(panelConfiguration1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelConfiguration2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -524,12 +524,9 @@ public final class PosSimulator extends javax.swing.JFrame {
         initComponent();
          processorWorkPath = gson.fromJson(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString(), FilePOS.class);
          windowTCPIP.path = processorWorkPath.getWorkPath();
-//        Gson gson = new Gson();
         if (ProcessFile.isJSONValid(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString())) {
-//            processorWorkPath = gson.fromJson(ProcessFile.convertJsonToString(Constantes.PATH_CFG_POS).toString(), FilePOS.class);
             File f = new File(processorWorkPath.getWorkPath());
             if (f.exists()) {
-//                windowTCPIP.path = processorWorkPath.getWorkPath();
                 txtPath.setText(processorWorkPath.getWorkParent());
                 enviromentPath = processorWorkPath.getWorkParent();
                 getconfigHost(processorWorkPath.getWorkPath());
@@ -555,9 +552,9 @@ public final class PosSimulator extends javax.swing.JFrame {
         jm_connect.setEnabled(false);
         jMenuPDF.setEnabled(false);
         jMenuXLS.setEnabled(false);
-        jMenuAll.setEnabled(false);
+        jm_reportStatus.setEnabled(false);
         num_instances.setText("1");
-        num_send_per_instance.setText("1");
+        num_ship.setText("1");
         ipAdress = "";
         portHost = "";
         windowTCPIP.ip_adress.setText("");
@@ -629,7 +626,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     private void connectToHost() {
         valor = !valor;
         if (valor) {
-            socketProxy.setupFront(Integer.parseInt(num_instances.getText()),Integer.parseInt(num_send_per_instance.getText()));
+            socketProxy.setupFront(Integer.parseInt(num_instances.getText()),Integer.parseInt(num_ship.getText()));
             socketProxy.openSocketAny(ipAdress, portHost);
         } else {
             socketProxy.closeSocket();
@@ -651,10 +648,10 @@ public final class PosSimulator extends javax.swing.JFrame {
         setListtxn2();
     }//GEN-LAST:event_jListTxnMouseClicked
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jm_customActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_customActionPerformed
         // TODO add your handling code here:
         chooseCustomer();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jm_customActionPerformed
 
     private void jMenuPDFActionPerformed(java.awt.event.ActionEvent evt) {
         try {
@@ -678,10 +675,10 @@ public final class PosSimulator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuXLSActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jm_tcpipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_tcpipActionPerformed
         // TODO add your handling code here:
         windowTCPIP.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jm_tcpipActionPerformed
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         // TODO add your handling code here:
@@ -694,17 +691,15 @@ public final class PosSimulator extends javax.swing.JFrame {
         socketProxy.sendMessageSocket(txnName, listStreams);
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
-    private void jMenuAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAllActionPerformed
+    private void jm_reportStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_reportStatusActionPerformed
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
             socketProxy.fullReport();
-        } catch (JRException ex) {
-            Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (JRException | IOException ex) {
             Logger.getLogger(PosSimulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuAllActionPerformed
+    }//GEN-LAST:event_jm_reportStatusActionPerformed
 
     private void jm_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_connectActionPerformed
         // TODO add your handling code here:
@@ -804,13 +799,13 @@ public final class PosSimulator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CboxNumI;
+    public static javax.swing.JCheckBox CboxNumI;
     private javax.swing.JTabbedPane RESPUESTA;
     private javax.swing.JMenu Reportes;
-    private javax.swing.JButton btnCargar;
+    public static javax.swing.JButton btnCargar;
     public static javax.swing.JButton btnConnect;
     public static javax.swing.JButton btnSendMessage;
-    private javax.swing.JButton btnTCPIP;
+    public static javax.swing.JButton btnTCPIP;
     public static javax.swing.JLabel imgConn;
     public static javax.swing.JLabel ip_adress;
     private javax.swing.JLabel jLabel1;
@@ -822,10 +817,7 @@ public final class PosSimulator extends javax.swing.JFrame {
     public static javax.swing.JList<String> jListConfig;
     public static javax.swing.JList<String> jListTxn;
     private javax.swing.JMenu jMenu1;
-    public static javax.swing.JMenuItem jMenuAll;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JMenuItem jMenuPDF;
     public static javax.swing.JMenuItem jMenuXLS;
     private javax.swing.JPanel jPanel1;
@@ -840,11 +832,14 @@ public final class PosSimulator extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     public static javax.swing.JMenuItem jm_connect;
+    public static javax.swing.JMenuItem jm_custom;
+    public static javax.swing.JMenuItem jm_reportStatus;
     public static javax.swing.JMenuItem jm_sendMessage;
+    public static javax.swing.JMenuItem jm_tcpip;
     public static javax.swing.JLabel lblPort;
     private javax.swing.JMenu menuConfig;
     private javax.swing.JTextField num_instances;
-    private javax.swing.JTextField num_send_per_instance;
+    public static javax.swing.JTextField num_ship;
     private javax.swing.JPanel panelConfiguration;
     private javax.swing.JPanel panelConfiguration1;
     private javax.swing.JPanel panelConfiguration2;

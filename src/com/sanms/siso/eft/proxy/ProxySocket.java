@@ -57,6 +57,12 @@ public class ProxySocket {
         this.num_instances = numI;
         this.num_send_per_instance = numS;
     }
+    
+    public void enableComponentes(boolean val){
+        
+        
+        
+    }
 
     public void openSocketAny(String ip, String port) {
         proxy = new Proxy[num_instances];
@@ -71,6 +77,12 @@ public class ProxySocket {
                 PosSimulator.lblPort.setText(port);
                 PosSimulator.jm_sendMessage.setEnabled(true);
                 PosSimulator.btnSendMessage.setEnabled(true);
+                PosSimulator.btnTCPIP.setEnabled(false);
+                PosSimulator.num_ship.setEnabled(false);
+                PosSimulator.jm_tcpip.setEnabled(false);
+                PosSimulator.jm_custom.setEnabled(false);
+                PosSimulator.btnCargar.setEnabled(false);
+                PosSimulator.CboxNumI.setEnabled(false);
                 if (PosSimulator.jListConfig.isSelectionEmpty()) {
                     PosSimulator.jm_sendMessage.setEnabled(false);
                     PosSimulator.btnSendMessage.setEnabled(false);
@@ -92,9 +104,15 @@ public class ProxySocket {
         PosSimulator.lblPort.setText("00");
         PosSimulator.jm_sendMessage.setEnabled(false);
         PosSimulator.btnSendMessage.setEnabled(false);
+        PosSimulator.btnTCPIP.setEnabled(true);
+        PosSimulator.num_ship.setEnabled(true);
+        PosSimulator.jm_tcpip.setEnabled(true);
+        PosSimulator.btnCargar.setEnabled(true);
+        PosSimulator.jm_custom.setEnabled(true);
+        PosSimulator.CboxNumI.setEnabled(true);
         PosSimulator.jMenuPDF.setEnabled(false);
         PosSimulator.jMenuXLS.setEnabled(false);
-        PosSimulator.jMenuAll.setEnabled(false);
+        PosSimulator.jm_reportStatus.setEnabled(false);
         for (int i = 0; i < num_instances; i++) {
             proxy[i].release();
         }

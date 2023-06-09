@@ -189,7 +189,7 @@ public class InstanceManager extends Thread {
                     tableModelStatus.setValueAt(count + 1, i, 7);
                     PosSimulator.jMenuPDF.setEnabled(true);
                     PosSimulator.jMenuXLS.setEnabled(true);
-                    PosSimulator.jMenuAll.setEnabled(true);
+                    PosSimulator.jm_reportStatus.setEnabled(true);
                     log.info("Instancia " + getInstance() + " mensaje enviado : " + count);
                 } catch (ParseException ex) {
                     log.error(ex);
