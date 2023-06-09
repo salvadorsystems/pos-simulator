@@ -58,34 +58,13 @@ public class ProxySocket {
         this.num_send_per_instance = numS;
     }
 
-    public void enableComponentes(boolean val) {
-        PosSimulator.jm_sendMessage.setEnabled(val);
-        PosSimulator.btnSendMessage.setEnabled(val);
-        PosSimulator.btnTCPIP.setEnabled(!val);
-        PosSimulator.num_ship.setEnabled(!val);
-        PosSimulator.jm_tcpip.setEnabled(!val);
-        PosSimulator.btnCargar.setEnabled(!val);
-        PosSimulator.jm_custom.setEnabled(!val);
-        PosSimulator.CboxNumI.setEnabled(!val);
-
-    }
-
     public void openSocketAny(String ip, String port) {
         proxy = new Proxy[num_instances];
         for (int i = 0; i < num_instances; i++) {
             proxy[i] = new Proxy();
             connectSocket = proxy[i].setup(ip, port, false, 30);
             if (connectSocket == 0) {
-                PosSimulator.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.PATH_IMG_ON)));
-                PosSimulator.btnConnect.setText("Disconnect");
-                PosSimulator.jm_connect.setText("Disconnect");
-                PosSimulator.ip_adress.setText(ip);
-                PosSimulator.lblPort.setText(port);
-                enableComponentes(true);
-                if (PosSimulator.jListConfig.isSelectionEmpty()) {
-                    PosSimulator.jm_sendMessage.setEnabled(false);
-                    PosSimulator.btnSendMessage.setEnabled(false);
-                }
+                enableComponentes(true, "Disconnect", ip, port, Constantes.PATH_IMG_ON);
             } else {
                 log.debug(Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje());
                 JOptionPane.showMessageDialog(null, Errores.ERROR_VALIDACION_OBLIGATORIEDAD_1004.getMensaje(),
@@ -96,12 +75,7 @@ public class ProxySocket {
     }
 
     public void closeSocket() {
-        PosSimulator.imgConn.setIcon(new ImageIcon(getClass().getResource(Constantes.PATH_IMG_OFF)));
-        PosSimulator.btnConnect.setText("Connect");
-        PosSimulator.jm_connect.setText("Connect");
-        PosSimulator.ip_adress.setText("0.0.0.0");
-        PosSimulator.lblPort.setText("00");
-        enableComponentes(false);
+        enableComponentes(false, "Connect", "0.0.0.0", "00", Constantes.PATH_IMG_OFF);
         PosSimulator.jMenuPDF.setEnabled(false);
         PosSimulator.jMenuXLS.setEnabled(false);
         PosSimulator.jm_reportStatus.setEnabled(false);
@@ -133,5 +107,25 @@ public class ProxySocket {
 
     public void fullReport() throws JRException, IOException {
         work.reportFull();
+    }
+
+    public void enableComponentes(boolean val, String status, String ip, String port, String imgConn) {
+        PosSimulator.jm_sendMessage.setEnabled(val);
+        PosSimulator.btnSendMessage.setEnabled(val);
+        PosSimulator.btnTCPIP.setEnabled(!val);
+        PosSimulator.num_ship.setEnabled(!val);
+        PosSimulator.jm_tcpip.setEnabled(!val);
+        PosSimulator.btnCargar.setEnabled(!val);
+        PosSimulator.jm_custom.setEnabled(!val);
+        PosSimulator.CboxNumI.setEnabled(!val);
+        PosSimulator.btnConnect.setText(status);
+        PosSimulator.jm_connect.setText(status);
+        PosSimulator.ip_adress.setText(ip);
+        PosSimulator.lblPort.setText(port);
+        PosSimulator.imgConn.setIcon(new ImageIcon(getClass().getResource(imgConn)));
+        if (PosSimulator.jListConfig.isSelectionEmpty()) {
+            PosSimulator.jm_sendMessage.setEnabled(false);
+            PosSimulator.btnSendMessage.setEnabled(false);
+        }
     }
 }
